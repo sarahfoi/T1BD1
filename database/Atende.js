@@ -1,29 +1,25 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
 
-const Animal = connection.define( 'animal',{
+const Atende = connection.define( 'atende',{
     cod:{
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    nome:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    sexo:{
-        type: Sequelize.CHAR,
-        allowNull: false
-    },
-    dataNascimento:{
-        type: Sequelize.DATE,
-        allowNull: false
-    },
-    codEspecie:{
+    CPF:{
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    ativo:{
-        type: Sequelize.BOOLEAN,
+    data:{
+        type: Sequelize.DATEONLY,
         allowNull: false
-    }
+    },
+    diagnóstico:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    codAnimal:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
 })

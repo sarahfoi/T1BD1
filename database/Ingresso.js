@@ -1,29 +1,21 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
 
-const Animal = connection.define( 'animal',{
-    cod:{
+const Ingressos = connection.define( 'ingressos',{
+    num:{
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    nome:{
-        type: Sequelize.STRING,
+    horario:{
+        type: Sequelize.TIME,
         allowNull: false
     },
-    sexo:{
-        type: Sequelize.CHAR,
-        allowNull: false
-    },
-    dataNascimento:{
+    data:{
         type: Sequelize.DATE,
         allowNull: false
     },
-    codEspecie:{
+    numBilheteria:{
         type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    ativo:{
-        type: Sequelize.BOOLEAN,
         allowNull: false
     }
 })
