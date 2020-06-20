@@ -113,11 +113,11 @@ app.get('/Ingressos/insert', (req,res)=>{
 })
 
 app.get('/ServicosGerais', (req,res)=>{
-    res.render('servicosgerais');
+    res.render('servicosGerais');
 })
 
 app.get('/ServicosGerais/insert', (req,res)=>{
-    res.render('servicosgerais_insert');
+    res.render('servicosGerais_insert');
 })
 
 app.get('/Supervisiona', (req,res)=>{
