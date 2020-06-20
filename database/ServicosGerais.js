@@ -35,7 +35,7 @@ const ServicosGerais = connection.define( 'serviçosgerais',{
         allowNull: false
     },
     Conta:{
-        type: Sequelize.Integer,
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     Digito:{

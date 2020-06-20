@@ -36,6 +36,9 @@ app.get('/login', (req, res)=>{
 app.get('/Ala', (req,res)=>{
     res.render('ala');
 })
+app.get('/Ala/insert', (req,res)=>{
+    res.render('ala_insert');
+})
 
 app.get('/Animal', (req,res)=>{
     res.render('animal');

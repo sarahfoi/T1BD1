@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
 
-const Ingressos = connection.define( 'ingressos',{
+const Ingresso = connection.define( 'ingressos',{
     num:{
         type: Sequelize.INTEGER,
         allowNull: false

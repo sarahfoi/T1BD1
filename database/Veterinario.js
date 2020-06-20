@@ -35,7 +35,7 @@ const Veterinario = connection.define( 'veterinario',{
         allowNull: false
     },
     Conta:{
-        type: Sequelize.Integer,
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     Digito:{
