@@ -10,6 +10,10 @@ const Supervisiona = connection.define( 'supervisiona',{
         type: Sequelize.INTEGER,
         allowNull: false
     },
+},{
+    freezeTableName: true,
+    tableName: 'superviona'
 })
 
 Supervisiona.sync({force:false})
+module.exports = Supervisiona

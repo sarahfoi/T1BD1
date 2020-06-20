@@ -19,6 +19,10 @@ const Trabalha = connection.define( 'trabalha',{
         allowNull: false
     },
 
+},{
+    freezeTableName: true,
+    tableName: 'trabalha'
 })
 
 Trabalha.sync({force:false})
+module.exports = Trabalha

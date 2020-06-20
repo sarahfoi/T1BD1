@@ -22,6 +22,10 @@ const Atende = connection.define( 'atende',{
         type: Sequelize.INTEGER,
         allowNull: false
     },
+},{
+    freezeTableName: true,
+    tableName: 'atende'
 })
 
 Atende.sync({force:false})
+module.exports = Atende

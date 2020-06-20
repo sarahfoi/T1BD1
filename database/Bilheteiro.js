@@ -50,6 +50,10 @@ const Bilheteiro = connection.define( 'bilheteiro',{
         type: Sequelize.BOOLEAN,
         allowNull: false
     }
+},{
+    freezeTableName: true,
+    tableName: 'bilheterio'
 })
 
 Bilheteiro.sync({force:false})
+module.exports = Bilheteiro

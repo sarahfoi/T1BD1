@@ -18,6 +18,10 @@ const Ingresso = connection.define( 'ingressos',{
         type: Sequelize.INTEGER,
         allowNull: false
     }
+},{
+    freezeTableName: true,
+    tableName: 'ingresso'
 })
 
 Ingresso.sync({force:false})
+module.exports = Ingresso
