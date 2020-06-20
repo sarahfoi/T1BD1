@@ -1,8 +1,6 @@
 form{
     margin-top: 2%;
-}
-
-input{
-    margin-left: 5%;
-    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    margin: 5% 5%;
 }
