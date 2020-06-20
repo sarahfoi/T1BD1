@@ -44,7 +44,105 @@ app.get('/Animal', (req,res)=>{
     res.render('animal');
 })
 
+app.get('/Animal/insert', (req,res)=>{
+    res.render('animal_insert');
+})
 
+app.get('/Atende', (req,res)=>{
+    res.render('atende');
+})
+
+app.get('/Atende/insert', (req,res)=>{
+    res.render('atende_insert');
+})
+
+app.get('/Bilheteiro', (req,res)=>{
+    res.render('bilheteiro');
+})
+
+app.get('/Bilheteiro/insert', (req,res)=>{
+    res.render('bilheteiro_insert');
+})
+
+app.get('/Bilheteria', (req,res)=>{
+    res.render('bilheteria');
+})
+
+app.get('/Bilheteria/insert', (req,res)=>{
+    res.render('bilheteria_insert');
+})
+
+app.get('/Cuida', (req,res)=>{
+    res.render('cuida');
+})
+
+app.get('/Cuida/insert', (req,res)=>{
+    res.render('cuida_insert');
+})
+
+app.get('/Especie', (req,res)=>{
+    res.render('especie');
+})
+
+app.get('/Especie/insert', (req,res)=>{
+    res.render('especie_insert');
+})
+
+app.get('/HorarioAla', (req,res)=>{
+    res.render('horarioala');
+})
+
+app.get('/HorarioAla/insert', (req,res)=>{
+    res.render('horarioala_insert');
+})
+
+app.get('/HorarioBilheteria', (req,res)=>{
+    res.render('horariobilheteria');
+})
+
+app.get('/HorarioBilheteria/insert', (req,res)=>{
+    res.render('horariobilheteria_insert');
+})
+
+app.get('/Ingressos', (req,res)=>{
+    res.render('ingresso');
+})
+
+app.get('/Ingressos/insert', (req,res)=>{
+    res.render('ingresso_insert');
+})
+
+app.get('/ServicosGerais', (req,res)=>{
+    res.render('servicosgerais');
+})
+
+app.get('/ServicosGerais/insert', (req,res)=>{
+    res.render('servicosgerais_insert');
+})
+
+app.get('/Supervisiona', (req,res)=>{
+    res.render('supervisiona');
+})
+
+app.get('/Supervisiona/insert', (req,res)=>{
+    res.render('supervisiona_insert');
+})
+
+app.get('/Trabalha', (req,res)=>{
+    res.render('trabalho');
+})
+
+app.get('/Trabalha/insert', (req,res)=>{
+    res.render('trabalho_insert');
+})
+
+app.get('/Veterinario', (req,res)=>{
+    res.render('veterinario');
+})
+
+app.get('/Veterinario/insert', (req,res)=>{
+    res.render('veterinario_insert');
+})
 
 //FUNÇÕES DE INSERÇÃO
 
