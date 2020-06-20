@@ -31,3 +31,5 @@ const Especie = connection.define( 'especie',{
         allowNull: false
     }
 })
+
+Especie.sync({force:false})

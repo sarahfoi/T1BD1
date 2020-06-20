@@ -51,3 +51,5 @@ const Bilheteiro = connection.define( 'bilheteiro',{
         allowNull: false
     }
 })
+
+Bilheteiro.sync({force:false})

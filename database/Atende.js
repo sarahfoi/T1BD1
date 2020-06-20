@@ -23,3 +23,5 @@ const Atende = connection.define( 'atende',{
         allowNull: false
     },
 })
+
+Atende.sync({force:false})

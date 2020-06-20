@@ -19,3 +19,5 @@ const Ingressos = connection.define( 'ingressos',{
         allowNull: false
     }
 })
+
+Ingresso.sync({force:false})

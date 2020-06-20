@@ -11,3 +11,5 @@ const HorarioAla = connection.define( 'horarioala',{
         allowNull: false
     }
 })
+
+HorarioAla.sync({force:false})

@@ -20,3 +20,5 @@ const Trabalha = connection.define( 'trabalha',{
     },
 
 })
+
+Trabalha.sync({force:false})

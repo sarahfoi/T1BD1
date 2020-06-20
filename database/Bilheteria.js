@@ -11,3 +11,5 @@ const Bilheteria = connection.define( 'bilheteria',{
         allowNull: false
     },
 })
+
+Bilheteria.sync({force:false})

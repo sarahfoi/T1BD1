@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
 
-const ServiçosGerais = connection.define( 'serviçosgerais',{
+const ServicosGerais = connection.define( 'serviçosgerais',{
     CPF:{
         type: Sequelize.STRING,
         allowNull: false
@@ -42,12 +42,10 @@ const ServiçosGerais = connection.define( 'serviçosgerais',{
         type: Sequelize.CHAR,
         allowNull: false
     },
-    numBilheteria:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     funcao:{
         type: Sequelize.STRING,
         allowNull: false
     }
 })
+
+ServicosGerais.sync({force:false})

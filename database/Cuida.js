@@ -11,3 +11,5 @@ const Cuida = connection.define( 'cuida',{
         allowNull: false
     },
 })
+
+Cuida.sync({force:false})

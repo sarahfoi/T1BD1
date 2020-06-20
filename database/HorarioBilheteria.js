@@ -15,3 +15,5 @@ const HorarioBilheteria = connection.define( 'horariobilheteria',{
         allowNull: false
     }
 })
+
+HorarioBilheteria.sync({force:false})

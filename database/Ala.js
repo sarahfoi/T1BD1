@@ -15,3 +15,5 @@ const Ala = connection.define( 'ala',{
         allowNull: false
     }
 })
+
+Ala.sync({force:false})

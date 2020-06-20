@@ -27,3 +27,5 @@ const Animal = connection.define( 'animal',{
         allowNull: false
     }
 })
+
+Animal.sync({force:false})

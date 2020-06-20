@@ -11,3 +11,5 @@ const Supervisiona = connection.define( 'supervisiona',{
         allowNull: false
     },
 })
+
+Supervisiona.sync({force:false})

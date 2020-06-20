@@ -55,3 +55,5 @@ const Veterinario = connection.define( 'veterinario',{
         allowNull: false
     }
 })
+
+Veterinario.sync({force:false})
