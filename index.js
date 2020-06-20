@@ -15,6 +15,10 @@ app.get('/', (req, res)=>{
     res.render("index"); 
 });
 
+app.get('/login', (req, res)=>{
+    res.render('login');
+});
+
 /*-----------FIM ROTAS-----------*/
 app.listen(8000, ()=>{
     console.log("Site rodando");
