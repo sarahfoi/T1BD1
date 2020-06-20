@@ -155,7 +155,7 @@ app.post ("/insereala", (req,res) =>{
         localizacao:localizacao,
         nome:nome
     }).then(()=>{
-    res.redirect("/")
+        res.redirect("/")
     });
 });
 

@@ -14,6 +14,10 @@ const Ala = connection.define( 'ala',{
         type: Sequelize.STRING,
         allowNull: false
     }
-})
+},{
+    freezeTableName: true,
+    tableName: 'ala'
+});
 
-Ala.sync({force:false})
+Ala.sync({force:false});
+module.exports = Ala;
