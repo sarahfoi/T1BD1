@@ -10,6 +10,10 @@ const Bilheteria = connection.define( 'bilheteria',{
         type: Sequelize.STRING,
         allowNull: false
     },
+},{
+    freezeTableName: true,
+    tableName: 'bilheteria'
 })
 
 Bilheteria.sync({force:false})
+module.exports = Bilheteria

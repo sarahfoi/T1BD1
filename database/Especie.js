@@ -30,6 +30,10 @@ const Especie = connection.define( 'especie',{
         type: Sequelize.INTEGER,
         allowNull: false
     }
+},{
+    freezeTableName: true,
+    tableName: 'especie'
 })
 
 Especie.sync({force:false})
+module.exports = Especie

@@ -10,6 +10,10 @@ const Cuida = connection.define( 'cuida',{
         type: Sequelize.INTEGER,
         allowNull: false
     },
+},{
+    freezeTableName: true,
+    tableName: 'cuida'
 })
 
 Cuida.sync({force:false})
+module.exports = Cuida

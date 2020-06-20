@@ -54,6 +54,10 @@ const Veterinario = connection.define( 'veterinario',{
         type: Sequelize.BOOLEAN,
         allowNull: false
     }
+},{
+    freezeTableName: true,
+    tableName: 'veterinario'
 })
 
 Veterinario.sync({force:false})
+module.exports = Veterinario

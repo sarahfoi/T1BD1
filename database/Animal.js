@@ -26,6 +26,11 @@ const Animal = connection.define( 'animal',{
         type: Sequelize.BOOLEAN,
         allowNull: false
     }
+},{
+    freezeTableName: true,
+    tableName: 'animal'
 })
 
 Animal.sync({force:false})
+
+module.exports = Animal

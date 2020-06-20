@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
 
-const ServicosGerais = connection.define( 'serviçosgerais',{
+const ServicosGerais = connection.define( 'servicosGerais',{
     CPF:{
         type: Sequelize.STRING,
         allowNull: false
@@ -46,6 +46,10 @@ const ServicosGerais = connection.define( 'serviçosgerais',{
         type: Sequelize.STRING,
         allowNull: false
     }
+},{
+    freezeTableName: true,
+    tableName: 'servicosGerais'
 })
 
 ServicosGerais.sync({force:false})
+module.exports = ServicosGerais
