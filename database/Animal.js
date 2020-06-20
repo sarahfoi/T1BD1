@@ -29,8 +29,8 @@ const Animal = connection.define( 'animal',{
 },{
     freezeTableName: true,
     tableName: 'animal'
-})
+});
 
-Animal.sync({force:false})
+Animal.sync({force:false});
 
-module.exports = Animal
+module.exports = Animal;
