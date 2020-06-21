@@ -260,6 +260,50 @@ app.post('/removeTrabalha',(req,res)=>{
     });
 });
 
+app.post('/removeAnimal', (req,res)=>{
+    Animal.update({
+        ativo: false,
+        where: {
+            cod: req.body.cod
+        }
+    }).then(()=>{
+        res.render('/animal')
+    });
+});
+
+app.post('/removeBilheteiro', (req,res)=>{
+    Bilheteiro.update({
+        ativo: false,
+        where: {
+            CPF: req.body.CPF
+        }
+    }).then(()=>{
+        res.render('/Bilheteiro')
+    });
+});
+
+app.post('/removeServicosGerais', (req,res)=>{
+    ServicosGerais.update({
+        ativo: false,
+        where: {
+            CPF: req.body.CPF
+        }
+    }).then(()=>{
+        res.render('/ServicosGerais')
+    });
+});
+
+app.post('/removeVeterinario', (req,res)=>{
+    Veterinario.update({
+        ativo: false,
+        where: {
+            CPF: req.body.CPF
+        }
+    }).then(()=>{
+        res.render('/Veterinario')
+    });
+});
+
 //FUNÇÕES DE BUSCA TODOS
 
 app.get ('/buscatodosAla', (req,res)=>{
