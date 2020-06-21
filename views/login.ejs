@@ -1,43 +1,28 @@
 <%- include('partials/head.ejs'); %>
-    <link rel="stylesheet" href="assets/styles/login.css">
+    <link rel="stylesheet" href="/assets/styles/login.css">
     <title>Zoológico - Home</title>
 </head>
 
 <body>
 
     <main role="main">
-        <nav class="navbar fixed-top navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">Zóologico</a>
-            <!--button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navHome" aria-controls="navHome" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button-->
-            <div class="collapse navbar-collapse" id="navHome">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/Sobre">Sobre</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="row">
+        <%- include('partials/navbar.ejs'); %>
+        <div class="row" style="margin: 5%">
             <div class="col-md-4 offset-md-4">
                 <h3 style="text-align: center">Login</h3>
-                <form>
+                <form method="post" action="/login/entrar">
                     <div class="form-group">
                         <label for="emailLogin">E-mail</label>
-                        <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
+                        <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" name="emailLogin">
                         <small id="emailHelp" class="form-text text-muted">Insira o e-mail cadastrado.</small>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <label for="senhaLogin">Senha</label>
+                        <input type="password" class="form-control" id="senhaLogin" name="senhaLogin">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
+                <p class="text-danger" style="text-align:center;display: none" id="erroLogin">Dados inválidos.</p>
             </div>
         </div>
         
