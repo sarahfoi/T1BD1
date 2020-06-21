@@ -89,19 +89,19 @@ app.get('/Especie/insert', (req,res)=>{
 })
 
 app.get('/HorarioAla', (req,res)=>{
-    res.render('horarioala');
+    res.render('horarioAla');
 })
 
 app.get('/HorarioAla/insert', (req,res)=>{
-    res.render('horarioala_insert');
+    res.render('horarioAla_insert');
 })
 
 app.get('/HorarioBilheteria', (req,res)=>{
-    res.render('horariobilheteria');
+    res.render('horarioBilheteria');
 })
 
 app.get('/HorarioBilheteria/insert', (req,res)=>{
-    res.render('horariobilheteria_insert');
+    res.render('horarioBilheteria_insert');
 })
 
 app.get('/Ingressos', (req,res)=>{
@@ -144,9 +144,13 @@ app.get('/Veterinario/insert', (req,res)=>{
     res.render('veterinario_insert');
 })
 
+//PAGINAS DE INSERÇÃO
+
+//PAGINAS DE BUSCA, REMOÇÃO E ALTERAÇÃO
+
 //FUNÇÕES DE INSERÇÃO
 
-app.post ("/insereala", (req,res) =>{
+app.post ("/insereAla", (req,res) =>{
     var cod= req.body.cod;
     var localizacao= req.body.localizacao;
     var nome=req.body.nome;
@@ -397,6 +401,10 @@ app.post ("/insereveterinario", (req,res) =>{
     res.redirect("/")
     });
 });
+
+//
+
+
 
 /*-----------FIM ROTAS-----------*/
 app.listen(8000, ()=>{
