@@ -33,6 +33,12 @@ app.get('/login', (req, res)=>{
     res.render('login');
 });
 
+app.get('/insert/Funcionario', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Funcionario'
+    })
+})
+
 app.get('/Ala', (req,res)=>{
     res.render('ala');
 })

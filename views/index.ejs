@@ -1,25 +1,11 @@
 <%- include('partials/head.ejs'); %>
-        <link rel="stylesheet" href="assets/styles/index.css">
-        <title>Zoológico - Home</title>
-    </head>
-    <body>
-        <main role="main">
-            <nav class="navbar fixed-top navbar-expand navbar-dark bg-dark">
-                <a class="navbar-brand" href="/">Zoológico</a>
-                <!--button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navHome" aria-controls="navHome" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button-->
-                <div class="collapse navbar-collapse" id="navHome">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/Sobre">Sobre</a> 
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/login">Login</a> 
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+<link rel="stylesheet" href="assets/styles/index.css">
+<title>Zoológico - Home</title>
+</head>
+
+<body>
+    <main role="main">
+        <% include('partials/navbar.ejs') %>
 
         <div id="carrossel-home" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -48,24 +34,24 @@
             </a>
         </div>
 
-            
-            <div class="container" style="text-align: center;">
-                <div class="row">
-                    <div class="col-sm">
-                        <img src="/assets/joão.jpg" class="rounded-circle img-fluid" width="140" height="140"/>
-                        <h4>João Otávio Frediani</h4>
-                    </div>
-                    <div class="col-sm">
-                        <img src="/assets/matheus.jpg" class="rounded-circle img-fluid" width="140" height="140"/>
-                        <h4>Matheus Sinto Novaes</h4>
-                    </div>
-                    <div class="col-sm">
-                        <img src="/assets/sarah.jpg" class="rounded-circle img-fluid" width="140" height="140"/>
-                        <h4>Sarah Rodrigues Campos</h4>
-                    </div>
+
+        <div class="container" style="text-align: center;">
+            <div class="row">
+                <div class="col-sm">
+                    <img src="/assets/joão.jpg" class="rounded-circle img-fluid" width="140" height="140" />
+                    <h4>João Otávio Frediani</h4>
+                </div>
+                <div class="col-sm">
+                    <img src="/assets/matheus.jpg" class="rounded-circle img-fluid" width="140" height="140" />
+                    <h4>Matheus Sinto Novaes</h4>
+                </div>
+                <div class="col-sm">
+                    <img src="/assets/sarah.jpg" class="rounded-circle img-fluid" width="140" height="140" />
+                    <h4>Sarah Rodrigues Campos</h4>
                 </div>
             </div>
-        </main>
- 
-    </body>
+        </div>
+    </main>
+
+</body>
 <%- include('partials/foot.ejs'); %>
