@@ -144,6 +144,115 @@ app.get('/Veterinario/insert', (req,res)=>{
     res.render('veterinario_insert');
 })
 
+//FUNÇÕES DE REMOÇÃO
+
+app.post('/removeAla',(req,res)=>{
+    Ala.destroy({
+        where: {
+            cod: req.body.cod
+        }
+    }).then(()=>{
+        res.render('/Ala')
+    });
+});
+
+app.post('/removeAtende',(req,res)=>{
+    Atende.destroy({
+        where: {
+            cod: req.body.cod
+        }
+    }).then(()=>{
+        res.render('/Atende')
+    });
+});
+
+app.post('/removeBilheteria',(req,res)=>{
+    Bilheteria.destroy({
+        where: {
+            numBilheteria: req.body.numBilheteria
+        }
+    }).then(()=>{
+        res.render('/Bilheteria')
+    });
+});
+
+app.post('/removeCuida',(req,res)=>{
+    Cuida.destroy({
+        where: {
+            CPF: req.body.CPF,
+            numBilheteria: req.body.numBilheteria
+        }
+    }).then(()=>{
+        res.render('/Cuida')
+    });
+});
+
+app.post('/removeEspecie',(req,res)=>{
+    Especie.destroy({
+        where: {
+            codEspecie: req.body.codEspecie
+        }
+    }).then(()=>{
+        res.render('/Especie')
+    });
+});
+
+app.post('/removehorarioAla',(req,res)=>{
+    HorarioAla.destroy({
+        where: {
+            cod: req.body.cod,
+            horario: req.body.horario
+        }
+    }).then(()=>{
+        res.render('/Ala')
+    });
+});
+
+app.post('/removehorarioBilheteria',(req,res)=>{
+    HorarioBilheteria.destroy({
+        where: {
+            cod: req.body.cod,
+            horarioInicio:req.body.horarioInicio,
+            horarioFinal: req.body.horarioFinal
+        }
+    }).then(()=>{
+        res.render('/Bilheteria')
+    });
+});
+
+app.post('/removeIngresso',(req,res)=>{
+    Ingresso.destroy({
+        where: {
+            num: req.body.num
+        }
+    }).then(()=>{
+        res.render('/Ingresso')
+    });
+});
+
+app.post('/removeSupervisiona',(req,res)=>{
+    Supervisiona.destroy({
+        where: {
+            CPF: req.body.CPF,
+            codEspecie: req.body.codEspecie
+        }
+    }).then(()=>{
+        res.render('/Veterinario')
+    });
+});
+
+app.post('/removeTrabalha',(req,res)=>{
+    Trabalha.destroy({
+        where: {
+            CPF: req.body.CPF,
+            codAla: req.body.codAla,
+            horarioInicio: req.body.horarioInicio,
+            horarioFim: req.body.horarioFim
+        }
+    }).then(()=>{
+        res.render('/ServicosGerais')
+    });
+});
 
 //FUNÇÕES DE BUSCA TODOS
 
@@ -151,7 +260,7 @@ app.get ('/buscatodosAla', (req,res)=>{
     Ala.FindAll({
         atributes:['cod','localizacao','nome']
     }).then(()=>{
-        req.redirect('/Ala')
+        res.redirect('/Ala')
     });
 });
 
@@ -162,7 +271,7 @@ app.get ('/buscatodosAnimal', (req,res)=>{
         },
         atributes:['cod','nome','sexo','daraNascimento','codEspecie']
     }).then(()=>{
-        req.redirect('/Animal')
+        res.redirect('/Animal')
     });
 });
 
@@ -170,7 +279,7 @@ app.get ('/buscatodosAtende', (req,res)=>{
     Atende.FindAll({
         atributes:['cod','CPF','data','diagnostico','codAnimal']
     }).then(()=>{
-        req.redirect('/Atende')
+        res.redirect('/Atende')
     });
 });
 
@@ -181,7 +290,7 @@ app.get ('/buscatodosBilheteiro', (req,res)=>{
         },
         atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito']
     }).then(()=>{
-        req.redirect('/Bilheteiro')
+        res.redirect('/Bilheteiro')
     });
 });
 
@@ -189,7 +298,7 @@ app.get ('/buscatodosBilheteria', (req,res)=>{
     Bilheteria.FindAll({
         atributes:['numBilheteria','localizacao']
     }).then(()=>{
-        req.redirect('/Bilheteria')
+        res.redirect('/Bilheteria')
     });
 });
 
@@ -197,7 +306,7 @@ app.get ('/buscatodosCuida', (req,res)=>{
     Cuida.FindAll({
         atributes:['CPF','numBilheteria']
     }).then(()=>{
-        req.redirect('/Bilheteiro')
+        res.redirect('/Bilheteiro')
     });
 });
 
@@ -205,7 +314,7 @@ app.get ('/buscatodosEspecie', (req,res)=>{
     Especie.FindAll({
         atributes:['codEspecie','nomeCientifico','nomePopular','estado','alimentacao','descricao','codAla']
     }).then(()=>{
-        req.redirect('/Especie')
+        res.redirect('/Especie')
     });
 });
 
@@ -213,7 +322,7 @@ app.get ('/buscatodosHorarioAla', (req,res)=>{
     HorarioAla.FindAll({
         atributes:['cod','horario']
     }).then(()=>{
-        req.redirect('/Ala')
+        res.redirect('/Ala')
     });
 });
 
@@ -221,7 +330,7 @@ app.get ('/buscatodosHorarioBilheteria', (req,res)=>{
     HorarioBilheteria.FindAll({
         atributes:['cod','horarioInicio','horarioFinal']
     }).then(()=>{
-        req.redirect('/Bilheteria')
+        res.redirect('/Bilheteria')
     });
 });
 
@@ -229,7 +338,7 @@ app.get ('/buscatodosIngresso', (req,res)=>{
     Ingresso.FindAll({
         atributes:['num','horario','data','numBilheteria']
     }).then(()=>{
-        req.redirect('/Ala')
+        res.redirect('/Ala')
     });
 });
 
@@ -240,7 +349,7 @@ app.get ('/buscatodosServicosGerais', (req,res)=>{
         },
         atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito','funcao']
     }).then(()=>{
-        req.redirect('/ServicosGerais')
+        res.redirect('/ServicosGerais')
     });
 });
 
@@ -248,7 +357,7 @@ app.get ('/buscatodosSupervisiona', (req,res)=>{
     Supervisiona.FindAll({
         atributes:['CPF','codEspecie']
     }).then(()=>{
-        req.redirect('/Veterinario')
+        res.redirect('/Veterinario')
     });
 });
 
@@ -256,7 +365,7 @@ app.get ('/buscatodosTrabalha', (req,res)=>{
     Trabalha.FindAll({
         atributes:['CPF','codAla','horarioInicio','horarioFim']
     }).then(()=>{
-        req.redirect('/ServicosGerais')
+        res.redirect('/ServicosGerais')
     });
 });
 
@@ -267,7 +376,7 @@ app.get ('/buscatodosVeterinario', (req,res)=>{
         },
         atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito','CRMV','Faculdade']
     }).then(()=>{
-        req.redirect('/ServicosGerais')
+        res.redirect('/Veterinario')
     });
 });
 
