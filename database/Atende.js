@@ -14,7 +14,7 @@ const Atende = connection.define( 'atende',{
         type: Sequelize.DATEONLY,
         allowNull: false
     },
-    diagnóstico:{
+    diagnostico:{
         type: Sequelize.STRING,
         allowNull: false
     },

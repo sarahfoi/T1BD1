@@ -144,9 +144,132 @@ app.get('/Veterinario/insert', (req,res)=>{
     res.render('veterinario_insert');
 })
 
-//PAGINAS DE INSERÇÃO
 
-//PAGINAS DE BUSCA, REMOÇÃO E ALTERAÇÃO
+//FUNÇÕES DE BUSCA TODOS
+
+app.get ('/buscatodosAla', (req,res)=>{
+    Ala.FindAll({
+        atributes:['cod','localizacao','nome']
+    }).then(()=>{
+        req.redirect('/Ala')
+    });
+});
+
+app.get ('/buscatodosAnimal', (req,res)=>{
+    Animal.FindAll({
+        where: {
+            ativo: true
+        },
+        atributes:['cod','nome','sexo','daraNascimento','codEspecie']
+    }).then(()=>{
+        req.redirect('/Animal')
+    });
+});
+
+app.get ('/buscatodosAtende', (req,res)=>{
+    Atende.FindAll({
+        atributes:['cod','CPF','data','diagnostico','codAnimal']
+    }).then(()=>{
+        req.redirect('/Atende')
+    });
+});
+
+app.get ('/buscatodosBilheteiro', (req,res)=>{
+    Bilheteiro.FindAll({
+        where: {
+            ativo: true
+        },
+        atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito']
+    }).then(()=>{
+        req.redirect('/Bilheteiro')
+    });
+});
+
+app.get ('/buscatodosBilheteria', (req,res)=>{
+    Bilheteria.FindAll({
+        atributes:['numBilheteria','localizacao']
+    }).then(()=>{
+        req.redirect('/Bilheteria')
+    });
+});
+
+app.get ('/buscatodosCuida', (req,res)=>{
+    Cuida.FindAll({
+        atributes:['CPF','numBilheteria']
+    }).then(()=>{
+        req.redirect('/Bilheteiro')
+    });
+});
+
+app.get ('/buscatodosEspecie', (req,res)=>{
+    Especie.FindAll({
+        atributes:['codEspecie','nomeCientifico','nomePopular','estado','alimentacao','descricao','codAla']
+    }).then(()=>{
+        req.redirect('/Especie')
+    });
+});
+
+app.get ('/buscatodosHorarioAla', (req,res)=>{
+    HorarioAla.FindAll({
+        atributes:['cod','horario']
+    }).then(()=>{
+        req.redirect('/Ala')
+    });
+});
+
+app.get ('/buscatodosHorarioBilheteria', (req,res)=>{
+    HorarioBilheteria.FindAll({
+        atributes:['cod','horarioInicio','horarioFinal']
+    }).then(()=>{
+        req.redirect('/Bilheteria')
+    });
+});
+
+app.get ('/buscatodosIngresso', (req,res)=>{
+    Ingresso.FindAll({
+        atributes:['num','horario','data','numBilheteria']
+    }).then(()=>{
+        req.redirect('/Ala')
+    });
+});
+
+app.get ('/buscatodosServicosGerais', (req,res)=>{
+    ServicosGerais.FindAll({
+        where: {
+            ativo: true
+        },
+        atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito','funcao']
+    }).then(()=>{
+        req.redirect('/ServicosGerais')
+    });
+});
+
+app.get ('/buscatodosSupervisiona', (req,res)=>{
+    Supervisiona.FindAll({
+        atributes:['CPF','codEspecie']
+    }).then(()=>{
+        req.redirect('/Veterinario')
+    });
+});
+
+app.get ('/buscatodosTrabalha', (req,res)=>{
+    Trabalha.FindAll({
+        atributes:['CPF','codAla','horarioInicio','horarioFim']
+    }).then(()=>{
+        req.redirect('/ServicosGerais')
+    });
+});
+
+app.get ('/buscatodosVeterinario', (req,res)=>{
+    Veterinario.FindAll({
+        where: {
+            ativo: true
+        },
+        atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito','CRMV','Faculdade']
+    }).then(()=>{
+        req.redirect('/ServicosGerais')
+    });
+});
 
 //FUNÇÕES DE INSERÇÃO
 
@@ -401,10 +524,6 @@ app.post ("/insereveterinario", (req,res) =>{
     res.redirect("/")
     });
 });
-
-//
-
-
 
 /*-----------FIM ROTAS-----------*/
 app.listen(8000, ()=>{

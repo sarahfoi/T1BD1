@@ -42,10 +42,6 @@ const Bilheteiro = connection.define( 'bilheteiro',{
         type: Sequelize.CHAR,
         allowNull: false
     },
-    numBilheteria:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     Ativo:{
         type: Sequelize.BOOLEAN,
         allowNull: false
