@@ -14,6 +14,10 @@ const Ingresso = connection.define( 'ingressos',{
         type: Sequelize.DATE,
         allowNull: false
     },
+    preco:{
+        type: Sequelize.FLOAT,
+        allowNull: false
+    },
     numBilheteria:{
         type: Sequelize.INTEGER,
         allowNull: false
