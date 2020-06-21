@@ -33,11 +33,19 @@ app.get('/login', (req, res)=>{
     res.render('login');
 });
 
-app.get('/insert/Funcionario', (req, res)=>{
+app.get('/insert/Funcionario/Veterinario', (req, res)=>{
     res.render('insert', {
-        tabela: 'Funcionario'
+        tabela: 'Funcionario',
+        funcao: 'Veterinario'
     })
-})
+});
+
+app.get('/insert/Funcionario/ServicosGerais', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Funcionario',
+        funcao: 'ServicosGerais'
+    })
+});
 
 app.get('/Ala', (req,res)=>{
     res.render('ala');

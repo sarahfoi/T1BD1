@@ -157,7 +157,7 @@
         <% } %>
 
         <% if (tabela == 'Funcionario') { %>
-        <form method='POST' action="/insereServicosGerais">
+        <form method='POST' action="/insereFuncionario">
             <div class="form-group">
                 <label for="CPF">CPF</label>
                 <input type="number" id="CPF" name="CPF">
@@ -199,45 +199,31 @@
                 <input type="number" id="Digito" name="Digito">
             </div>
 
-
-            
-
+            <% if(funcao == 'ServicosGerais'){ %>
             <div class="form-group">
                 <label for="funcao">Função</label>
                 <select type="text" id="funcao" name="funcao" onchange="setSelected(this.value)">
                     <option value="Segurança">Segurança</option>
                     <option value="Limpeza">Limpeza</option>
-                    <option value="Bilheteiro">Bilheteiro</option>
-                    <option value="Veterinário">Veterinário</option>
                 </select>
             </div>
+            <% } %>
 
-            <script>
-
-                setSelected = function (elem) {
-                    if (elem == 'Veterinário') {
-                        return `
-                        <div class="form-group">
-                            <label for="CRMV">CRMV</label>
-                            <input type="number" id="CRMV" name="CRMV">
-            </div>
-                            <div class="form-group">
-                                <label for="Faculdade">Faculdade</label>
-                                <input type="text" id="Faculdade" name="Faculdade">
-            </div>
-
-                                <!-- Supervisiona -->
+            <% if (funcao == 'Veterinario') { %>
             <div class="form-group">
-                                    <label for="codEspecie">Código Especie</label>
-                                    <input type="number" id="codEspecie" name="codEspecie">
-            </div>`
-                    }
-                }
+                <label for="CRMV">CRMV</label>
+                <input type="number" id="CRMV" name="CRMV">
+            </div>
+            <div class="form-group">
+                <label for="Faculdade">Faculdade</label>
+                <input type="text" id="Faculdade" name="Faculdade">
+            </div>
 
-            </script>
-
-            <% if (getSelected()) { %>
-
+            <!-- Supervisiona -->
+            <div class="form-group">
+                <label for="codEspecie">Código Especie</label>
+                <input type="number" id="codEspecie" name="codEspecie">
+            </div>
             <% } %>
 
 
