@@ -33,130 +33,61 @@ app.get('/login', (req, res)=>{
     res.render('login');
 });
 
-app.get('/insert/Funcionario/Veterinario', (req, res)=>{
+
+// TELAS DE INSERÇÃO
+app.get('/insert/Ala', (req, res)=>{
     res.render('insert', {
-        tabela: 'Funcionario',
-        funcao: 'Veterinario'
+        tabela: 'Ala'
     })
 });
 
-app.get('/insert/Funcionario/ServicosGerais', (req, res)=>{
+app.get('/insert/Animal', (req, res)=>{
     res.render('insert', {
-        tabela: 'Funcionario',
-        funcao: 'ServicosGerais'
+        tabela: 'Animal'
     })
 });
 
-app.get('/Ala', (req,res)=>{
-    res.render('ala');
-})
-app.get('/Ala/insert', (req,res)=>{
-    res.render('ala_insert');
-})
+app.get('/insert/Atende', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Atende'
+    })
+});
 
-app.get('/Animal', (req,res)=>{
-    res.render('animal');
-})
+app.get('/insert/Bilheteria', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Bilheteria'
+    })
+});
 
-app.get('/Animal/insert', (req,res)=>{
-    res.render('animal_insert');
-})
+app.get('/insert/Especie', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Especie'
+    })
+});
 
-app.get('/Atende', (req,res)=>{
-    res.render('atende');
-})
+app.get('/insert/ServicosGerais', (req, res)=>{
+    res.render('insert', {
+        tabela: 'ServicosGerais'
+    })
+});
 
-app.get('/Atende/insert', (req,res)=>{
-    res.render('atende_insert');
-})
+app.get('/insert/Veterinario', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Veterinario'
+    })
+});
 
-app.get('/Bilheteiro', (req,res)=>{
-    res.render('bilheteiro');
-})
+app.get('/insert/Bilheteiro', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Bilheteiro'
+    })
+});
 
-app.get('/Bilheteiro/insert', (req,res)=>{
-    res.render('bilheteiro_insert');
-})
-
-app.get('/Bilheteria', (req,res)=>{
-    res.render('bilheteria');
-})
-
-app.get('/Bilheteria/insert', (req,res)=>{
-    res.render('bilheteria_insert');
-})
-
-app.get('/Cuida', (req,res)=>{
-    res.render('cuida');
-})
-
-app.get('/Cuida/insert', (req,res)=>{
-    res.render('cuida_insert');
-})
-
-app.get('/Especie', (req,res)=>{
-    res.render('especie');
-})
-
-app.get('/Especie/insert', (req,res)=>{
-    res.render('especie_insert');
-})
-
-app.get('/HorarioAla', (req,res)=>{
-    res.render('horarioAla');
-})
-
-app.get('/HorarioAla/insert', (req,res)=>{
-    res.render('horarioAla_insert');
-})
-
-app.get('/HorarioBilheteria', (req,res)=>{
-    res.render('horarioBilheteria');
-})
-
-app.get('/HorarioBilheteria/insert', (req,res)=>{
-    res.render('horarioBilheteria_insert');
-})
-
-app.get('/Ingressos', (req,res)=>{
-    res.render('ingresso');
-})
-
-app.get('/Ingressos/insert', (req,res)=>{
-    res.render('ingresso_insert');
-})
-
-app.get('/ServicosGerais', (req,res)=>{
-    res.render('servicosGerais');
-})
-
-app.get('/ServicosGerais/insert', (req,res)=>{
-    res.render('servicosGerais_insert');
-})
-
-app.get('/Supervisiona', (req,res)=>{
-    res.render('supervisiona');
-})
-
-app.get('/Supervisiona/insert', (req,res)=>{
-    res.render('supervisiona_insert');
-})
-
-app.get('/Trabalha', (req,res)=>{
-    res.render('trabalho');
-})
-
-app.get('/Trabalha/insert', (req,res)=>{
-    res.render('trabalho_insert');
-})
-
-app.get('/Veterinario', (req,res)=>{
-    res.render('veterinario');
-})
-
-app.get('/Veterinario/insert', (req,res)=>{
-    res.render('veterinario_insert');
-})
+app.get('/insert/Ingresso', (req, res)=>{
+    res.render('insert', {
+        tabela: 'Ingresso'
+    })
+});
 
 //FUNÇÕES DE REMOÇÃO
 
@@ -453,7 +384,7 @@ app.post ("/insereAla", (req,res) =>{
     });
 });
 
-app.post ("/insereanimal", (req,res) =>{
+app.post ("/insereAnimal", (req,res) =>{
     var cod= req.body.cod;
     var nome=req.body.nome;
     var sexo=req.body.sexo;
@@ -472,7 +403,7 @@ app.post ("/insereanimal", (req,res) =>{
     });
 });
 
-app.post ("/inserebilheteiro", (req,res) =>{
+app.post ("/insereBilheteiro", (req,res) =>{
     var CPF= req.body.CPF;
     var ddn= req.body.ddn;
     var nome=req.body.nome;
@@ -503,7 +434,7 @@ app.post ("/inserebilheteiro", (req,res) =>{
     });
 });
 
-app.post ("/insereatende", (req,res) =>{
+app.post ("/insereAtende", (req,res) =>{
     var cod= req.body.cod;
     var CPF= req.body.CPF;
     var data=req.body.data;
@@ -520,7 +451,7 @@ app.post ("/insereatende", (req,res) =>{
     });
 });
 
-app.post ("/inserebilheteria", (req,res) =>{
+app.post ("/insereBilheteria", (req,res) =>{
     var numBilheteria= req.body.numBilheteria;
     var localizacao= req.body.localizacao;
     Bilheteria.create({
@@ -531,7 +462,7 @@ app.post ("/inserebilheteria", (req,res) =>{
     });
 });
 
-app.post ("/inserecuida", (req,res) =>{
+app.post ("/insereCuida", (req,res) =>{
     var numBilheteria= req.body.numBilheteria;
     var CPF= req.body.CPF;
     Cuida.create({
@@ -542,7 +473,7 @@ app.post ("/inserecuida", (req,res) =>{
     });
 });
 
-app.post ("/inserehorariobilheteria", (req,res) =>{
+app.post ("/insereHorarioBilheteria", (req,res) =>{
     var cod= req.body.cod;
     var horarioInicio= req.body.horarioInicio;
     var horarioFinal= req.body.horarioFinal
@@ -555,7 +486,7 @@ app.post ("/inserehorariobilheteria", (req,res) =>{
     });
 });
 
-app.post ("/inserebilheteria", (req,res) =>{
+app.post ("/insereBilheteria", (req,res) =>{
     var numBilheteria= req.body.numBilheteria;
     var localizacao= req.body.localizacao;
     Bilheteria.create({
@@ -566,7 +497,7 @@ app.post ("/inserebilheteria", (req,res) =>{
     });
 });
 
-app.post ("/insereespecie", (req,res) =>{
+app.post ("/insereEspecie", (req,res) =>{
     var codEspecie= req.body.codEspecie;
     var nomeCientifico= req.body.nomeCientifico;
     var nomePopular= req.body.nomePopular;
@@ -587,7 +518,7 @@ app.post ("/insereespecie", (req,res) =>{
     });
 });
 
-app.post ("/inserehorarioala", (req,res) =>{
+app.post ("/insereHorarioAla", (req,res) =>{
     var num= req.body.num;
     var horario= req.body.horario;
     var data=req.body.data;
@@ -602,7 +533,7 @@ app.post ("/inserehorarioala", (req,res) =>{
     });
 });
 
-app.post ("/insereservicosgerais", (req,res) =>{
+app.post ("/insereServicosGerais", (req,res) =>{
     var CPF= req.body.CPF;
     var ddn= req.body.ddn;
     var nome=req.body.nome;
@@ -633,7 +564,7 @@ app.post ("/insereservicosgerais", (req,res) =>{
     });
 });
 
-app.post ("/inseresupervisiona", (req,res) =>{
+app.post ("/insereSupervisiona", (req,res) =>{
     var CPF= req.body.CPF;
     var codEspecie= req.body.codEspecie;
     Supervisiona.create({
@@ -659,7 +590,7 @@ app.post ("/insereTrabalha", (req,res) =>{
     });
 });
 
-app.post ("/insereveterinario", (req,res) =>{
+app.post ("/insereVeterinario", (req,res) =>{
     var CPF= req.body.CPF;
     var ddn= req.body.ddn;
     var nome=req.body.nome;

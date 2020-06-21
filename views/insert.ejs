@@ -5,7 +5,7 @@
 
 <body>
     <main role="main">
-        <%- include('partials/navbar.ejs') -%>
+        <%- include('partials/navbar.ejs'); %>
 
         <% if (tabela == 'Ala') { %>
         <form method='POST' action="/insereAla">
@@ -85,7 +85,6 @@
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-
         <% } %>
 
         <% if (tabela == 'Bilheteria') { %>
@@ -99,6 +98,7 @@
                 <input type="text" id="type" name="type">
             </div>
 
+            <!--Horario Bilheteria-->
             <div class="form-group">
                 <label for="horarioInicio">Horário Início</label>
                 <input type="time" id="horarioInicio" name="horarioInicio">
@@ -156,50 +156,11 @@
         </form>
         <% } %>
 
-        <% if (tabela == 'Funcionario') { %>
-        <form method='POST' action="/insereFuncionario">
-            <div class="form-group">
-                <label for="CPF">CPF</label>
-                <input type="number" id="CPF" name="CPF">
-            </div>
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome">
-            </div>
-            <div class="form-group">
-                <label for="ddn">Data de Nascimento</label>
-                <input type="date" id="ddn" name="ddn">
-            </div>
-            <div class="form-group">
-                <label for="Salario">Salário</label>
-                <input type="number" id="Salario" name="Salario">
-            </div>
-            <div class="form-group">
-                <label for="CLT">CLT</label>
-                <input type="number" id="CLT" name="CLT">
-            </div>
-            <div class="form-group">
-                <label for="Endereço">Endereço</label>
-                <input type="text" id="Endereço" name="Endereço">
-            </div>
-            <div class="form-group">
-                <label for="Banco">Banco</label>
-                <input type="number" id="Banco" name="Banco">
-            </div>
-            <div class="form-group">
-                <label for="Agencia">Agência</label>
-                <input type="number" id="Agencia" name="Agencia">
-            </div>
-            <div class="form-group">
-                <label for="Conta">Conta</label>
-                <input type="number" id="Conta" name="Conta">
-            </div>
-            <div class="form-group">
-                <label for="Digito">Dígito</label>
-                <input type="number" id="Digito" name="Digito">
-            </div>
+        <% if (tabela == 'ServicosGerais') { %>
+        <form method='POST' action="/insereServicosGerais">
 
-            <% if(funcao == 'ServicosGerais'){ %>
+            <%- include('partials/funcionario_form.ejs');  %>
+
             <div class="form-group">
                 <label for="funcao">Função</label>
                 <select type="text" id="funcao" name="funcao" onchange="setSelected(this.value)">
@@ -207,9 +168,29 @@
                     <option value="Limpeza">Limpeza</option>
                 </select>
             </div>
-            <% } %>
+            <!--Trabalha-->
+            <div class="form-group">
+                <label for="codAla">Código Ala</label>
+                <input type="number" id="codAla" name="codAla">
+            </div>
+            <div class="form-group">
+                <label for="horarioInicio">Horário Início</label>
+                <input type="time" id="horarioInicio" name="horarioInicio">
+            </div>
+            <div class="form-group">
+                <label for="horarioFinal">Horário Final</label>
+                <input type="time" id="horarioFinal" name="horarioFinal">
+            </div>
 
-            <% if (funcao == 'Veterinario') { %>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <% } %>
+
+        <% if (tabela == 'Veterinario') { %>
+        <form method='POST' action="/insereVeterinario">
+
+            <%- include('partials/funcionario_form.ejs');  %>
+
             <div class="form-group">
                 <label for="CRMV">CRMV</label>
                 <input type="number" id="CRMV" name="CRMV">
@@ -224,9 +205,21 @@
                 <label for="codEspecie">Código Especie</label>
                 <input type="number" id="codEspecie" name="codEspecie">
             </div>
-            <% } %>
 
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <% } %>
 
+        <% if (tabela == 'Bilheteiro') { %>
+        <form method='POST' action="/insereBilheteiro">
+
+            <%- include('partials/funcionario_form.ejs');  %>
+
+            <!--Cuida-->
+            <div class="form-group">
+                <label for="numBilheteria">Número Bilheteria</label>
+                <input type="number" id="numBilheteria" name="numBilheteria">
+            </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
