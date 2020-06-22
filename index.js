@@ -390,7 +390,7 @@ app.post ("/insereAnimal", (req,res) =>{
     var sexo=req.body.sexo;
     var dataNascimento=req.body.dataNascimento;
     var codEspecie=req.body.codEspecie;
-    var ativo=req.body.ativo;
+    var ativo=true;
     Animal.create({
         cod:cod,
         nome:nome,
@@ -502,7 +502,7 @@ app.post ("/insereEspecie", (req,res) =>{
     var nomeCientifico= req.body.nomeCientifico;
     var nomePopular= req.body.nomePopular;
     var estado= req.body.estado;
-    var alimentacao= req.body.alimentacao;
+    var alimentacao= req.body.alimentacao; 
     var descricao= req.body.descricao;
     var codAla= req.body.codAla;
     Especie.create({

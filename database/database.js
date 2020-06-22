@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const connection = new Sequelize('bdzoo', 'root','12345',{
-    host: 'localhost',
-    dialect: 'mysql'
+const connection = new Sequelize({
+    dialect: 'sqlite',
+    storage: 'public/data/bdzoo.sqlite'
 });
 
 module.exports = connection;
