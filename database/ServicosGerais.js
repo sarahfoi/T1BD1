@@ -45,6 +45,10 @@ const ServicosGerais = connection.define( 'servicosGerais',{
     funcao:{
         type: Sequelize.STRING,
         allowNull: false
+    },
+    ativo:{
+        type: Sequelize.BOOLEAN,
+        allowNull: false
     }
 },{
     freezeTableName: true,
