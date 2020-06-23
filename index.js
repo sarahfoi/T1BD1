@@ -452,7 +452,7 @@ app.post ("/insereAnimal", (req,res) =>{
         nome:nome,
         sexo:sexo,
         dataNascimento:dataNascimento,
-        codEspecie:codEspecie,
+        especieId:codEspecie,
         ativo:ativo
     }).then(()=>{
     res.redirect("/")

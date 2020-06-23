@@ -15,10 +15,6 @@ const Animal = connection.define( 'animal',{
         type: Sequelize.DATE,
         allowNull: false
     },
-    codEspecie:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     ativo:{
         type: Sequelize.BOOLEAN,
         allowNull: false

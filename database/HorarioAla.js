@@ -1,11 +1,9 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
+const Ala = require('./Ala')
 
 const HorarioAla = connection.define( 'horarioAla',{
-    cod:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
+    
     horario:{
         type: Sequelize.TIME,
         allowNull: false
@@ -14,6 +12,7 @@ const HorarioAla = connection.define( 'horarioAla',{
     freezeTableName: true,
     tableName: 'horarioAla'
 })
+HorarioAla.belongsTo(Ala);
 
 HorarioAla.sync({force:false})
 module.exports = HorarioAla
