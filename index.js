@@ -302,26 +302,28 @@ app.post('/removeVeterinario', (req,res)=>{
 //FUNÇÕES DE BUSCA TODOS
 
 app.get ('/buscatodosAla', (req,res)=>{
-    Ala.FindAll({
+    Ala.findAll({
         atributes:['cod','localizacao','nome']
-    }).then(()=>{
-        res.redirect('/Ala')
+    }).then((resultado)=>{
+        console.log(resultado)
+        //res.redirect('/Ala')
     });
 });
 
 app.get ('/buscatodosAnimal', (req,res)=>{
-    Animal.FindAll({
+    Animal.findAll({
         where: {
             ativo: true
         },
         atributes:['cod','nome','sexo','daraNascimento','codEspecie']
-    }).then(()=>{
+    }).then((resultado)=>{
+        
         res.redirect('/Animal')
     });
 });
 
 app.get ('/buscatodosAtende', (req,res)=>{
-    Atende.FindAll({
+    Atende.findAll({
         atributes:['cod','CPF','data','diagnostico','codAnimal']
     }).then(()=>{
         res.redirect('/Atende')
@@ -329,7 +331,7 @@ app.get ('/buscatodosAtende', (req,res)=>{
 });
 
 app.get ('/buscatodosBilheteiro', (req,res)=>{
-    Bilheteiro.FindAll({
+    Bilheteiro.findAll({
         where: {
             ativo: true
         },
@@ -340,7 +342,7 @@ app.get ('/buscatodosBilheteiro', (req,res)=>{
 });
 
 app.get ('/buscatodosBilheteria', (req,res)=>{
-    Bilheteria.FindAll({
+    Bilheteria.findAll({
         atributes:['numBilheteria','localizacao']
     }).then(()=>{
         res.redirect('/Bilheteria')
@@ -348,7 +350,7 @@ app.get ('/buscatodosBilheteria', (req,res)=>{
 });
 
 app.get ('/buscatodosCuida', (req,res)=>{
-    Cuida.FindAll({
+    Cuida.findAll({
         atributes:['CPF','numBilheteria']
     }).then(()=>{
         res.redirect('/Bilheteiro')
@@ -356,7 +358,7 @@ app.get ('/buscatodosCuida', (req,res)=>{
 });
 
 app.get ('/buscatodosEspecie', (req,res)=>{
-    Especie.FindAll({
+    Especie.findAll({
         atributes:['codEspecie','nomeCientifico','nomePopular','estado','alimentacao','descricao','codAla']
     }).then(()=>{
         res.redirect('/Especie')
@@ -364,7 +366,7 @@ app.get ('/buscatodosEspecie', (req,res)=>{
 });
 
 app.get ('/buscatodosHorarioAla', (req,res)=>{
-    HorarioAla.FindAll({
+    HorarioAla.findAll({
         atributes:['cod','horario']
     }).then(()=>{
         res.redirect('/Ala')
@@ -372,7 +374,7 @@ app.get ('/buscatodosHorarioAla', (req,res)=>{
 });
 
 app.get ('/buscatodosHorarioBilheteria', (req,res)=>{
-    HorarioBilheteria.FindAll({
+    HorarioBilheteria.findAll({
         atributes:['cod','horarioInicio','horarioFinal']
     }).then(()=>{
         res.redirect('/Bilheteria')
@@ -380,7 +382,7 @@ app.get ('/buscatodosHorarioBilheteria', (req,res)=>{
 });
 
 app.get ('/buscatodosIngresso', (req,res)=>{
-    Ingresso.FindAll({
+    Ingresso.findAll({
         atributes:['num','horario','data','numBilheteria']
     }).then(()=>{
         res.redirect('/Ala')
@@ -388,7 +390,7 @@ app.get ('/buscatodosIngresso', (req,res)=>{
 });
 
 app.get ('/buscatodosServicosGerais', (req,res)=>{
-    ServicosGerais.FindAll({
+    ServicosGerais.findAll({
         where: {
             ativo: true
         },
@@ -399,7 +401,7 @@ app.get ('/buscatodosServicosGerais', (req,res)=>{
 });
 
 app.get ('/buscatodosSupervisiona', (req,res)=>{
-    Supervisiona.FindAll({
+    Supervisiona.findAll({
         atributes:['CPF','codEspecie']
     }).then(()=>{
         res.redirect('/Veterinario')
@@ -407,7 +409,7 @@ app.get ('/buscatodosSupervisiona', (req,res)=>{
 });
 
 app.get ('/buscatodosTrabalha', (req,res)=>{
-    Trabalha.FindAll({
+    Trabalha.findAll({
         atributes:['CPF','codAla','horarioInicio','horarioFim']
     }).then(()=>{
         res.redirect('/ServicosGerais')
@@ -415,7 +417,7 @@ app.get ('/buscatodosTrabalha', (req,res)=>{
 });
 
 app.get ('/buscatodosVeterinario', (req,res)=>{
-    Veterinario.FindAll({
+    Veterinario.findAll({
         where: {
             ativo: true
         },
