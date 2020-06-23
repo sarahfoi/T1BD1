@@ -89,6 +89,62 @@ app.get('/insert/Ingresso', (req, res)=>{
     })
 });
 
+
+// TELAS DE CONSULTA TODOS (select)
+app.get('/select/Ala', (req, res)=>{
+    res.render('select', {
+        tabela: 'Ala'
+    })
+});
+
+app.get('/select/Animal', (req, res)=>{
+    res.render('select', {
+        tabela: 'Animal'
+    })
+});
+
+app.get('/select/Atende', (req, res)=>{
+    res.render('select', {
+        tabela: 'Atende'
+    })
+});
+
+app.get('/select/Bilheteria', (req, res)=>{
+    res.render('select', {
+        tabela: 'Bilheteria'
+    })
+});
+
+app.get('/select/Especie', (req, res)=>{
+    res.render('select', {
+        tabela: 'Especie'
+    })
+});
+
+app.get('/select/ServicosGerais', (req, res)=>{
+    res.render('select', {
+        tabela: 'ServicosGerais'
+    })
+});
+
+app.get('/select/Veterinario', (req, res)=>{
+    res.render('select', {
+        tabela: 'Veterinario'
+    })
+});
+
+app.get('/select/Bilheteiro', (req, res)=>{
+    res.render('select', {
+        tabela: 'Bilheteiro'
+    })
+});
+
+app.get('/select/Ingresso', (req, res)=>{
+    res.render('select', {
+        tabela: 'Ingresso'
+    })
+});
+
 //FUNÇÕES DE REMOÇÃO
 
 app.post('/removeAla',(req,res)=>{
