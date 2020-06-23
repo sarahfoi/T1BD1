@@ -3,15 +3,7 @@ const connection = require('./database');
 const Bilheteria = require('./Bilheteria')
 
 const Ingresso = connection.define( 'ingressos',{
-    
-    horario:{
-        type: Sequelize.TIME,
-        allowNull: false
-    },
-    data:{
-        type: Sequelize.DATE,
-        allowNull: false
-    },
+
     preco:{
         type: Sequelize.FLOAT,
         allowNull: false

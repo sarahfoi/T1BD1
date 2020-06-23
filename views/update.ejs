@@ -9,10 +9,10 @@
 
         <% if (tabela == 'Ala') { %>
         <form method='POST' action="/insereAla">
-            <input type="hidden" name="idAla">
+            <input type="hidden" name="alaId">
             <div class="form-group">
                 <label for="cod">Código</label>
-                <input type="number" id="cod" name="cod" value= <%= cod %> readonly>
+                <input type="number" id="cod" name="cod" value= <%= idAla %> readonly>
             </div>
             <div class="form-group">
                 <label for="nome">Nome</label>
@@ -33,29 +33,30 @@
         <% } %>
 
         <% if (tabela == 'Animal') { %>
+            <input type="hidden" name="animalId">
         <form method='POST' action="/insereAnimal">
             <div class="form-group">
                 <label for="cod">Código</label>
-                <input type="number" id="cod" name="cod">
+                <input type="number" id="cod" name="cod" value= <%= idAnimal %> readonly>
             </div>
             <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome">
+                <input type="text" id="nome" name="nome" value= <%= nome %>>
             </div>
             <div class="form-group">
                 <label for="sexo">Sexo</label>
-                <select type="text" id="sexo" name="sexo">
+                <select type="text" id="sexo" name="sexo" value= <%= sexo %>>
                     <option value="M">M</option>
                     <option value="F">F</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="dataNascimento">Data de Nascimento</label>
-                <input type="date" id="dataNascimento" name="dataNascimento">
+                <input type="date" id="dataNascimento" name="dataNascimento" value= <%= ddn %> >
             </div>
             <div class="form-group">
                 <label for="codEspecie">Código da Espécie</label>
-                <input type="text" id="codEspecie" name="codEspecie">
+                <input type="text" id="codEspecie" name="codEspecie" value= <%= especieId %>>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -63,25 +64,26 @@
 
         <% if (tabela == 'Atende') { %>
         <form method='POST' action="/insereAtende">
+            <input type="hidden" name="atendeId">
             <div class="form-group">
                 <label for="cod">Código</label>
-                <input type="number" id="cod" name="cod">
+                <input type="number" id="cod" name="cod" value= <%= atendeId %> readonly>
             </div>
             <div class="form-group">
                 <label for="CPF">CPF</label>
-                <input type="number" id="CPF" name="CPF">
+                <input type="number" id="CPF" name="CPF" value= <%= CPF %>>
             </div>
             <div class="form-group">
                 <label for="data">Data</label>
-                <input type="date" id="data" name="data">
+                <input type="date" id="data" name="data" value= <%= data %>>
             </div>
             <div class="form-group">
                 <label for="diagnostico">Diagnostico</label>
-                <textarea type="text" id="diagnostico" name="diagnostico"></textarea>
+                <textarea type="text" id="diagnostico" name="diagnostico" value= <%= diagnostico %>></textarea>
             </div>
             <div class="form-group">
                 <label for="codAnimal">Código do Animal</label>
-                <input type="number" id="codAnimal" name="codAnimal">
+                <input type="number" id="codAnimal" name="codAnimal" value= <%= animalId %>>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -90,23 +92,24 @@
 
         <% if (tabela == 'Bilheteria') { %>
         <form method='POST' action="/insereBilheteria">
+            <input type="hidden" name="bilheteriaId">
             <div class="form-group">
                 <label for="numBilheteria">Número Bilheteria</label>
-                <input type="number" id="numBilheteria" name="numBilheteria">
+                <input type="number" id="numBilheteria" name="numBilheteria" value= <%= bilheteriaId %> readonly>
             </div>
             <div class="form-group">
-                <label for="type">Type</label>
-                <input type="text" id="type" name="type">
+                <label for="localizacao">Localização</label>
+                <input type="text" id="localizacao" name="localizacao" value= <%= localizacao %>>
             </div>
 
             <!--Horario Bilheteria-->
             <div class="form-group">
                 <label for="horarioInicio">Horário Início</label>
-                <input type="time" id="horarioInicio" name="horarioInicio">
+                <input type="time" id="horarioInicio" name="horarioInicio" value= <%= horarioInicio %>>
             </div>
             <div class="form-group">
                 <label for="horarioFinal">Horário Final</label>
-                <input type="time" id="horarioFinal" name="horarioFinal">
+                <input type="time" id="horarioFinal" name="horarioFinal" value= <%= horarioFinal %>>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -115,21 +118,22 @@
 
         <% if (tabela == 'Especie') { %>
         <form method='POST' action="/insereEspecie">
+            <input type="hidden" name="especieId">
             <div class="form-group">
                 <label for="codEspecie">Código da Espécie</label>
-                <input type="number" id="codEspecie" name="codEspecie">
+                <input type="number" id="codEspecie" name="codEspecie" value= <%= especieId %> readonly>
             </div>
             <div class="form-group">
                 <label for="nomeCientifico">Nome Cientifico</label>
-                <input type="text" id="nomeCientifico" name="nomeCientifico">
+                <input type="text" id="nomeCientifico" name="nomeCientifico" value= <%= nomeCientifico %>>
             </div>
             <div class="form-group">
                 <label for="nomePopular">Nome Popular</label>
-                <input type="text" id="nomePopular" name="nomePopular">
+                <input type="text" id="nomePopular" name="nomePopular" value= <%= nomePopular %>>
             </div>
             <div class="form-group">
                 <label for="estado">Estado de Conservação</label>
-                <select type="text" id="estado" name="estado">
+                <select type="text" id="estado" name="estado" value= <%= estado %>>
                     <option value="LC">LC</option>
                     <option value="NT">NT</option>
                     <option value="VU">VU</option>
@@ -143,15 +147,15 @@
             </div>
             <div class="form-group">
                 <label for="alimentacao">Alimentação</label>
-                <textarea type="text" id="alimentacao" name="alimentacao"></textarea>
+                <textarea type="text" id="alimentacao" name="alimentacao" value= <%= alimentacao %>></textarea>
             </div>
             <div class="form-group">
                 <label for="descricao">Descrição</label>
-                <textarea type="text" id="descricao" name="descricao"></textarea>
+                <textarea type="text" id="descricao" name="descricao" value= <%= descricao %> ></textarea>
             </div>
             <div class="form-group">
                 <label for="codAla">Código da Ala</label>
-                <input type="text" id="codAla" name="codAla">
+                <input type="text" id="codAla" name="codAla" value= <%= alaId %>>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -164,7 +168,7 @@
 
             <div class="form-group">
                 <label for="funcao">Função</label>
-                <select type="text" id="funcao" name="funcao" onchange="setSelected(this.value)">
+                <select type="text" id="funcao" name="funcao" value= <%= funcao %>>
                     <option value="Segurança">Segurança</option>
                     <option value="Limpeza">Limpeza</option>
                 </select>
@@ -172,15 +176,15 @@
             <!--Trabalha-->
             <div class="form-group">
                 <label for="codAla">Código Ala</label>
-                <input type="number" id="codAla" name="codAla">
+                <input type="number" id="codAla" name="codAla" value= <%= alaId %>>
             </div>
             <div class="form-group">
                 <label for="horarioInicio">Horário Início</label>
-                <input type="time" id="horarioInicio" name="horarioInicio">
+                <input type="time" id="horarioInicio" name="horarioInicio" value= <%= horarioInicio %>>
             </div>
             <div class="form-group">
                 <label for="horarioFinal">Horário Final</label>
-                <input type="time" id="horarioFinal" name="horarioFinal">
+                <input type="time" id="horarioFinal" name="horarioFinal" value= <%= horarioFinal %>>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -194,17 +198,17 @@
 
             <div class="form-group">
                 <label for="CRMV">CRMV</label>
-                <input type="number" id="CRMV" name="CRMV">
+                <input type="number" id="CRMV" name="CRMV" value= <%= CRMV %>>
             </div>
             <div class="form-group">
                 <label for="faculdade">Faculdade</label>
-                <input type="text" id="faculdade" name="faculdade">
+                <input type="text" id="faculdade" name="faculdade" value= <%= faculdade %>>
             </div>
 
             <!-- Supervisiona -->
             <div class="form-group">
                 <label for="codEspecie">Código Especie</label>
-                <input type="number" id="codEspecie" name="codEspecie">
+                <input type="number" id="codEspecie" name="codEspecie" value= <%= especieId %>>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -219,7 +223,7 @@
             <!--Cuida-->
             <div class="form-group">
                 <label for="numBilheteria">Número Bilheteria</label>
-                <input type="number" id="numBilheteria" name="numBilheteria">
+                <input type="number" id="numBilheteria" name="numBilheteria" value= <%= bilheteriaId %>>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -230,23 +234,20 @@
         <form method='POST' action="/insereIngresso">
             <div class="form-group">
                 <label for="num">Número</label>
-                <input type="number" id="num" name="num">
+                <input type="number" id="num" name="num" value= <%= ingressoId %> readonly>
             </div>
             <div class="form-group">
                 <label for="preco">Preço</label>
-                <input type="number" id="preco" name="preco">
+                <input type="number" id="preco" name="preco" value= <%= preco %>>
             </div>
             <div class="form-group">
-                <label for="horario">Horário</label>
-                <input type="time" id="horario" name="horario">
+                <label for="horario">Data e Horário da compra</label>
+                <input type="text" id="horario" name="horario" value= <%= horario %> readonly>
             </div>
-            <div class="form-group">
-                <label for="data">Data</label>
-                <input type="date" id="data" name="data">
-            </div>
+            
             <div class="form-group">
                 <label for="numBilheteria">Número Bilheteria</label>
-                <input type="number" id="numBilheteria" name="numBilheteria">
+                <input type="number" id="numBilheteria" name="numBilheteria" value= <%= numBilheteria %>>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

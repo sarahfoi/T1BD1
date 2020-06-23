@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
 const Veterinario = require('./Veterinario');
-const Animal = require('./Animal');
+const Especie = require('./Especie');
 const { INTEGER } = require('sequelize');
 
 const Supervisiona = connection.define( 'supervisiona',{
@@ -17,7 +17,7 @@ const Supervisiona = connection.define( 'supervisiona',{
 
 Supervisiona.belongsTo(Veterinario, {foreignKey: 'CPF', targetKey: 'CPF', onDelete: 'CASCADE'});
 
-Supervisiona.belongsTo(Animal, {primaryKey: true, onDelete: 'CASCADE'});
+Supervisiona.belongsTo(Especie, {primaryKey: true, onDelete: 'CASCADE'});
 
 
 
