@@ -1,11 +1,8 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
+const Especie = require('./Especie')
 
 const Animal = connection.define( 'animal',{
-    cod:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     nome:{
         type: Sequelize.STRING,
         allowNull: false
@@ -30,6 +27,8 @@ const Animal = connection.define( 'animal',{
     freezeTableName: true,
     tableName: 'animal'
 });
+
+Animal.belongsTo(Especie);
 
 Animal.sync({force:false});
 

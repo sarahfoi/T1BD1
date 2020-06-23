@@ -1,6 +1,6 @@
 <%- include('partials/head.ejs'); %>
 <link rel="stylesheet" href="/assets/styles/index.css">
-<title>Zoológico - Home</title>
+<title>Zoológico - Update</title>
 </head>
 
 <body>
@@ -9,23 +9,23 @@
 
         <% if (tabela == 'Ala') { %>
         <form method='POST' action="/insereAla">
+            <input type="hidden" name="idAla">
             <div class="form-group">
                 <label for="cod">Código</label>
-                <input type="number" id="cod" name="cod">
+                <input type="number" id="cod" name="cod" value= <%= cod %> readonly>
             </div>
             <div class="form-group">
-                <label for="cod">Nome</label>
-                <input type="text" id="nome" name="nome">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" value= <%= nome %> >
             </div>
             <div class="form-group">
-                <label for="cod">Localização</label>
-                <input type="text" id="localizacao" name="localizacao">
+                <label for="localizacao">Localização</label>
+                <input type="text" id="localizacao" name="localizacao" value=<%= localizacao %>>
             </div>
             <!-- Horarios ala -->
-            
             <div class="form-group">
                 <label for="horario">Horário</label>
-                <input type="time" id="horario" name="horario">
+                <input type="time" id="horario" name="horario" value= <%= horario %> >
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
