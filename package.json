@@ -4,7 +4,7 @@
   "description": "Trabalho da disciplina de Banco de Dados I, do curso de Ciência da Computação da UNESP Bauru 2020.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
