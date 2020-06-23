@@ -4,7 +4,8 @@ const connection = require('./database');
 const Veterinario = connection.define( 'veterinario',{
     CPF:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     Nome:{
         type: Sequelize.STRING,

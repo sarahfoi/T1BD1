@@ -1,15 +1,9 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
+const Veterinario = require('./Veterinario');
+const Animal = require('./Animal');
 
 const Atende = connection.define( 'atende',{
-    cod:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    CPF:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     data:{
         type: Sequelize.DATEONLY,
         allowNull: false
@@ -18,14 +12,19 @@ const Atende = connection.define( 'atende',{
         type: Sequelize.STRING,
         allowNull: false
     },
-    codAnimal:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
+    
 },{
     freezeTableName: true,
     tableName: 'atende'
 })
+
+Atende.belongsTo(Veterinario, {foreignKey: {
+    allowNull: false}, onDelete: 'CASCADE'});
+
+Atende.belongsTo(Animal, {foreignKey: {
+    allowNull: false}, onDelete: 'CASCADE'});
+
+
 
 Atende.sync({force:false})
 module.exports = Atende

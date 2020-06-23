@@ -1,11 +1,9 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
+const Ala = require('./Ala');
 
 const Especie = connection.define( 'especie',{
-    codEspecie:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
+    
     nomeCientifico:{
         type: Sequelize.STRING,
         allowNull: false
@@ -25,15 +23,14 @@ const Especie = connection.define( 'especie',{
     descricao:{
         type: Sequelize.STRING,
         allowNull: false
-    },
-    codAla:{
-        type: Sequelize.INTEGER,
-        allowNull: false
     }
 },{
     freezeTableName: true,
     tableName: 'especie'
 })
+
+Especie.belongsTo(Ala, {foreignKey: {
+    allowNull: false}, onDelete: 'CASCADE'})
 
 Especie.sync({force:false})
 module.exports = Especie

@@ -24,7 +24,8 @@ const Animal = connection.define( 'animal',{
     tableName: 'animal'
 });
 
-Animal.belongsTo(Especie);
+Animal.belongsTo(Especie, {foreignKey: {
+    allowNull: false}, onDelete: 'CASCADE'});
 
 Animal.sync({force:false});
 

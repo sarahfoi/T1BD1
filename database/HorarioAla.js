@@ -12,7 +12,8 @@ const HorarioAla = connection.define( 'horarioAla',{
     freezeTableName: true,
     tableName: 'horarioAla'
 })
-HorarioAla.belongsTo(Ala);
+HorarioAla.belongsTo(Ala, {foreignKey: {
+    allowNull: false}, onDelete: 'CASCADE'});
 
 HorarioAla.sync({force:false})
 module.exports = HorarioAla

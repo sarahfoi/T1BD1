@@ -1,10 +1,12 @@
 const Sequelize = require('sequelize');
 const connection = require('./database');
+const Bilheteria = require('./Bilheteria')
 
 const Bilheteiro = connection.define( 'bilheteiro',{
     CPF:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     Nome:{
         type: Sequelize.STRING,
@@ -50,6 +52,9 @@ const Bilheteiro = connection.define( 'bilheteiro',{
     freezeTableName: true,
     tableName: 'bilheterio'
 })
+
+Bilheteiro.belongsTo(Bilheteria, {foreignKey: {
+    allowNull: false}, onDelete: 'CASCADE'})
 
 Bilheteiro.sync({force:false})
 module.exports = Bilheteiro

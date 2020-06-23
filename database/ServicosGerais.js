@@ -4,7 +4,8 @@ const connection = require('./database');
 const ServicosGerais = connection.define( 'servicosGerais',{
     CPF:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     Nome:{
         type: Sequelize.STRING,
