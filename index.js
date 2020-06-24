@@ -305,8 +305,7 @@ app.get ('/buscatodosAla', (req,res)=>{
     Ala.findAll({
         atributes:['cod','localizacao','nome']
     }).then((resultado)=>{
-        console.log(resultado)
-        //res.redirect('/Ala')
+        res.render('/select/Ala')
     });
 });
 
@@ -318,7 +317,7 @@ app.get ('/buscatodosAnimal', (req,res)=>{
         atributes:['cod','nome','sexo','daraNascimento','codEspecie']
     }).then((resultado)=>{
         
-        res.redirect('/Animal')
+        res.redirect('/select/Animal')
     });
 });
 
@@ -326,7 +325,7 @@ app.get ('/buscatodosAtende', (req,res)=>{
     Atende.findAll({
         atributes:['cod','CPF','data','diagnostico','codAnimal']
     }).then(()=>{
-        res.redirect('/Atende')
+        res.redirect('/select/Atende')
     });
 });
 
@@ -430,15 +429,19 @@ app.get ('/buscatodosVeterinario', (req,res)=>{
 //FUNÇÕES DE INSERÇÃO
 
 app.post ("/insereAla", (req,res) =>{
-    var cod= req.body.cod;
-    var localizacao= req.body.localizacao;
     var nome=req.body.nome;
+    var localizacao= req.body.localizacao;
+    var horario = req.body.horario;
     Ala.create({
-        cod:cod,
         localizacao:localizacao,
         nome:nome
-    }).then(()=>{
-        res.redirect("/")
+    }).then((inserido)=>{  
+        HorarioAla.create({
+            alaId: inserido.id,
+            horario: horario
+        }).then(()=>{
+            res.redirect('/');
+        })
     });
 });
 
