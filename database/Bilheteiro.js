@@ -44,6 +44,10 @@ const Bilheteiro = connection.define( 'bilheteiro',{
         type: Sequelize.CHAR,
         allowNull: false
     },
+    bilheteriaId:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     Ativo:{
         type: Sequelize.BOOLEAN,
         allowNull: false
@@ -53,8 +57,7 @@ const Bilheteiro = connection.define( 'bilheteiro',{
     tableName: 'bilheterio'
 })
 
-Bilheteiro.belongsTo(Bilheteria, {foreignKey: {
-    allowNull: false}, onDelete: 'CASCADE'})
+Bilheteiro.belongsTo(Bilheteria, {foreignKey: 'bilheteriaId', targetKey: 'id', onDelete: 'CASCADE'})
 
 Bilheteiro.sync({force:false})
 module.exports = Bilheteiro

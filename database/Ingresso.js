@@ -3,7 +3,11 @@ const connection = require('./database');
 const Bilheteria = require('./Bilheteria')
 
 const Ingresso = connection.define( 'ingressos',{
-
+    bilheteriaId:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false
+    },
     preco:{
         type: Sequelize.FLOAT,
         allowNull: false
@@ -13,8 +17,7 @@ const Ingresso = connection.define( 'ingressos',{
     tableName: 'ingresso'
 })
 
-Ingresso.belongsTo(Bilheteria, {foreignKey: {
-    allowNull: false}, onDelete: 'CASCADE'})
+Ingresso.belongsTo(Bilheteria, {foreignKey: 'bilheteriaId', targetKey: 'id', onDelete: 'CASCADE'})
 
 Ingresso.sync({force:false})
 module.exports = Ingresso

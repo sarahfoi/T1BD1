@@ -3,7 +3,11 @@ const connection = require('./database');
 const Bilheteria = require('./Bilheteria')
 
 const HorarioBilheteria = connection.define( 'horarioBilheteria',{
-    
+    bilheteriaId:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false
+    },
     horarioInicio:{
         type: Sequelize.TIME,
         allowNull: false
@@ -17,8 +21,7 @@ const HorarioBilheteria = connection.define( 'horarioBilheteria',{
     tableName: 'horarioBilheteria'
 })
 
-HorarioBilheteria.belongsTo(Bilheteria, {foreignKey: {
-    allowNull: false}, onDelete: 'CASCADE'})
+HorarioBilheteria.belongsTo(Bilheteria, {foreignKey: 'bilheteriaId', targetKey: 'id', onDelete: 'CASCADE'})
 
 HorarioBilheteria.sync({force:false})
 module.exports = HorarioBilheteria

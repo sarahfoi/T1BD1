@@ -5,19 +5,24 @@ const Especie = require('./Especie');
 const { INTEGER } = require('sequelize');
 
 const Supervisiona = connection.define( 'supervisiona',{
-    CPF:{
+    veterinarioCPF:{
         type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true
+    },
+    animalId:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false
     }
 },{
     freezeTableName: true,
     tableName: 'superviona'
 })
 
-Supervisiona.belongsTo(Veterinario, {foreignKey: 'CPF', targetKey: 'CPF', onDelete: 'CASCADE'});
+Supervisiona.belongsTo(Veterinario, {foreignKey: 'veterinarioCPF', targetKey: 'CPF', onDelete: 'CASCADE'});
 
-Supervisiona.belongsTo(Especie, {primaryKey: true, onDelete: 'CASCADE'});
+Supervisiona.belongsTo(Especie, {foreignKey: 'animalId', targetKey: 'id', onDelete: 'CASCADE'});
 
 
 

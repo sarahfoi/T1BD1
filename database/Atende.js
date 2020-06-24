@@ -4,6 +4,16 @@ const Veterinario = require('./Veterinario');
 const Animal = require('./Animal');
 
 const Atende = connection.define( 'atende',{
+    veterinarioCPF:{
+        type: Sequelize.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+    animalId:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
     data:{
         type: Sequelize.DATEONLY,
         allowNull: false
@@ -18,11 +28,9 @@ const Atende = connection.define( 'atende',{
     tableName: 'atende'
 })
 
-Atende.belongsTo(Veterinario, {foreignKey: {
-    allowNull: false}, onDelete: 'CASCADE'});
+Atende.belongsTo(Veterinario, {foreignKey: 'veterinarioCPF', targetKey: 'CPF', onDelete: 'CASCADE'});
 
-Atende.belongsTo(Animal, {foreignKey: {
-    allowNull: false}, onDelete: 'CASCADE'});
+Atende.belongsTo(Animal, {foreignKey: 'animalId', targetKey: 'id', onDelete: 'CASCADE'});
 
 
 
