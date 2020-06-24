@@ -92,56 +92,113 @@ app.get('/insert/Ingresso', (req, res)=>{
 
 // TELAS DE CONSULTA TODOS (select)
 app.get('/select/Ala', (req, res)=>{
-    res.render('select', {
-        tabela: 'Ala'
+    Ala.findAll({
+        atributes:['cod','localizacao','nome']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Ala',
+            resultado: resultado
+        })
     })
 });
 
 app.get('/select/Animal', (req, res)=>{
-    res.render('select', {
-        tabela: 'Animal'
+    Animal.findAll({
+        where: {
+            ativo: true
+        },
+        atributes:['cod','nome','sexo','daraNascimento','codEspecie']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Animal',
+            resultado:resultado
+        })
     })
 });
 
 app.get('/select/Atende', (req, res)=>{
-    res.render('select', {
-        tabela: 'Atende'
-    })
-});
-
-app.get('/select/Bilheteria', (req, res)=>{
-    res.render('select', {
-        tabela: 'Bilheteria'
-    })
-});
-
-app.get('/select/Especie', (req, res)=>{
-    res.render('select', {
-        tabela: 'Especie'
-    })
-});
-
-app.get('/select/ServicosGerais', (req, res)=>{
-    res.render('select', {
-        tabela: 'ServicosGerais'
-    })
-});
-
-app.get('/select/Veterinario', (req, res)=>{
-    res.render('select', {
-        tabela: 'Veterinario'
+    Atende.findAll({
+        atributes:['cod','CPF','data','diagnostico','codAnimal']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Atende',
+            resultado: resultado
+        })
     })
 });
 
 app.get('/select/Bilheteiro', (req, res)=>{
-    res.render('select', {
-        tabela: 'Bilheteiro'
+    Bilheteiro.findAll({
+        where: {
+            ativo: true
+        },
+        atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Bilheteiro',
+            resultado:resultado
+        })
     })
 });
 
+app.get('/select/Bilheteria', (req, res)=>{
+    Bilheteria.findAll({
+        atributes:['numBilheteria','localizacao']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Bilheteria',
+            resultado:resultado
+        })
+    })
+});
+
+app.get('/select/Especie', (req, res)=>{
+    Especie.findAll({
+        atributes:['codEspecie','nomeCientifico','nomePopular','estado','alimentacao','descricao','codAla']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Especie',
+            resultado:resultado
+        })
+    })
+});
+
+app.get('/select/ServicosGerais', (req, res)=>{
+    ServicosGerais.findAll({
+        where: {
+            ativo: true
+        },
+        atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito','funcao']
+        }).then((resultado)=>{
+            res.render('select', {
+                tabela: 'ServicosGerais',
+                resultado:resultado
+        })
+    })
+});
+
+app.get('/select/Veterinario', (req, res)=>{
+    Veterinario.findAll({
+        where: {
+            ativo: true
+        },
+        atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito','CRMV','Faculdade']
+    }).then((resultado)=>{
+            res.render('select', {
+                tabela: 'Veterinario',
+                resultado:resultado
+            })
+        })
+    });
+
 app.get('/select/Ingresso', (req, res)=>{
-    res.render('select', {
-        tabela: 'Ingresso'
+    Ingresso.findAll({
+        atributes:['num','horario','data','numBilheteria']
+    }).then((resultado)=>{
+        res.render('select', {
+            tabela: 'Ingresso',
+            resultado:resultado
+        })
     })
 });
 
@@ -301,15 +358,15 @@ app.post('/removeVeterinario', (req,res)=>{
 
 //FUNÇÕES DE BUSCA TODOS
 
-app.get ('/buscatodosAla', (req,res)=>{
+/*app.get ('/buscatodosAla', (req,res)=>{
     Ala.findAll({
         atributes:['cod','localizacao','nome']
     }).then((resultado)=>{
         res.render('/select/Ala')
     });
-});
+});*/
 
-app.get ('/buscatodosAnimal', (req,res)=>{
+/*app.get ('/buscatodosAnimal', (req,res)=>{
     Animal.findAll({
         where: {
             ativo: true
@@ -319,56 +376,56 @@ app.get ('/buscatodosAnimal', (req,res)=>{
         
         res.redirect('/select/Animal')
     });
-});
+});*/
 
-app.get ('/buscatodosAtende', (req,res)=>{
+/*app.get ('/buscatodosAtende', (req,res)=>{
     Atende.findAll({
         atributes:['cod','CPF','data','diagnostico','codAnimal']
     }).then(()=>{
         res.redirect('/select/Atende')
     });
-});
+});*/
 
-app.get ('/buscatodosBilheteiro', (req,res)=>{
+/*app.get ('/buscatodosBilheteiro', (req,res)=>{
     Bilheteiro.findAll({
         where: {
             ativo: true
         },
         atributes:['CPF','Nome','ddn','Salario','CLT','Endereço','Banco','Agencia','Conta','Digito']
     }).then(()=>{
-        res.redirect('/Bilheteiro')
+        res.redirect('/select/Bilheteiro')
     });
-});
+});*/
 
-app.get ('/buscatodosBilheteria', (req,res)=>{
+/*app.get ('/buscatodosBilheteria', (req,res)=>{
     Bilheteria.findAll({
         atributes:['numBilheteria','localizacao']
     }).then(()=>{
-        res.redirect('/Bilheteria')
+        res.redirect('/select/Bilheteria')
     });
-});
+});*/
 
 app.get ('/buscatodosCuida', (req,res)=>{
     Cuida.findAll({
         atributes:['CPF','numBilheteria']
     }).then(()=>{
-        res.redirect('/Bilheteiro')
+        res.redirect('/select/Cuida')
     });
 });
 
-app.get ('/buscatodosEspecie', (req,res)=>{
+/*app.get ('/buscatodosEspecie', (req,res)=>{
     Especie.findAll({
         atributes:['codEspecie','nomeCientifico','nomePopular','estado','alimentacao','descricao','codAla']
     }).then(()=>{
-        res.redirect('/Especie')
+        res.render('/select/Especie')
     });
-});
+});*/
 
 app.get ('/buscatodosHorarioAla', (req,res)=>{
     HorarioAla.findAll({
         atributes:['cod','horario']
     }).then(()=>{
-        res.redirect('/Ala')
+        res.render('/select/Ala')
     });
 });
 
@@ -376,19 +433,19 @@ app.get ('/buscatodosHorarioBilheteria', (req,res)=>{
     HorarioBilheteria.findAll({
         atributes:['cod','horarioInicio','horarioFinal']
     }).then(()=>{
-        res.redirect('/Bilheteria')
+        res.render('/select/Bilheteria')
     });
 });
 
-app.get ('/buscatodosIngresso', (req,res)=>{
+/*app.get ('/buscatodosIngresso', (req,res)=>{
     Ingresso.findAll({
         atributes:['num','horario','data','numBilheteria']
     }).then(()=>{
-        res.redirect('/Ala')
+        res.render('/Ala')
     });
-});
+});*/
 
-app.get ('/buscatodosServicosGerais', (req,res)=>{
+/*app.get ('/buscatodosServicosGerais', (req,res)=>{
     ServicosGerais.findAll({
         where: {
             ativo: true
@@ -397,7 +454,7 @@ app.get ('/buscatodosServicosGerais', (req,res)=>{
     }).then(()=>{
         res.redirect('/ServicosGerais')
     });
-});
+});*/
 
 app.get ('/buscatodosSupervisiona', (req,res)=>{
     Supervisiona.findAll({
@@ -415,7 +472,7 @@ app.get ('/buscatodosTrabalha', (req,res)=>{
     });
 });
 
-app.get ('/buscatodosVeterinario', (req,res)=>{
+/*app.get ('/buscatodosVeterinario', (req,res)=>{
     Veterinario.findAll({
         where: {
             ativo: true
@@ -424,7 +481,7 @@ app.get ('/buscatodosVeterinario', (req,res)=>{
     }).then(()=>{
         res.redirect('/Veterinario')
     });
-});
+});*/
 
 //FUNÇÕES DE INSERÇÃO
 
@@ -440,27 +497,25 @@ app.post ("/insereAla", (req,res) =>{
             alaId: inserido.id,
             horario: horario
         }).then(()=>{
-            res.redirect('/');
+            res.redirect('/insert/Ala');
         })
     });
 });
 
 app.post ("/insereAnimal", (req,res) =>{
-    var cod= req.body.cod;
     var nome=req.body.nome;
     var sexo=req.body.sexo;
     var dataNascimento=req.body.dataNascimento;
     var codEspecie=req.body.codEspecie;
-    var ativo=true;
     Animal.create({
         cod:cod,
         nome:nome,
         sexo:sexo,
         dataNascimento:dataNascimento,
         especieId:codEspecie,
-        ativo:ativo
+        ativo:true
     }).then(()=>{
-    res.redirect("/")
+    res.redirect("/insert/Animal")
     });
 });
 
@@ -476,7 +531,6 @@ app.post ("/insereBilheteiro", (req,res) =>{
     var Conta=req.body.Conta;
     var Digito=req.body.Digito;
     var numBilheteria=req.body.numBilheteria;
-    var ativo=req.body.ativo;
     Bilheteiro.create({
         CPF:CPF,
         ddn:ddn,
@@ -489,9 +543,9 @@ app.post ("/insereBilheteiro", (req,res) =>{
         Conta:Conta,
         Digito:Digito,
         numBilheteria:numBilheteria,
-        ativo:ativo
+        ativo:true
     }).then(()=>{
-    res.redirect("/")
+    res.redirect("/insert/Bilheteiro")
     });
 });
 
