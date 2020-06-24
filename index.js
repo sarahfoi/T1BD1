@@ -33,6 +33,10 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
+app.get('/sobre', (req, res) => {
+    res.render('sobre');
+})
+
 
 // TELAS DE INSERÇÃO
 app.get('/insert/Ala', (req, res) => {
@@ -626,6 +630,137 @@ app.post("/insereVeterinario", (req, res) => {
         ativo: ativo
     }).then(() => {
         res.redirect("/")
+    });
+});
+
+//FUNÇÕES DE UPDATE
+
+app.post('/atualizaAla', (req, res) => {
+    Ala.update({
+        nome: req.body.nome,
+        localizacao: req.body.localizacao,
+        horario: req.body.horario,
+        where: {
+            id: req.body.id
+        }
+    }).then(() => {
+        res.render('/select/Ala')
+    });
+});
+
+app.post('/atualizaAnimal', (req, res) => {
+    Animal.update({
+        nome : req.body.nome,
+        sexo : req.body.sexo,
+        dataNascimento : req.body.dataNascimento,
+        especieId :req.body.especieId,
+        where: {
+            id: req.body.id
+        }
+    }).then(() => {
+        res.render('/select/Animal')
+    });
+});
+
+app.post('/atualizaAtende', (req, res) => {
+    Atende.update({
+        veterinarioCPF : req.body.veterinarioCPF,
+        animalId : req.body.animalId,
+        data : req.body.data,
+        diagnostico : req.body.diagnostico,
+        where: {
+            id: req.body.id
+        }
+    }).then(() => {
+        res.render('/select/Animal')
+    });
+});
+
+app.post('/atualizaBilheteria', (req, res) => {
+    Bilheteria.update({
+        localizacao : req.body.localizacao,
+        where: {
+            id: req.body.id
+        }
+    }).then(() => {
+        res.render('/select/Bilheteria')
+    });
+});
+
+app.post('/atualizaEspecie', (req, res) => {
+    Especie.update({
+        nomeCientifico: req.body.nomeCientifico,
+        nomePopular: req.body.nomePopular,
+        estado: req.body.estado,
+        alimentacao: req.body.alimentacao,
+        descricao: req.body.descricao,
+        alaId: req.body.alaId,
+        where: {
+            id: req.body.id
+        }
+    }).then(() => {
+        res.render('/select/Especie')
+    });
+});
+
+app.post('/atualizaBilheteiro', (req, res) => {
+    Bilheteiro.update({
+        ddn : req.body.ddn,
+        nome : req.body.nome,
+        Salario : req.body.Salario,
+        CLT : req.body.CLT,
+        Endereço : req.body.Endereço,
+        Banco : req.body.Banco,
+        Agencia : req.body.Agencia,
+        Conta : req.body.Conta,
+        Digito : req.body.Digito,
+        bilheteriaId : req.body.bilheteriaId,
+        where: {
+            CPF: req.body.CPF
+        }
+    }).then(() => {
+        res.render('/select/Bilheteiro')
+    });
+});
+
+app.post('/atualizaServicosGerais', (req, res) => {
+    ServicosGerais.update({
+        ddn : req.body.ddn,
+        nome : req.body.nome,
+        Salario : req.body.Salario,
+        CLT : req.body.CLT,
+        Endereço : req.body.Endereço,
+        Banco : req.body.Banco,
+        Agencia : req.body.Agencia,
+        Conta : req.body.Conta,
+        Digito : req.body.Digito,
+        funcao : req.body.funcao,
+        where: {
+            CPF: req.body.CPF
+        }
+    }).then(() => {
+        res.render('/select/ServicosGerais')
+    });
+});
+
+app.post('/atualizaVeterinario', (req, res) => {
+    ServicosGerais.update({
+        ddn : req.body.ddn,
+        nome : req.body.nome,
+        Salario : req.body.Salario,
+        CLT : req.body.CLT,
+        Endereço : req.body.Endereço,
+        Banco : req.body.Banco,
+        Agencia : req.body.Agencia,
+        Conta : req.body.Conta,
+        Digito : req.body.Digito,
+        CRMV : req.body.CRMV,
+        Faculdade: Faculdade,
+        where: {
+            CPF: req.body.CPF
+        }
+    }).then(() => {
+        res.render('/select/Veterinario')
     });
 });
 
