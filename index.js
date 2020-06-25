@@ -120,7 +120,7 @@ app.get('/select/Animal', (req, res) => {
         where: {
             ativo: true
         },
-        atributes: ['nome', 'sexo', 'dataNascimento', 'especieId']
+        atributes: ['id','nome', 'sexo', 'dataNascimento', 'especieId']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Animal',
@@ -171,7 +171,7 @@ app.get('/select/Bilheteria', (req, res) => {
 
 app.get('/select/Especie', (req, res) => {
     Especie.findAll({
-        atributes: ['especieId', 'nomeCientifico', 'nomePopular', 'estado', 'alimentacao', 'descricao', 'alaId']
+        atributes: ['id', 'nomeCientifico', 'nomePopular', 'estado', 'alimentacao', 'descricao', 'alaId']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Especie',
@@ -191,38 +191,53 @@ app.get('/select/Funcionario', (req, res) => {
 
 app.get('/select/ServicosGerais', (req, res) => {
 
-    var result=[];
+    var resultado=[];
     ServicosGerais.findAll({
         where: {
             ativo: true
         },
         atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'funcao']
-    }).then((resultado) => {
-        resultado.forEach(r => {
-            Supervisiona.findAll({
+    }).then((funcionarios) => {
+        funcionarios.forEach(funcionario => {
+            Trabalha.findAll({
                 where: {
-                    CPF: r.CPF
+                    CPF: funcionario.CPF
                 },
-            }).then((especie)=>{
-                var newObject = {r,especie};
-                result.push(mewObject);
+            }).then((trabalho)=>{
+                var newObject = {funcionario,trabalho};
+                resultado.push(mewObject);
+                res.render('select/ServicosGerais', {
+                    tabela: "ServicosGerais"
+                });
             })
         });
     })
 });
 
 app.get('/select/Veterinario', (req, res) => {
+    var resultado=[];
     Veterinario.findAll({
         where: {
             ativo: true
         },
         atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'CRMV', 'Faculdade']
-    }).then((resultado) => {
-        res.render('select', {
-            tabela: 'Veterinario',
-            resultado: resultado,
-            insert: '/insert/Veterinario'
-        })
+    }).then((funcionarios) => {
+        funcionarios.forEach(funcionario => {
+            Supervisiona.findAll({
+                where: {
+                    CPF: funcionario.CPF
+                },
+                atributes: ['especieId']
+            }).then((especies)=>{
+                var newObject = {funcionario,especie};
+                resultado.push(mewObject);
+                res.render('/select/Veterinario',{
+                    tabela: "Veterinario",
+                    resultado: resultado,
+                    insert: "/insert/Veterinario"
+                });
+            })
+        });
     })
 });
 
@@ -615,14 +630,14 @@ app.post("/insereTrabalha", (req, res) => {
         horariofim: horariofim,
         alaId: codAla
     }).then(() => {
-        res.redirect("/")
+        res.redirect("/") 
     });
 });
 
 app.post("/insereVeterinario", (req, res) => {
     var CPF = req.body.CPF;
     var ddn = req.body.ddn;
-    var nome = req.body.nome;
+    var Nome = req.body.Nome;
     var Salario = req.body.Salario;
     var CLT = req.body.CLT;
     var Endereço = req.body.Endereço;
@@ -632,7 +647,8 @@ app.post("/insereVeterinario", (req, res) => {
     var Digito = req.body.Digito;
     var CRMV = req.body.CRMV;
     var Faculdade = req.body.Faculdade
-    var ativo = req.body.ativo;
+    var Ativo = req.body.Ativo;
+    //* Pegar o ID da espécie
     Veterinario.create({
         CPF: CPF,
         ddn: ddn,
@@ -647,8 +663,13 @@ app.post("/insereVeterinario", (req, res) => {
         CRMV: CRMV,
         Faculdade: Faculdade,
         ativo: ativo
-    }).then(() => {
-        res.redirect("/")
+    }).then((inserido) => {
+        Supervisiona.create({
+            CPF: inserido.CPF,
+            especieId: especieId
+        }).then(() => {
+            res.redirect('/insert/Veterinario');
+        })
     });
 });
 

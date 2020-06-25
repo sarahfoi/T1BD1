@@ -9,7 +9,7 @@
 
         <% if (tabela == 'Ala') { %>
         <form method='POST' action="/insereAla">
-            
+
             <div class="form-group">
                 <label for="cod">Nome</label>
                 <input type="text" id="nome" name="nome">
@@ -19,7 +19,7 @@
                 <input type="text" id="localizacao" name="localizacao">
             </div>
             <!-- Horarios ala -->
-            
+
             <div class="form-group">
                 <label for="horario">Horário</label>
                 <input type="time" id="horario" name="horario">
@@ -47,13 +47,24 @@
                 <input type="date" id="dataNascimento" name="dataNascimento">
             </div>
             <div class="form-group">
-                <label for="codEspecie">Código da Espécie</label>
-                <select name="codEspecie" id="codEspecie"></select>
-                <% const selectEspecie = document.querySelector('select[name=codEspecie]');
-                    selectEspecie.innerHTML = ''
-                %> 
-
-                <input type="text" id="codEspecie" name="codEspecie">
+                <label for="codEspecie">Espécie</label>
+                <select name="codEspecie" id="codEspecie">
+                    
+                <script>
+                    function getEspecie(event) {
+                        const selectEspecie = document.querySelector('select[name=codEspecie]');
+                        selectEspecie.innerHTML = '';
+                        const Especie = require("./database/Especie");
+                        Especie.findAll({
+                            atributes: ['id', 'nomeCientifico']
+                        }).then((resultado => {
+                            resultado.forEach(r => {
+                                selectEspecie.innerHTML += `<option value="${r.id}">"${r.nomeCientifico}"</option>`
+                            })
+                        }))
+                    }
+                </script>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -77,14 +88,14 @@
                 <label for="diagnostico">Diagnostico</label>
                 <textarea type="text" id="diagnostico" name="diagnostico"></textarea>
             </div>
-            
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         <% } %>
 
         <% if (tabela == 'Bilheteria') { %>
         <form method='POST' action="/insereBilheteria">
-            
+
             <div class="form-group">
                 <label for="type">Localização</label>
                 <input type="text" id="type" name="type">
@@ -106,7 +117,7 @@
 
         <% if (tabela == 'Especie') { %>
         <form method='POST' action="/insereEspecie">
-            
+
             <div class="form-group">
                 <label for="nomeCientifico">Nome Cientifico</label>
                 <input type="text" id="nomeCientifico" name="nomeCientifico">
@@ -216,12 +227,12 @@
 
         <% if (tabela == 'Ingresso') { %>
         <form method='POST' action="/insereIngresso">
-            
+
             <div class="form-group">
                 <label for="preco">Preço</label>
                 <input type="number" id="preco" name="preco">
             </div>
-            
+
             <div class="form-group">
                 <label for="numBilheteria">Número Bilheteria</label>
                 <input type="number" id="numBilheteria" name="numBilheteria">
