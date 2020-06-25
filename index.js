@@ -604,7 +604,7 @@ app.post("/insereServicosGerais", (req, res) => {
             servicosGeraisCPF: CPF,
             alaId: codAla,
         })
-        res.redirect("/")
+        res.redirect("/") 
     });
 });
 

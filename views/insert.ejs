@@ -49,21 +49,25 @@
             <div class="form-group">
                 <label for="codEspecie">Espécie</label>
                 <select name="codEspecie" id="codEspecie">
-                    
+
                 <script>
-                    function getEspecie(event) {
+
+                    function getEspecie() {
                         const selectEspecie = document.querySelector('select[name=codEspecie]');
                         selectEspecie.innerHTML = '';
                         const Especie = require("./database/Especie");
                         Especie.findAll({
                             atributes: ['id', 'nomeCientifico']
                         }).then((resultado => {
-                            resultado.forEach(r => {
+                            console.log(resultado);
+                            for(r of resultado){
                                 selectEspecie.innerHTML += `<option value="${r.id}">"${r.nomeCientifico}"</option>`
-                            })
+                            }
                         }))
                     }
+                    getEspecie()
                 </script>
+
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -150,7 +154,27 @@
             </div>
             <div class="form-group">
                 <label for="codAla">Código da Ala</label>
-                <input type="text" id="codAla" name="codAla">
+                <select name="codAla" id="codAla">
+
+                    <script>
+                        function getAla() {
+                            const selectEspecie = document.querySelector('select[name=codAla]');
+                            selectEspecie.innerHTML = '';
+                            const Especie = require("./database/Ala");
+                            Especie.findAll({
+                                atributes: ['id', 'nome']
+                            }).then((resultado => {
+                                console.log(resultado);
+                                for(r of resultado){
+                                    selectEspecie.innerHTML += `<option value="${r.id}">"${r.nome}"</option>`
+                                }
+                            }))
+                        }
+
+                        getAla();
+                    </script>
+    
+                    </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
