@@ -98,7 +98,8 @@ app.get('/insert/Ingresso', (req, res) => {
 
 app.get('/select/Home', (req, res) => {
     res.render('select', {
-        tabela: 'Home'
+        tabela: 'Home',
+        resultado: false
     })
 });
 
@@ -108,7 +109,8 @@ app.get('/select/Ala', (req, res) => {
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Ala',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Ala'
         })
     })
 });
@@ -122,7 +124,8 @@ app.get('/select/Animal', (req, res) => {
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Animal',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Animal'
         })
     })
 });
@@ -133,7 +136,8 @@ app.get('/select/Atende', (req, res) => {
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Atende',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Atende'
         })
     })
 });
@@ -143,11 +147,12 @@ app.get('/select/Bilheteiro', (req, res) => {
         where: {
             ativo: true
         },
-        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito','bilheteriaId']
+        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'bilheteriaId']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Bilheteiro',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Bilheteiro'
         })
     })
 });
@@ -158,7 +163,8 @@ app.get('/select/Bilheteria', (req, res) => {
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Bilheteria',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Bilheteria'
         })
     })
 });
@@ -169,28 +175,39 @@ app.get('/select/Especie', (req, res) => {
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Especie',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Especie'
         })
     })
 });
 
 app.get('/select/Funcionario', (req, res) => {
+
     res.render('select', {
-        tabela: 'Funcionario'
+        tabela: 'Funcionario',
+        resultado: resultado
     });
 });
 
 app.get('/select/ServicosGerais', (req, res) => {
+
+    var result=[];
     ServicosGerais.findAll({
         where: {
             ativo: true
         },
         atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'funcao']
     }).then((resultado) => {
-        res.render('select', {
-            tabela: 'ServicosGerais',
-            resultado: resultado
-        })
+        resultado.forEach(r => {
+            Supervisiona.findAll({
+                where: {
+                    CPF: r.CPF
+                },
+            }).then((especie)=>{
+                var newObject = {r,especie};
+                result.push(mewObject);
+            })
+        });
     })
 });
 
@@ -204,6 +221,7 @@ app.get('/select/Veterinario', (req, res) => {
         res.render('select', {
             tabela: 'Veterinario',
             resultado: resultado,
+            insert: '/insert/Veterinario'
         })
     })
 });
@@ -214,7 +232,8 @@ app.get('/select/Ingresso', (req, res) => {
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Ingresso',
-            resultado: resultado
+            resultado: resultado,
+            insert: '/insert/Ingresso'
         })
     })
 });
@@ -490,7 +509,7 @@ app.post("/insereAtende", (req, res) => {
     var codAnimal = req.body.codAnimal;
     var data = req.body.data;
     var diagnostico = req.body.diagnostico;
-    
+
     Atende.create({
         veterinarioCPF: CPF,
         animalId: codAnimal,
@@ -568,7 +587,7 @@ app.post("/insereServicosGerais", (req, res) => {
     }).then((inserido) => {
         Trabalha.create({
             servicosGeraisCPF: CPF,
-            alaId: codAla,  
+            alaId: codAla,
         })
         res.redirect("/")
     });
@@ -650,10 +669,10 @@ app.post('/atualizaAla', (req, res) => {
 
 app.post('/atualizaAnimal', (req, res) => {
     Animal.update({
-        nome : req.body.nome,
-        sexo : req.body.sexo,
-        dataNascimento : req.body.dataNascimento,
-        especieId :req.body.especieId,
+        nome: req.body.nome,
+        sexo: req.body.sexo,
+        dataNascimento: req.body.dataNascimento,
+        especieId: req.body.especieId,
         where: {
             id: req.body.id
         }
@@ -664,10 +683,10 @@ app.post('/atualizaAnimal', (req, res) => {
 
 app.post('/atualizaAtende', (req, res) => {
     Atende.update({
-        veterinarioCPF : req.body.veterinarioCPF,
-        animalId : req.body.animalId,
-        data : req.body.data,
-        diagnostico : req.body.diagnostico,
+        veterinarioCPF: req.body.veterinarioCPF,
+        animalId: req.body.animalId,
+        data: req.body.data,
+        diagnostico: req.body.diagnostico,
         where: {
             id: req.body.id
         }
@@ -678,7 +697,7 @@ app.post('/atualizaAtende', (req, res) => {
 
 app.post('/atualizaBilheteria', (req, res) => {
     Bilheteria.update({
-        localizacao : req.body.localizacao,
+        localizacao: req.body.localizacao,
         where: {
             id: req.body.id
         }
@@ -705,16 +724,16 @@ app.post('/atualizaEspecie', (req, res) => {
 
 app.post('/atualizaBilheteiro', (req, res) => {
     Bilheteiro.update({
-        ddn : req.body.ddn,
-        nome : req.body.nome,
-        Salario : req.body.Salario,
-        CLT : req.body.CLT,
-        Endereço : req.body.Endereço,
-        Banco : req.body.Banco,
-        Agencia : req.body.Agencia,
-        Conta : req.body.Conta,
-        Digito : req.body.Digito,
-        bilheteriaId : req.body.bilheteriaId,
+        ddn: req.body.ddn,
+        nome: req.body.nome,
+        Salario: req.body.Salario,
+        CLT: req.body.CLT,
+        Endereço: req.body.Endereço,
+        Banco: req.body.Banco,
+        Agencia: req.body.Agencia,
+        Conta: req.body.Conta,
+        Digito: req.body.Digito,
+        bilheteriaId: req.body.bilheteriaId,
         where: {
             CPF: req.body.CPF
         }
@@ -725,16 +744,16 @@ app.post('/atualizaBilheteiro', (req, res) => {
 
 app.post('/atualizaServicosGerais', (req, res) => {
     ServicosGerais.update({
-        ddn : req.body.ddn,
-        nome : req.body.nome,
-        Salario : req.body.Salario,
-        CLT : req.body.CLT,
-        Endereço : req.body.Endereço,
-        Banco : req.body.Banco,
-        Agencia : req.body.Agencia,
-        Conta : req.body.Conta,
-        Digito : req.body.Digito,
-        funcao : req.body.funcao,
+        ddn: req.body.ddn,
+        nome: req.body.nome,
+        Salario: req.body.Salario,
+        CLT: req.body.CLT,
+        Endereço: req.body.Endereço,
+        Banco: req.body.Banco,
+        Agencia: req.body.Agencia,
+        Conta: req.body.Conta,
+        Digito: req.body.Digito,
+        funcao: req.body.funcao,
         where: {
             CPF: req.body.CPF
         }
@@ -745,16 +764,16 @@ app.post('/atualizaServicosGerais', (req, res) => {
 
 app.post('/atualizaVeterinario', (req, res) => {
     ServicosGerais.update({
-        ddn : req.body.ddn,
-        nome : req.body.nome,
-        Salario : req.body.Salario,
-        CLT : req.body.CLT,
-        Endereço : req.body.Endereço,
-        Banco : req.body.Banco,
-        Agencia : req.body.Agencia,
-        Conta : req.body.Conta,
-        Digito : req.body.Digito,
-        CRMV : req.body.CRMV,
+        ddn: req.body.ddn,
+        nome: req.body.nome,
+        Salario: req.body.Salario,
+        CLT: req.body.CLT,
+        Endereço: req.body.Endereço,
+        Banco: req.body.Banco,
+        Agencia: req.body.Agencia,
+        Conta: req.body.Conta,
+        Digito: req.body.Digito,
+        CRMV: req.body.CRMV,
         Faculdade: Faculdade,
         where: {
             CPF: req.body.CPF

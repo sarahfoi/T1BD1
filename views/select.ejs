@@ -1,148 +1,152 @@
 <%- include('partials/head.ejs'); %>
-        <link rel="stylesheet" href="assets/styles/index.css">
-        <title>Zoológico - Home</title>
-    </head>
-    <body>
-        <%- include('partials/navbar.ejs'); %>
-        <main role="main">
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-sm-2">
-                        <ul class="nav nav-pills flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Home">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Ala">Alas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Animal">Animais</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Atende">Atendimentos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Bilheteria">Bilheterias</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Especie">Espécies</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Funcionario">Funcionários</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/select/Ingresso">Ingressos</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <h3><%- tabela %></h3>
-                            </div>
+<link rel="stylesheet" href="assets/styles/index.css">
+<title>Zoológico - Home</title>
+</head>
+
+<body>
+    <%- include('partials/navbar.ejs'); %>
+    <main role="main">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-sm-2">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Ala">Alas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Animal">Animais</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Atende">Atendimentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Bilheteria">Bilheterias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Especie">Espécies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Funcionario">Funcionários</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Ingresso">Ingressos</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h3><%- tabela %></h3>
                         </div>
-                        <% if (tabela != 'Home') { %>
-                        <div class="row">
-                            <div class="col-sm-10">
-                                <div class="row bg-light">
-                                    <div class="col-sm-8">
-                                        <form>
-                                            <div class="row py-3">
-                                                <div class="col-sm-9">
-                                                    <input class="form-control" type="search" placeholder="Insira o que quiser pesquisar">        
-                                                </div>    
-                                                <div class="col-sm-3">
-                                                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Pesquisar</button>
-                                                </div>
+                    </div>
+                    <% if (tabela != 'Home') { %>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="row bg-light">
+                                <div class="col-sm-8">
+                                    <form>
+                                        <div class="row py-3">
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="search"
+                                                    placeholder="Insira o que quiser pesquisar">
                                             </div>
-                                        </form>
-                                    </div>
-                                    <% if(tabela=="Funcionario"){ %>
-                                    <div class="col-sm-4 align-middle">
-                                        <div class="dropdown align-middle">
-                                            <button class="btn btn-secondary dropdown-toggle align-middle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Escolha um funcionário
-                                            </button>
-                                            <div class="dropdown-menu align-middle" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="/select/Bilheteiro">Bilheteiro</a>
-                                                <a class="dropdown-item" href="/select/ServicosGerais">Serviços Gerais</a>
-                                                <a class="dropdown-item" href="/select/Veterinario">Veterinários</a>
+                                            <div class="col-sm-3">
+                                                <button class="btn btn-outline-info my-2 my-sm-0"
+                                                    type="submit">Pesquisar</button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <% } %>
+                                    </form>
                                 </div>
-                            </div>    
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary float-right">Inserir novo item</button>
-                            </div>
-                        </div>
-                        <% } %>
-
-                        
-                        
-                        <% resultado.forEach(res => { %>
-                        <div class="row mt-2">
-                            <div class="col-sm-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-9">
-                                                <span>
-                                                    <% switch(tabela){
-                                                        case "Ala":%> 
-                                                            <%= res.nome %>
-                                                            <% break;
-                                                        case "Animal": %>
-                                                            <%= res.nome %>
-                                                            <% break;
-                                                        case "Atende": %>
-                                                            <%= res.data %>
-                                                            <% break;
-                                                        case "Bilheteiro": %>
-                                                            <%= res.nome %>
-                                                            <% break;
-                                                        case "Bilheteria": %>
-                                                            <%= res.id; %>
-                                                            <% break;
-                                                        case "Especie": %>
-                                                            <%= res.nomePopular; %>
-                                                            <% break;
-                                                        case "ServicosGerais": %>
-                                                            <%= res.nome; %>
-                                                            <% break;
-                                                        case "Veterinario": %>
-                                                            <%= res.nome; %>
-                                                            <% break;
-                                                        case "Ingresso": %>
-                                                            <%= res.numBilheteria; %>
-                                                            <% break;
-                                                    } %>
-                                                </span>
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <i data-feather="edit"></i>
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <i data-feather="trash-2"></i>
-                                            </div>
-                                            <div class="col-sm-1">
-                                                <i data-feather="eye"></i>
-                                            </div>
-                                        </div>                                        
+                                <% if(tabela=="Funcionario"){ %>
+                                <div class="col-sm-4 align-middle">
+                                    <div class="dropdown align-middle">
+                                        <button class="btn btn-secondary dropdown-toggle align-middle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Escolha um funcionário
+                                        </button>
+                                        <div class="dropdown-menu align-middle" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="/select/Bilheteiro">Bilheteiro</a>
+                                            <a class="dropdown-item" href="/select/ServicosGerais">Serviços Gerais</a>
+                                            <a class="dropdown-item" href="/select/Veterinario">Veterinários</a>
+                                        </div>
                                     </div>
-                                </div>  
+                                </div>
+                                <% } %>
                             </div>
                         </div>
-                        <% }) %>
+                        <div class="col-sm-2">
+                            <a class="btn btn-primary float-right" href = <%= insert %> >Inserir novo item</a>
+                        </div>
                     </div>
-                </div>
-                
-            </div>
-        </main>
-    </body>
-    <script>
-        feather.replace()
-      </script>
-<%- include('partials/foot.ejs'); %>
+                    <% } %>
 
+
+
+                    <% if (resultado) resultado.forEach(res => { %>
+                    <div class="row mt-2">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <span>
+                                                <% switch(tabela){
+                                                        case "Ala":%>
+                                                <%= res.nome %>
+                                                <% break;
+                                                        case "Animal": %>
+                                                <%= res.nome %>
+                                                <% break;
+                                                        case "Atende": %>
+                                                <%= res.data %>
+                                                <% break;
+                                                        case "Bilheteiro": %>
+                                                <%= res.nome %>
+                                                <% break;
+                                                        case "Bilheteria": %>
+                                                <%= res.id; %>
+                                                <% break;
+                                                        case "Especie": %>
+                                                <%= res.nomePopular; %>
+                                                <% break;
+                                                        case "ServicosGerais": %>
+                                                <%= res.nome; %>
+                                                <% break;
+                                                        case "Veterinario": %>
+                                                <%= res.nome; %>
+                                                <% break;
+                                                        case "Ingresso": %>
+                                                <%= res.numBilheteria; %>
+                                                <% break;
+                                                    } %>
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <i data-feather="edit"></i>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <i data-feather="trash-2"></i>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <i data-feather="eye"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+<script>
+    feather.replace()
+</script>
+<%- include('partials/foot.ejs'); %>

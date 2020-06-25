@@ -31,10 +31,11 @@ li {
 figcaption {
     text-align-last: center;
 }
-img{
+img .relacional{
     max-width: 90%;
     max-height: 90%;
     width: auto;
     height: auto;
-
+    display: flex;
+    
 }
