@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const sequelize = require("./database/database");
-const { QueryTypes } = require('sequelize');
+const { QueryTypes, Sequelize } = require('sequelize');
 const bodyParser = require('body-parser');
 const Ala = require("./database/Ala");
 const Animal = require("./database/Animal");
@@ -76,7 +76,7 @@ app.get('/insert/Bilheteria', (req, res) => {
 });
 
 app.get('/insert/Especie', (req, res) => {
-    
+
     const projects = sequelize.query('SELECT * FROM ala', {
         model: Ala,
         mapToModel: true // pass true here if you have any mapped fields
@@ -126,9 +126,9 @@ app.get('/insert/Ingresso', (req, res) => {
 app.get('/update/Ala/:id', (req, res) => {
     var id = req.params.id;
     sequelize.query('SELECT * FROM ala, horarioAla where alaId = :id and id = alaId', {
-        replacements: {id: id},
+        replacements: { id: id },
         type: QueryTypes.SELECT
-    }).then(elem => { 
+    }).then(elem => {
         console.log(elem);
         res.render('update', {
             tabela: 'Ala',
@@ -139,12 +139,12 @@ app.get('/update/Ala/:id', (req, res) => {
 
 app.get('/update/Animal/:id', (req, res) => {
     var id = req.params.id;
-    sequelize.query('SELECT * FROM animal where id = :id', { 
-        replacements: {id: id},
+    sequelize.query('SELECT * FROM animal where id = :id', {
+        replacements: { id: id },
         type: QueryTypes.SELECT
-    }).then(elem => { 
+    }).then(elem => {
         //console.log(Date.parse("2020-06-06"));
-        elem[0].dataNascimento = Date.parse(elem[0].dataNascimento);
+        //elem[0].dataNascimento = Date.parse(elem[0].dataNascimento);
         //console.log(elem[0].dataNascimento);
         res.render('update', {
             tabela: 'Animal',
@@ -176,6 +176,9 @@ app.get('/update/Bilheteria/:id', (req, res) => {
     Bilheteria.findOne({
         where: { id: id }
     }).then(elem => {
+        HorarioBilheteria.findAll({
+            where: {BilheteriaId: id}
+        })
         res.render('update', {
             tabela: 'Bilheteria',
             elem: elem
@@ -212,30 +215,30 @@ app.get('/update/Ingresso/:id', (req, res) => {
 app.get('/update/ServicosGerais/:CPF', (req, res) => {
     var CPF = req.params.CPF;
     const resultado = sequelize.query('SELECT * FROM servicosGerais, trabalha WHERE servicosGeraisCPF = :CPF', {
-        replacements: {CPF: CPF},
+        replacements: { CPF: CPF },
         type: QueryTypes.SELECT
     }).then((elem => {
-        console.log(elem[0]); 
+        console.log(elem[0]);
         res.render('update', {
             tabela: 'ServicosGerais',
             elem: elem[0]
         })
-    })).catch(err=>{
+    })).catch(err => {
         console.log(err);
-    }); 
+    });
 });
 
 app.get('/update/Veterinario/:CPF', (req, res) => {
     var CPF = req.params.CPF;
     const resultado = sequelize.query('SELECT * FROM veterinario, supervisiona WHERE veterinarioCPF = :CPF', {
-        replacements: {CPF: CPF},
+        replacements: { CPF: CPF },
         type: QueryTypes.SELECT
     }).then((elem => {
         res.render('update', {
             tabela: 'Veterinario',
             elem: elem[0]
         })
-    })).catch(err=>{
+    })).catch(err => {
         console.log(err);
     });
 });
@@ -264,7 +267,7 @@ app.get('/select/Ala', (req, res) => {
 
 app.get('/select/Animal', (req, res) => {
     sequelize.query('SELECT * FROM animal where ativo = :ativo', {
-        replacements: {ativo: true},
+        replacements: { ativo: true },
         model: Animal,
         mapToModel: true // pass true here if you have any mapped fields
     }).then((resultado) => {
@@ -277,150 +280,97 @@ app.get('/select/Animal', (req, res) => {
 });
 
 app.get('/select/Atende', (req, res) => {
-    sequelize.query('SELECT * FROM atende WHERE ativo = :ativo',{
-        replacements: {ativo: true},
+    sequelize.query('SELECT * FROM atende', {
         model: Atende,
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Atende',
             resultado: resultado,
-            insert: 'insert/Atende'
+            insert: '/insert/Atende'
         })
     })
 });
 
 
 app.get('/select/Bilheteiro', (req, res) => {
-    sequelize.query('SELECT * FROM bilheteiro WHERE ativo = :ativo',{
-        replacements: {ativo: true},
+    sequelize.query('SELECT * FROM bilheteiro WHERE ativo = :ativo', {
         model: Bilheteiro,
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Bilheteiro',
             resultado: resultado,
-            insert: 'insert/Bilheteiro'
+            insert: '/insert/Bilheteiro'
         })
     })
 });
 
 app.get('/select/Bilheteria', (req, res) => {
-    sequelize.query('SELECT * FROM bilheteria WHERE ativo = :ativo',{
-        replacements: {ativo: true},
+    sequelize.query('SELECT * FROM bilheteria', {
         model: Bilheteria,
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Bilheteria',
             resultado: resultado,
-            insert: 'insert/Bilheteria'
+            insert: '/insert/Bilheteria'
         })
     })
 });
 
 app.get('/select/Especie', (req, res) => {
-    sequelize.query('SELECT * FROM especie WHERE ativo = :ativo',{
-        replacements: {ativo: true},
+    sequelize.query('SELECT * FROM especie', {
         model: Especie,
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Especie',
             resultado: resultado,
-            insert: 'insert/Especie'
+            insert: '/insert/Especie'
         })
     })
 });
 
 app.get('/select/ServicosGerais', (req, res) => {
-    sequelize.query('SELECT * FROM servicosGerais where ativo = :ativo',{
-        replacements: {ativo: true},
+    sequelize.query('SELECT * FROM servicosGerais_v where ativo= :ativo', {
+        replacements: { ativo: true },
         model: ServicosGerais,
         mapToModel: true
-    }).then()
-
-    var resultado = [];
-    ServicosGerais.findAll({
-        where: {
-            ativo: true
-        },
-        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereco', 'Banco', 'Agencia', 'Conta', 'Digito', 'funcao']
-    }).then((funcionarios) => {
-        if(funcionarios.length){
-            funcionarios.forEach(funcionario => {
-                Trabalha.findAll({
-                    where: {
-                        servicosGeraisCPF: funcionario.CPF
-                    },
-                }).then((trabalho) => {
-                    console.log(trabalho); 
-                    var newObject = { funcionario, trabalho };
-                    resultado.push(newObject);
-                    res.render('select', {
-                        tabela: "ServicosGerais",
-                        resultado: resultado,
-                        insert: '/insert/ServicosGerais'
-                    });
-                })
-            });
-        }else{
-            res.render('select', {
-                tabela: "ServicosGerais",
-                resultado: undefined,
-                insert: '/insert/ServicosGerais'
-            });
-        }
+    }).then(resultado => {
+        res.render('select', {
+            tabela: "ServicosGerais",
+            resultado: resultado,
+            insert: '/insert/ServicosGerais'
+        })
     })
 });
 
 app.get('/select/Veterinario', (req, res) => {
-    var resultado = [];
-    Veterinario.findAll({
-        where: {
-            Ativo: true
-        },
-        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereco', 'Banco', 'Agencia', 'Conta', 'Digito', 'CRMV', 'Faculdade']
-    }).then((funcionarios) => {
-        if(funcionarios.length){
-            funcionarios.forEach(funcionario => {
-                Supervisiona.findAll({
-                    where: {
-                        veterinarioCPF: funcionario.CPF
-                    },
-                    atributes: ['especieId']
-                }).then((especies) => {
-                    var newObject = { funcionario, especies }
-                    resultado.push(newObject); //! Problema: renderiza a página TODA VEZ, por isso dá erro aqui. Resolver isso de outra forma. Vou pesquisar como faz!!
-                    res.render('select', {
-                        tabela: "Veterinario",
-                        resultado: resultado,
-                        insert: "/insert/Veterinario"
-                    });
-                })
-            });
-            console.log("resultado select veterinario: "+resultado);  //aparece antes da execução da query (pq não é síncrono?)
-        }else{
-            res.render('select', {
-                tabela: "Veterinario",
-                resultado: undefined,
-                insert: "/insert/Veterinario"
-            });
-        }
-        
+    sequelize.query('SELECT * FROM veterinario_v where ativo= :ativo', {
+        replacements: { ativo: true },
+        model: Veterinario,
+        mapToModel: true
+    }).then(resultado => {
+        console.log(resultado)
+        res.render('select', {
+            tabela: "Veterinario",
+            resultado: resultado,
+            insert: '/insert/Veterinario'
+        })
     })
+
 });
 
 app.get('/select/Ingresso', (req, res) => {
-    sequelize.query('SELECT * FROM ingresso WHERE ativo = :ativo',{
-        replacements: {ativo: true},
+    sequelize.query('SELECT * FROM ingresso', {
         model: Ingresso,
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Ingresso',
             resultado: resultado,
-            insert: 'insert/Ingresso'
+            insert: '/insert/Ingresso'
         })
     })
 });
@@ -614,11 +564,11 @@ app.post("/insereAnimal", (req, res) => {
 });
 
 app.post("/insereBilheteiro", (req, res) => {
-    console.log(req.body); 
+    console.log(req.body);
     var CPF = req.body.CPF;
-    var ddn = req.body.ddn; 
+    var ddn = req.body.ddn;
     var nome = req.body.nome;
-    var Salario = req.body.Salario; 
+    var Salario = req.body.Salario;
     var CLT = req.body.CLT;
     var Endereco = req.body.Endereco;
     var Banco = req.body.Banco;
@@ -788,7 +738,7 @@ app.post('/insereIngresso', (req, res) => {
         bilheteriaId: numBilheteria
     }).then(() => {
         res.redirect('/select/Ingresso')
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     })
 
@@ -797,17 +747,26 @@ app.post('/insereIngresso', (req, res) => {
 //FUNÇÕES DE UPDATE
 
 app.post('/atualizaAla/', (req, res) => {
-    Ala.update({
-        nome: req.body.nome,
-        localizacao: req.body.localizacao
-    },
-        {
-            where: {
-                id: req.body.cod
-            }
+    sequelize.query(`UPDATE ala SET nome = :nome, localizacao = :localizacao WHERE id = :id;`, {
+        replacements: {
+            nome: req.body.nome,
+            localizacao: req.body.localizacao,
+            id: req.body.cod,
+            horario: req.body.horario
+        }
+    }).then(() => {
+        sequelize.query('SELECT * FROM ala, horarioAla where ala.id = :id;', {
+            id: req.body.cod,
         }).then(() => {
+            sequelize.query('UPDATE horarioAla SET horario = :horario WHERE alaId = :id;', {
+                replacements: {
+                    id: req.body.cod,
+                    horario: req.body.horario
+                }
+            })
             res.redirect('/select/Ala')
         });
+    })
 });
 
 app.post('/atualizaAnimal', (req, res) => {

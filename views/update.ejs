@@ -8,20 +8,23 @@
         <%- include('partials/navbar.ejs'); %>
         <div class="container">
             <% if (tabela == 'Ala') { %> 
+                <% var i = 1; 
+                for (i = 0; i < 1; i++){ %>
             <form method='POST' action="/atualizaAla/">
                 <input type="hidden" name="alaId">
                 <div class="form-group">
                     <label for="cod">Código</label>
-                    <input type="number" id="cod" name="cod" value= "<%= elem[0].id %>" readonly>
+                    <input type="number" id="cod" name="cod" value= "<%= elem[i].id %>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" value= "<%= elem[0].nome %>" >
+                    <input type="text" id="nome" name="nome" value= "<%= elem[i].nome %>" >
                 </div>
                 <div class="form-group">
                     <label for="localizacao">Localização</label>
-                    <input type="text" id="localizacao" name="localizacao" value="<%= elem[0].localizacao %>">
+                    <input type="text" id="localizacao" name="localizacao" value="<%= elem[i].localizacao %>">
                 </div>
+                <% } %>
                 <!-- Horarios ala -->
                 <% var i = 1; 
                 elem.forEach(e => { %>
@@ -81,7 +84,7 @@
                 </div>
                 <div class="form-group">
                     <label for="diagnostico">Diagnostico</label>
-                    <textarea type="text" id="diagnostico" name="diagnostico" value= "<%= elem.diagnostico %>"></textarea>
+                    <textarea type="text" id="diagnostico" name="diagnostico"><%= elem.diagnostico %></textarea>
                 </div>
                 
 
@@ -146,11 +149,11 @@
                 </div>
                 <div class="form-group">
                     <label for="alimentacao">Alimentação</label>
-                    <textarea type="text" id="alimentacao" name="alimentacao" value= "<%= elem.alimentacao %>"></textarea>
+                    <textarea type="text" id="alimentacao" name="alimentacao"><%= elem.alimentacao %></textarea>
                 </div>
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <textarea type="text" id="descricao" name="descricao" value= "<%= elem.descricao %>" ></textarea>
+                    <textarea type="text" id="descricao" name="descricao"><%= elem.descricao %></textarea>
                 </div>
                 <div class="form-group">
                     <label for="codAla">Código da Ala</label>
