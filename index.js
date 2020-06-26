@@ -225,6 +225,26 @@ app.get('/update/ServicosGerais/:CPF', (req, res) => {
     })
 })
 
+app.get('/update/Veterinario/:CPF', (req, res) => {
+    var CPF = req.params.CPF;
+    //console.log(CPF)
+    Veterinario.findOne({
+        where: { CPF: CPF }
+    }).then(elem0 => {
+        Supervisiona.findOne({
+            where: { veterinarioCPF: CPF }
+        }).then(elem1 => {
+            var elem = {elem0, elem1}
+            console.log(elem.elem0.CPF)
+            res.render('update', {
+                tabela: 'Veterinario',
+                elem: elem
+            })
+        })
+
+    })
+})
+
 
 // TELAS DE CONSULTA TODOS (select)
 
