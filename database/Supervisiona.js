@@ -17,12 +17,12 @@ const Supervisiona = connection.define( 'supervisiona',{
     }
 },{
     freezeTableName: true,
-    tableName: 'superviona'
+    tableName: 'supervisiona'
 })
 
 Supervisiona.belongsTo(Veterinario, {foreignKey: 'veterinarioCPF', targetKey: 'CPF', onDelete: 'CASCADE'});
 
-Supervisiona.belongsTo(Especie, {foreignKey: 'animalId', targetKey: 'id', onDelete: 'CASCADE'});
+Supervisiona.belongsTo(Especie, {foreignKey: 'especieId', targetKey: 'id', onDelete: 'CASCADE'});
 
 
 

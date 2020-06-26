@@ -30,10 +30,12 @@ app.get('/', (req, res) => {
     res.render("index");
 });
 
+//LOGIN
 app.get('/login', (req, res) => {
     res.render('login');
 });
 
+//SOBRE
 app.get('/sobre', (req, res) => {
     res.render('sobre');
 })
@@ -121,6 +123,7 @@ app.get('/insert/Ingresso', (req, res) => {
 
 //*Falta: veterinário e bilheteiro
 app.get('/update/Ala/:id', (req, res) => {
+    var id = req.params.id;
     Ala.findOne({
         where: { id: id }
     }).then(elem0 => {
@@ -206,7 +209,7 @@ app.get('/update/Ingresso/:id', (req, res) => {
 })
 
 
-app.get('/update/ServicosGerais/:CPF', (req, res) => {
+/*app.get('/update/ServicosGerais/:CPF', (req, res) => {
     var CPF = req.params.CPF;
     //console.log(CPF)
     ServicosGerais.findOne({
@@ -223,29 +226,33 @@ app.get('/update/ServicosGerais/:CPF', (req, res) => {
         })
 
     })
-})
+})*/
+
+app.get('/update/ServicosGerais/:CPF', (req, res) => {
+    var CPF = req.params.CPF;
+    const resultado = sequelize.query('SELECT * FROM servicosGerais, trabalha WHERE servicosGeraisCPF = :CPF', {
+        replacements: {CPF: CPF}
+    }).then((elem => {
+        console.log(elem);
+        res.render('update', {
+            tabela: 'ServicosGerais',
+            elem: elem
+        })
+    }))
+});
 
 app.get('/update/Veterinario/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    //console.log(CPF)
-    Veterinario.findOne({
-        where: { CPF: CPF }
-    }).then(elem0 => {
-        Supervisiona.findOne({
-            where: { veterinarioCPF: CPF }
-        }).then(elem1 => {
-            var elem = {elem0, elem1}
-            console.log(elem.elem0.CPF)
-            res.render('update', {
-                tabela: 'Veterinario',
-                elem: elem
-            })
+    const resultado = sequelize.query('SELECT * FROM veterinario, supervisiona WHERE veterinarioCPF = :CPF', {
+        replacements: {CPF: CPF}
+    }).then((elem => {
+        console.log(elem);
+        res.render('update', {
+            tabela: 'Veterinario',
+            elem: elem
         })
-
-    })
-})
-
-
+    }))
+});
 // TELAS DE CONSULTA TODOS (select)
 
 app.get('/select/Home', (req, res) => {

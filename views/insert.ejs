@@ -20,7 +20,6 @@
                     <input type="text" id="localizacao" name="localizacao">
                 </div>
                 <!-- Horarios ala -->
-
                 <div class="form-group">
                     <label for="horario">Horário</label>
                     <input type="time" id="horario" name="horario">
@@ -52,7 +51,7 @@
                     <select name="codEspecie" id="codEspecie">
                         <% resultado.forEach(r => { %>
                         <option value=<%= r.id %>> <%=r.nomeCientifico %> </option>
-                        <% }) %> 
+                        <% }) %>
 
                     </select>
                 </div>
@@ -143,7 +142,7 @@
                     <select name="codAla" id="codAla">
 
                         <% resultado.forEach(r => { %>
-                        <option value = "<%= r.id %>"> <%= r.nome %> </option>
+                        <option value="<%= r.id %>"> <%= r.nome %> </option>
                         <% }) %>
 
                     </select>
