@@ -54,7 +54,7 @@ const Bilheteiro = connection.define( 'bilheteiro',{
     }
 },{
     freezeTableName: true,
-    tableName: 'bilheterio'
+    tableName: 'bilheteiro'
 })
 
 Bilheteiro.belongsTo(Bilheteria, {foreignKey: 'bilheteriaId', targetKey: 'id', onDelete: 'CASCADE'})

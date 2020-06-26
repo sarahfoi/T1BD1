@@ -10,7 +10,7 @@ const Supervisiona = connection.define( 'supervisiona',{
         allowNull: false,
         primaryKey: true
     },
-    animalId:{
+    especieId:{
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false

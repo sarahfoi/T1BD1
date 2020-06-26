@@ -5,7 +5,6 @@ const Bilheteria = require('./Bilheteria')
 const Ingresso = connection.define( 'ingressos',{
     bilheteriaId:{
         type: Sequelize.INTEGER,
-        primaryKey: true,
         allowNull: false
     },
     preco:{

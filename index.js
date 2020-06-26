@@ -46,8 +46,13 @@ app.get('/insert/Ala', (req, res) => {
 });
 
 app.get('/insert/Animal', (req, res) => {
-    res.render('insert', {
-        tabela: 'Animal'
+    Especie.findAll({
+        atributes: ['id', 'nomeCientifico']
+    }).then(resultado => {
+        res.render('insert', {
+            tabela: 'Animal',
+            resultado: resultado
+        })
     })
 });
 
@@ -64,9 +69,15 @@ app.get('/insert/Bilheteria', (req, res) => {
 });
 
 app.get('/insert/Especie', (req, res) => {
-    res.render('insert', {
-        tabela: 'Especie'
+    Ala.findAll({
+        atributes: ['id', 'nome']
+    }).then(resultado => {
+        res.render('insert', {
+            tabela: 'Especie',
+            resultado: resultado
+        })
     })
+
 });
 
 app.get('/insert/ServicosGerais', (req, res) => {
@@ -76,9 +87,14 @@ app.get('/insert/ServicosGerais', (req, res) => {
 });
 
 app.get('/insert/Veterinario', (req, res) => {
-    res.render('insert', {
-        tabela: 'Veterinario'
-    })
+    Especie.findAll({
+        atributes: ['id', 'nomeCientifico']
+    }).then((resultado => {
+        res.render('insert', {
+            tabela: 'Veterinario',
+            resultado: resultado
+        })
+    }))
 });
 
 app.get('/insert/Bilheteiro', (req, res) => {
@@ -92,6 +108,115 @@ app.get('/insert/Ingresso', (req, res) => {
         tabela: 'Ingresso'
     })
 });
+
+// TELAS DE UPDATE
+
+app.get('/update/Ala/:id', (req, res) => {
+    var id = req.params.id;
+    //console.log(id)
+    Ala.findOne({
+        where: { id: id }
+    }).then(elem0 => {
+        HorarioAla.findOne({
+            where: { alaId: id }
+        }).then(elem1 => {
+            var elem = { elem0, elem1 }
+            res.render('update', {
+                tabela: 'Ala',
+                elem: elem
+            })
+        })
+    })
+})
+
+app.get('/update/Animal/:id', (req, res) => {
+    var id = req.params.id;
+    //console.log(id)
+    Animal.findOne({
+        where: { id: id }
+    }).then(elem => {
+        res.render('update', {
+            tabela: 'Animal',
+            elem: elem
+        })
+    })
+})
+
+app.get('/update/Atende/:veterinarioCPF/:animalId', (req, res) => {
+    var veterinarioCPF = req.params.veterinarioCPF;
+    var animalid = req.params.animalId;
+    //console.log(id)
+    Atende.findOne({
+        where: {
+            veterinarioCPF: veterinarioCPF,
+            animalId: animalid
+        }
+    }).then(elem => {
+        res.render('update', {
+            tabela: 'Atende',
+            elem: elem
+        })
+    })
+})
+
+app.get('/update/Bilheteria/:id', (req, res) => {
+    var id = req.params.id;
+    //console.log(id)
+    Bilheteria.findOne({
+        where: { id: id }
+    }).then(elem => {
+        res.render('update', {
+            tabela: 'Bilheteria',
+            elem: elem
+        })
+    })
+})
+
+app.get('/update/Especie/:id', (req, res) => {
+    var id = req.params.id;
+    //console.log(id)
+    Especie.findOne({
+        where: { id: id }
+    }).then(elem => {
+        res.render('update', {
+            tabela: 'Especie',
+            elem: elem
+        })
+    })
+})
+
+app.get('/update/Ingresso/:id', (req, res) => {
+    var id = req.params.id;
+    //console.log(id)
+    Ingresso.findOne({
+        where: { id: id }
+    }).then(elem => {
+        res.render('update', {
+            tabela: 'Ingresso',
+            elem: elem
+        })
+    })
+})
+
+
+app.get('/update/ServicosGerais/:CPF', (req, res) => {
+    var CPF = req.params.CPF;
+    //console.log(CPF)
+    ServicosGerais.findOne({
+        where: { CPF: CPF }
+    }).then(elem0 => {
+        Trabalha.findOne({
+            where: { servicosGeraisCPF: CPF }
+        }).then(elem1 => {
+            var elem = {elem0, elem1}
+            res.render('update', {
+                tabela: 'ServicosGerais',
+                elem: elem
+            })
+        })
+
+    })
+})
 
 
 // TELAS DE CONSULTA TODOS (select)
@@ -120,7 +245,7 @@ app.get('/select/Animal', (req, res) => {
         where: {
             ativo: true
         },
-        atributes: ['id','nome', 'sexo', 'dataNascimento', 'especieId']
+        atributes: ['id', 'nome', 'sexo', 'dataNascimento', 'especieId']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Animal',
@@ -145,7 +270,7 @@ app.get('/select/Atende', (req, res) => {
 app.get('/select/Bilheteiro', (req, res) => {
     Bilheteiro.findAll({
         where: {
-            ativo: true
+            Ativo: true
         },
         atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'bilheteriaId']
     }).then((resultado) => {
@@ -159,13 +284,13 @@ app.get('/select/Bilheteiro', (req, res) => {
 
 app.get('/select/Bilheteria', (req, res) => {
     Bilheteria.findAll({
-        atributes: ['bilheteriaId', 'localizacao']
-    }).then((resultado) => {
+        atributes: ['id', 'Localizacao']
+    }).then(resultado => {
         res.render('select', {
-            tabela: 'Bilheteria',
+            tabela: "Bilheteria",
             resultado: resultado,
             insert: '/insert/Bilheteria'
-        })
+        });
     })
 });
 
@@ -181,17 +306,9 @@ app.get('/select/Especie', (req, res) => {
     })
 });
 
-app.get('/select/Funcionario', (req, res) => {
-
-    res.render('select', {
-        tabela: 'Funcionario',
-        resultado: resultado
-    });
-});
-
 app.get('/select/ServicosGerais', (req, res) => {
 
-    var resultado=[];
+    var resultado = [];
     ServicosGerais.findAll({
         where: {
             ativo: true
@@ -201,13 +318,15 @@ app.get('/select/ServicosGerais', (req, res) => {
         funcionarios.forEach(funcionario => {
             Trabalha.findAll({
                 where: {
-                    CPF: funcionario.CPF
+                    servicosGeraisCPF: funcionario.CPF
                 },
-            }).then((trabalho)=>{
-                var newObject = {funcionario,trabalho};
-                resultado.push(mewObject);
-                res.render('select/ServicosGerais', {
-                    tabela: "ServicosGerais"
+            }).then((trabalho) => {
+                var newObject = { funcionario, trabalho };
+                resultado.push(newObject);
+                res.render('select', {
+                    tabela: "ServicosGerais",
+                    resultado: resultado,
+                    insert: '/insert/ServicosGerais'
                 });
             })
         });
@@ -215,23 +334,24 @@ app.get('/select/ServicosGerais', (req, res) => {
 });
 
 app.get('/select/Veterinario', (req, res) => {
-    var resultado=[];
+    var resultado = [];
     Veterinario.findAll({
         where: {
-            ativo: true
+            Ativo: true
         },
         atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'CRMV', 'Faculdade']
     }).then((funcionarios) => {
         funcionarios.forEach(funcionario => {
             Supervisiona.findAll({
                 where: {
-                    CPF: funcionario.CPF
+                    veterinarioCPF: funcionario.CPF
                 },
                 atributes: ['especieId']
-            }).then((especies)=>{
-                var newObject = {funcionario,especie};
-                resultado.push(mewObject);
-                res.render('/select/Veterinario',{
+            }).then((especies) => {
+                var newObject = { funcionario, especies }
+                console.log(newObject.funcionario.Nome);
+                resultado.push(newObject);
+                res.render('select', {
                     tabela: "Veterinario",
                     resultado: resultado,
                     insert: "/insert/Veterinario"
@@ -255,155 +375,112 @@ app.get('/select/Ingresso', (req, res) => {
 
 //FUNÇÕES DE REMOÇÃO
 
-app.post('/removeAla', (req, res) => {
+app.get('/removeAla/:id', (req, res) => {
+    var id = req.params.id;
     Ala.destroy({
         where: {
-            alaId: req.body.alaId
+            id: id
         }
     }).then(() => {
-        res.render('/Ala')
+        res.redirect('/select/Ala')
     });
 });
 
-app.post('/removeAtende', (req, res) => {
+app.get('/removeAtende/:veterinarioCPF/:animalId', (req, res) => {
+    var veterinarioCPF = req.params.veterinarioCPF;
+    var animalId = req.params.animalId;
     Atende.destroy({
         where: {
-            atendeId: req.body.atendeId
+            veterinarioCPF: veterinarioCPF,
+            animalId: animalId
         }
     }).then(() => {
-        res.render('/Atende')
+        res.redirect('/select/Atende')
     });
 });
 
-app.post('/removeBilheteria', (req, res) => {
+app.get('/removeBilheteria/:id', (req, res) => {
+    var id = req.params.id;
     Bilheteria.destroy({
         where: {
-            bilheteriaId: req.body.bilheteriaId
+            id: id
         }
     }).then(() => {
-        res.render('/Bilheteria')
+        res.redirect('/select/Bilheteria')
     });
 });
 
-app.post('/removeCuida', (req, res) => {
-    Cuida.destroy({
-        where: {
-            CPF: req.body.CPF,
-            bilheteriaId: req.body.bilheteriaId
-        }
-    }).then(() => {
-        res.render('/Cuida')
-    });
-});
-
-app.post('/removeEspecie', (req, res) => {
+app.get('/removeEspecie/:id', (req, res) => {
+    var id = req.params.id;
     Especie.destroy({
         where: {
-            especieId: req.body.especieId
+            id: id
         }
     }).then(() => {
-        res.render('/Especie')
+        res.redirect('/select/Especie')
     });
 });
 
-app.post('/removehorarioAla', (req, res) => {
-    HorarioAla.destroy({
-        where: {
-            alaId: req.body.alaId,
-            horario: req.body.horario
-        }
-    }).then(() => {
-        res.render('/Ala')
-    });
-});
-
-app.post('/removehorarioBilheteria', (req, res) => {
-    HorarioBilheteria.destroy({
-        where: {
-            bilheteriaId: req.body.bilheteriaId,
-            horarioInicio: req.body.horarioInicio,
-            horarioFinal: req.body.horarioFinal
-        }
-    }).then(() => {
-        res.render('/Bilheteria')
-    });
-});
-
-app.post('/removeIngresso', (req, res) => {
+app.get('/removeIngresso/:id', (req, res) => {
+    var id = req.params.id;
     Ingresso.destroy({
         where: {
-            ingressoId: req.body.ingressoId
+            id: id
         }
     }).then(() => {
-        res.render('/Ingresso')
+        res.redirect('/select/Ingresso')
     });
 });
 
-app.post('/removeSupervisiona', (req, res) => {
-    Supervisiona.destroy({
-        where: {
-            veterinarioCPF: req.body.veterinarioCPF,
-            especieId: req.body.especieId
-        }
-    }).then(() => {
-        res.render('/Veterinario')
-    });
-});
-
-app.post('/removeTrabalha', (req, res) => {
-    Trabalha.destroy({
-        where: {
-            sevicoGeraisCPF: req.body.servicosGeraisCPF,
-            alaId: req.body.alaId,
-            horarioInicio: req.body.horarioInicio,
-            horarioFim: req.body.horarioFim
-        }
-    }).then(() => {
-        res.render('/ServicosGerais')
-    });
-});
-
-app.post('/removeAnimal', (req, res) => {
+app.get('/removeAnimal/:id', (req, res) => {
+    var id = req.params.id;
     Animal.update({
-        ativo: false,
+        ativo: false
+    }, {
         where: {
-            animalId: req.body.animalId
+            id: id
         }
     }).then(() => {
-        res.render('/animal')
+        res.redirect('/select/Animal')
     });
 });
 
-app.post('/removeBilheteiro', (req, res) => {
+app.get('/removeBilheteiro/:CPF', (req, res) => {
+    var CPF = req.params.CPF;
     Bilheteiro.update({
-        ativo: false,
+        Ativo: false
+    }, {
         where: {
-            bilheteiroCPF: req.body.bilheteiroCPF
+            CPF: CPF
         }
     }).then(() => {
-        res.render('/Bilheteiro')
+        res.redirect('/select/Bilheteiro')
     });
 });
 
-app.post('/removeServicosGerais', (req, res) => {
+app.get('/removeServicosGerais/:CPF', (req, res) => {
+    var CPF = req.params.CPF;
     ServicosGerais.update({
-        ativo: false,
+        ativo: false
+    }, {
         where: {
-            servicosGeraisCPF: req.body.servicosGeraisCPF
+            CPF: CPF
         }
     }).then(() => {
-        res.render('/ServicosGerais')
+        res.redirect('/select/ServicosGerais')
     });
 });
 
-app.post('/removeVeterinario', (req, res) => {
+app.get('/removeVeterinario/:CPF', (req, res) => {
+    var CPF = req.params.CPF;
     Veterinario.update({
-        ativo: false,
+        Ativo: false
+    }, {
         where: {
-            veterinarioCPF: req.body.veterionarioCPF
+            CPF: CPF
         }
     }).then(() => {
-        res.render('/Veterinario')
+        res.redirect('/select/Veterinario')
     });
 });
 
@@ -499,7 +576,7 @@ app.post("/insereBilheteiro", (req, res) => {
     Bilheteiro.create({
         CPF: CPF,
         ddn: ddn,
-        nome: nome,
+        Nome: nome,
         Salario: Salario,
         CLT: CLT,
         Endereço: Endereço,
@@ -540,7 +617,7 @@ app.post("/insereBilheteria", (req, res) => {
     var horarioInicio = req.body.horarioInicio;
     var horarioFinal = req.body.horarioFinal;
     Bilheteria.create({
-        localizacao: localizacao
+        Localizacao: localizacao
     }).then((inserido) => {
         HorarioBilheteria.create({
             bilheteriaId: inserido.id,
@@ -552,7 +629,6 @@ app.post("/insereBilheteria", (req, res) => {
 
     });
 });
-
 
 app.post("/insereEspecie", (req, res) => {
     var nomeCientifico = req.body.nomeCientifico;
@@ -573,7 +649,6 @@ app.post("/insereEspecie", (req, res) => {
     });
 });
 
-
 app.post("/insereServicosGerais", (req, res) => {
     var CPF = req.body.CPF;
     var ddn = req.body.ddn;
@@ -586,10 +661,14 @@ app.post("/insereServicosGerais", (req, res) => {
     var Conta = req.body.Conta;
     var Digito = req.body.Digito;
     var funcao = req.body.funcao;
+    var alaId = req.body.codAla;
+    var horarioInicio = req.body.horarioInicio;
+    var horarioFinal = req.body.horarioFinal;
+    console.log(nome)
     ServicosGerais.create({
         CPF: CPF,
         ddn: ddn,
-        nome: nome,
+        Nome: nome,
         Salario: Salario,
         CLT: CLT,
         Endereço: Endereço,
@@ -601,43 +680,19 @@ app.post("/insereServicosGerais", (req, res) => {
         ativo: true
     }).then((inserido) => {
         Trabalha.create({
-            servicosGeraisCPF: CPF,
-            alaId: codAla,
+            servicosGeraisCPF: inserido.CPF,
+            alaId: alaId,
+            horariofim: horarioFinal,
+            horarioInicio: horarioInicio
         })
-        res.redirect("/") 
-    });
-});
-
-app.post("/insereSupervisiona", (req, res) => {
-    var CPF = req.body.CPF;
-    var codEspecie = req.body.codEspecie;
-    Supervisiona.create({
-        veterinarioCPF: CPF,
-        especieId: codEspecie
-    }).then(() => {
-        res.redirect("/")
-    });
-});
-
-app.post("/insereTrabalha", (req, res) => {
-    var CPF = req.body.CPF;
-    var horarioInicio = req.body.horarioInicio;
-    var horariofim = req.body.horariofim;
-    var codAla = req.body.codAla;
-    Trabalha.create({
-        servicosGeraisCPF: CPF,
-        horarioInicio: horarioInicio,
-        horariofim: horariofim,
-        alaId: codAla
-    }).then(() => {
-        res.redirect("/") 
+        res.redirect("/insert/ServicosGerais")
     });
 });
 
 app.post("/insereVeterinario", (req, res) => {
     var CPF = req.body.CPF;
     var ddn = req.body.ddn;
-    var Nome = req.body.Nome;
+    var Nome = req.body.nome;
     var Salario = req.body.Salario;
     var CLT = req.body.CLT;
     var Endereço = req.body.Endereço;
@@ -646,13 +701,12 @@ app.post("/insereVeterinario", (req, res) => {
     var Conta = req.body.Conta;
     var Digito = req.body.Digito;
     var CRMV = req.body.CRMV;
-    var Faculdade = req.body.Faculdade
-    var Ativo = req.body.Ativo;
-    //* Pegar o ID da espécie
+    var Faculdade = req.body.faculdade
+    var especieId = req.body.codEspecie;
     Veterinario.create({
         CPF: CPF,
         ddn: ddn,
-        nome: nome,
+        Nome: Nome,
         Salario: Salario,
         CLT: CLT,
         Endereço: Endereço,
@@ -662,10 +716,10 @@ app.post("/insereVeterinario", (req, res) => {
         Digito: Digito,
         CRMV: CRMV,
         Faculdade: Faculdade,
-        ativo: ativo
+        Ativo: true
     }).then((inserido) => {
         Supervisiona.create({
-            CPF: inserido.CPF,
+            veterinarioCPF: inserido.CPF,
             especieId: especieId
         }).then(() => {
             res.redirect('/insert/Veterinario');
@@ -673,19 +727,32 @@ app.post("/insereVeterinario", (req, res) => {
     });
 });
 
+app.post('/insereIngresso', (req, res) => {
+    var preco = req.body.preco;
+    var numBilheteria = req.body.numBilheteria;
+    Ingresso.create({
+        preco: preco,
+        bilheteriaId: numBilheteria
+    }).then(() => {
+        res.redirect('/select/Ingresso')
+    })
+
+})
+
 //FUNÇÕES DE UPDATE
 
-app.post('/atualizaAla', (req, res) => {
+app.post('/atualizaAla/', (req, res) => {
     Ala.update({
         nome: req.body.nome,
-        localizacao: req.body.localizacao,
-        horario: req.body.horario,
-        where: {
-            id: req.body.id
-        }
-    }).then(() => {
-        res.render('/select/Ala')
-    });
+        localizacao: req.body.localizacao
+    },
+        {
+            where: {
+                id: req.body.cod
+            }
+        }).then(() => {
+            res.redirect('/select/Ala')
+        });
 });
 
 app.post('/atualizaAnimal', (req, res) => {
@@ -693,37 +760,43 @@ app.post('/atualizaAnimal', (req, res) => {
         nome: req.body.nome,
         sexo: req.body.sexo,
         dataNascimento: req.body.dataNascimento,
-        especieId: req.body.especieId,
-        where: {
-            id: req.body.id
-        }
-    }).then(() => {
-        res.render('/select/Animal')
-    });
+        especieId: req.body.especieId
+    },
+        { where: { id: req.body.cod } }).then(() => {
+            res.redirect('/select/Animal')
+        });
 });
 
 app.post('/atualizaAtende', (req, res) => {
+    console.log(req.body.codAnimal);
     Atende.update({
         veterinarioCPF: req.body.veterinarioCPF,
-        animalId: req.body.animalId,
+        animalId: req.body.codAnimal,
         data: req.body.data,
-        diagnostico: req.body.diagnostico,
-        where: {
-            id: req.body.id
-        }
-    }).then(() => {
-        res.render('/select/Animal')
-    });
+        diagnostico: req.body.diagnostico
+    },
+        {
+            where: {
+                veterinarioCPF: req.body.veterinarioCPF,
+                animalId: req.body.codAnimal
+            }
+        }).then((x) => {
+            console.log(x);
+            res.redirect('/select/Atende')
+        }).catch(x => {
+            console.log(x);
+        });
 });
 
 app.post('/atualizaBilheteria', (req, res) => {
     Bilheteria.update({
-        localizacao: req.body.localizacao,
+        Localizacao: req.body.Localizacao
+    }, {
         where: {
             id: req.body.id
         }
     }).then(() => {
-        res.render('/select/Bilheteria')
+        res.redirect('/select/Bilheteria')
     });
 });
 
@@ -734,12 +807,13 @@ app.post('/atualizaEspecie', (req, res) => {
         estado: req.body.estado,
         alimentacao: req.body.alimentacao,
         descricao: req.body.descricao,
-        alaId: req.body.alaId,
+        alaId: req.body.alaId
+    }, {
         where: {
-            id: req.body.id
+            id: req.body.codEspecie
         }
     }).then(() => {
-        res.render('/select/Especie')
+        res.redirect('/select/Especie')
     });
 });
 
@@ -754,12 +828,13 @@ app.post('/atualizaBilheteiro', (req, res) => {
         Agencia: req.body.Agencia,
         Conta: req.body.Conta,
         Digito: req.body.Digito,
-        bilheteriaId: req.body.bilheteriaId,
+        bilheteriaId: req.body.bilheteriaId
+    }, {
         where: {
             CPF: req.body.CPF
         }
     }).then(() => {
-        res.render('/select/Bilheteiro')
+        res.redirect('/select/Bilheteiro')
     });
 });
 
@@ -774,12 +849,13 @@ app.post('/atualizaServicosGerais', (req, res) => {
         Agencia: req.body.Agencia,
         Conta: req.body.Conta,
         Digito: req.body.Digito,
-        funcao: req.body.funcao,
+        funcao: req.body.funcao
+    }, {
         where: {
             CPF: req.body.CPF
         }
     }).then(() => {
-        res.render('/select/ServicosGerais')
+        res.redirect('/select/ServicosGerais')
     });
 });
 
@@ -795,14 +871,18 @@ app.post('/atualizaVeterinario', (req, res) => {
         Conta: req.body.Conta,
         Digito: req.body.Digito,
         CRMV: req.body.CRMV,
-        Faculdade: Faculdade,
+        Faculdade: Faculdade
+    }, {
         where: {
             CPF: req.body.CPF
         }
     }).then(() => {
-        res.render('/select/Veterinario')
+        res.redirect('/select/Veterinario')
     });
 });
+
+
+
 
 /*-----------FIM ROTAS-----------*/
 app.listen(8000, () => {
