@@ -290,6 +290,7 @@ app.get('/select/Atende', (req, res) => {
     })
 });
 
+
 app.get('/select/Bilheteiro', (req, res) => {
     sequelize.query('SELECT * FROM bilheteiro WHERE ativo = :ativo',{
         replacements: {ativo: true},
