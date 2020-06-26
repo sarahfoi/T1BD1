@@ -7,235 +7,236 @@
     <main role="main">
         <%- include('partials/navbar.ejs'); %>
 
-        <% if (tabela == 'Ala') { %>
-        <form method='POST' action="/insereAla">
+        <div class="container mt-5">
+            <% if (tabela == 'Ala') { %>
+            <form method='POST' action="/insereAla">
 
-            <div class="form-group">
-                <label for="cod">Nome</label>
-                <input type="text" id="nome" name="nome">
-            </div>
-            <div class="form-group">
-                <label for="cod">Localização</label>
-                <input type="text" id="localizacao" name="localizacao">
-            </div>
-            <!-- Horarios ala -->
+                <div class="form-group">
+                    <label for="cod">Nome</label>
+                    <input type="text" id="nome" name="nome">
+                </div>
+                <div class="form-group">
+                    <label for="cod">Localização</label>
+                    <input type="text" id="localizacao" name="localizacao">
+                </div>
+                <!-- Horarios ala -->
 
-            <div class="form-group">
-                <label for="horario">Horário</label>
-                <input type="time" id="horario" name="horario">
-            </div>
+                <div class="form-group">
+                    <label for="horario">Horário</label>
+                    <input type="time" id="horario" name="horario">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Animal') { %>
-        <form method='POST' action="/insereAnimal">
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome">
-            </div>
-            <div class="form-group">
-                <label for="sexo">Sexo</label>
-                <select type="text" id="sexo" name="sexo">
-                    <option value="M">M</option>
-                    <option value="F">F</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="dataNascimento">Data de Nascimento</label>
-                <input type="date" id="dataNascimento" name="dataNascimento">
-            </div>
-            <div class="form-group">
-                <label for="codEspecie">Espécie</label>
-                <select name="codEspecie" id="codEspecie">
-                    <% resultado.forEach(r => { %>
-                    <option value=<%= r.id %>> <%=r.nomeCientifico %> </option>
-                    <% }) %> 
+            <% if (tabela == 'Animal') { %>
+            <form method='POST' action="/insereAnimal">
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome">
+                </div>
+                <div class="form-group">
+                    <label for="sexo">Sexo</label>
+                    <select type="text" id="sexo" name="sexo">
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dataNascimento">Data de Nascimento</label>
+                    <input type="date" id="dataNascimento" name="dataNascimento">
+                </div>
+                <div class="form-group">
+                    <label for="codEspecie">Espécie</label>
+                    <select name="codEspecie" id="codEspecie">
+                        <% resultado.forEach(r => { %>
+                        <option value=<%= r.id %>> <%=r.nomeCientifico %> </option>
+                        <% }) %> 
 
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Atende') { %>
-        <form method='POST' action="/insereAtende">
-            <div class="form-group">
-                <label for="CPF">CPF</label>
-                <input type="number" id="CPF" name="CPF">
-            </div>
-            <div class="form-group">
-                <label for="codAnimal">Código do Animal</label>
-                <input type="number" id="codAnimal" name="codAnimal">
-            </div>
-            <div class="form-group">
-                <label for="data">Data</label>
-                <input type="date" id="data" name="data">
-            </div>
-            <div class="form-group">
-                <label for="diagnostico">Diagnostico</label>
-                <textarea type="text" id="diagnostico" name="diagnostico"></textarea>
-            </div>
+            <% if (tabela == 'Atende') { %>
+            <form method='POST' action="/insereAtende">
+                <div class="form-group">
+                    <label for="CPF">CPF</label>
+                    <input type="number" id="CPF" name="CPF">
+                </div>
+                <div class="form-group">
+                    <label for="codAnimal">Código do Animal</label>
+                    <input type="number" id="codAnimal" name="codAnimal">
+                </div>
+                <div class="form-group">
+                    <label for="data">Data</label>
+                    <input type="date" id="data" name="data">
+                </div>
+                <div class="form-group">
+                    <label for="diagnostico">Diagnostico</label>
+                    <textarea type="text" id="diagnostico" name="diagnostico"></textarea>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Bilheteria') { %>
-        <form method='POST' action="/insereBilheteria">
+            <% if (tabela == 'Bilheteria') { %>
+            <form method='POST' action="/insereBilheteria">
 
-            <div class="form-group">
-                <label for="localizacao">Localização</label>
-                <input type="text" id="localizacao" name="localizacao">
-            </div>
+                <div class="form-group">
+                    <label for="localizacao">Localização</label>
+                    <input type="text" id="localizacao" name="localizacao">
+                </div>
 
-            <!--Horario Bilheteria-->
-            <div class="form-group">
-                <label for="horarioInicio">Horário Início</label>
-                <input type="time" id="horarioInicio" name="horarioInicio">
-            </div>
-            <div class="form-group">
-                <label for="horarioFinal">Horário Final</label>
-                <input type="time" id="horarioFinal" name="horarioFinal">
-            </div>
+                <!--Horario Bilheteria-->
+                <div class="form-group">
+                    <label for="horarioInicio">Horário Início</label>
+                    <input type="time" id="horarioInicio" name="horarioInicio">
+                </div>
+                <div class="form-group">
+                    <label for="horarioFinal">Horário Final</label>
+                    <input type="time" id="horarioFinal" name="horarioFinal">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Especie') { %>
-        <form method='POST' action="/insereEspecie">
+            <% if (tabela == 'Especie') { %>
+            <form method='POST' action="/insereEspecie">
 
-            <div class="form-group">
-                <label for="nomeCientifico">Nome Cientifico</label>
-                <input type="text" id="nomeCientifico" name="nomeCientifico">
-            </div>
-            <div class="form-group">
-                <label for="nomePopular">Nome Popular</label>
-                <input type="text" id="nomePopular" name="nomePopular">
-            </div>
-            <div class="form-group">
-                <label for="estado">Estado de Conservação</label>
-                <select type="text" id="estado" name="estado">
-                    <option value="LC">LC</option>
-                    <option value="NT">NT</option>
-                    <option value="VU">VU</option>
-                    <option value="EN">EN</option>
-                    <option value="CR">CR</option>
-                    <option value="EW">EW</option>
-                    <option value="EX">EX</option>
-                    <option value="DD">DD</option>
-                    <option value="NE">NE</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="alimentacao">Alimentação</label>
-                <textarea type="text" id="alimentacao" name="alimentacao"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea type="text" id="descricao" name="descricao"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="codAla">Ala</label>
-                <select name="codAla" id="codAla">
+                <div class="form-group">
+                    <label for="nomeCientifico">Nome Cientifico</label>
+                    <input type="text" id="nomeCientifico" name="nomeCientifico">
+                </div>
+                <div class="form-group">
+                    <label for="nomePopular">Nome Popular</label>
+                    <input type="text" id="nomePopular" name="nomePopular">
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado de Conservação</label>
+                    <select type="text" id="estado" name="estado">
+                        <option value="LC">LC</option>
+                        <option value="NT">NT</option>
+                        <option value="VU">VU</option>
+                        <option value="EN">EN</option>
+                        <option value="CR">CR</option>
+                        <option value="EW">EW</option>
+                        <option value="EX">EX</option>
+                        <option value="DD">DD</option>
+                        <option value="NE">NE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="alimentacao">Alimentação</label>
+                    <textarea type="text" id="alimentacao" name="alimentacao"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <textarea type="text" id="descricao" name="descricao"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="codAla">Ala</label>
+                    <select name="codAla" id="codAla">
 
-                    <% resultado.forEach(r => { %>
-                    <option value = "<%= r.id %>"> <%= r.nome %> </option>
-                    <% }) %>
+                        <% resultado.forEach(r => { %>
+                        <option value = "<%= r.id %>"> <%= r.nome %> </option>
+                        <% }) %>
 
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'ServicosGerais') { %>
-        <form method='POST' action="/insereServicosGerais">
+            <% if (tabela == 'ServicosGerais') { %>
+            <form method='POST' action="/insereServicosGerais">
 
-            <%- include('partials/funcionario_form.ejs');  %>
+                <%- include('partials/funcionario_form.ejs');  %>
 
-            <div class="form-group">
-                <label for="funcao">Função</label>
-                <select type="text" id="funcao" name="funcao" onchange="setSelected(this.value)">
-                    <option value="Segurança">Segurança</option>
-                    <option value="Limpeza">Limpeza</option>
-                </select>
-            </div>
-            <!--Trabalha-->
-            <div class="form-group">
-                <label for="codAla">Código Ala</label>
-                <input type="number" id="codAla" name="codAla">
-            </div>
-            <div class="form-group">
-                <label for="horarioInicio">Horário Início</label>
-                <input type="time" id="horarioInicio" name="horarioInicio">
-            </div>
-            <div class="form-group">
-                <label for="horarioFinal">Horário Final</label>
-                <input type="time" id="horarioFinal" name="horarioFinal">
-            </div>
+                <div class="form-group">
+                    <label for="funcao">Função</label>
+                    <select type="text" id="funcao" name="funcao" onchange="setSelected(this.value)">
+                        <option value="Segurança">Segurança</option>
+                        <option value="Limpeza">Limpeza</option>
+                    </select>
+                </div>
+                <!--Trabalha-->
+                <div class="form-group">
+                    <label for="codAla">Código Ala</label>
+                    <input type="number" id="codAla" name="codAla">
+                </div>
+                <div class="form-group">
+                    <label for="horarioInicio">Horário Início</label>
+                    <input type="time" id="horarioInicio" name="horarioInicio">
+                </div>
+                <div class="form-group">
+                    <label for="horarioFinal">Horário Final</label>
+                    <input type="time" id="horarioFinal" name="horarioFinal">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Veterinario') { %>
-        <form method='POST' action="/insereVeterinario">
+            <% if (tabela == 'Veterinario') { %>
+            <form method='POST' action="/insereVeterinario">
 
-            <%- include('partials/funcionario_form.ejs');  %>
+                <%- include('partials/funcionario_form.ejs');  %>
 
-            <div class="form-group">
-                <label for="CRMV">CRMV</label>
-                <input type="number" id="CRMV" name="CRMV">
-            </div>
-            <div class="form-group">
-                <label for="faculdade">Faculdade</label>
-                <input type="text" id="faculdade" name="faculdade">
-            </div>
+                <div class="form-group">
+                    <label for="CRMV">CRMV</label>
+                    <input type="number" id="CRMV" name="CRMV">
+                </div>
+                <div class="form-group">
+                    <label for="faculdade">Faculdade</label>
+                    <input type="text" id="faculdade" name="faculdade">
+                </div>
 
-            <!-- Supervisiona -->
-            <div class="form-group">
-                <label for="codEspecie">Código Especie</label>
-                <input type="number" id="codEspecie" name="codEspecie">
-            </div>
+                <!-- Supervisiona -->
+                <div class="form-group">
+                    <label for="codEspecie">Código Especie</label>
+                    <input type="number" id="codEspecie" name="codEspecie">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Bilheteiro') { %>
-        <form method='POST' action="/insereBilheteiro">
+            <% if (tabela == 'Bilheteiro') { %>
+            <form method='POST' action="/insereBilheteiro">
 
-            <%- include('partials/funcionario_form.ejs');  %>
+                <%- include('partials/funcionario_form.ejs');  %>
 
-            <!--Cuida-->
-            <div class="form-group">
-                <label for="numBilheteria">Número Bilheteria</label>
-                <input type="number" id="numBilheteria" name="numBilheteria">
-            </div>
+                <!--Cuida-->
+                <div class="form-group">
+                    <label for="numBilheteria">Número Bilheteria</label>
+                    <input type="number" id="numBilheteria" name="numBilheteria">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
 
-        <% if (tabela == 'Ingresso') { %>
-        <form method='POST' action="/insereIngresso">
+            <% if (tabela == 'Ingresso') { %>
+            <form method='POST' action="/insereIngresso">
 
-            <div class="form-group">
-                <label for="preco">Preço</label>
-                <input type="number" id="preco" name="preco" step=any>
-            </div>
+                <div class="form-group">
+                    <label for="preco">Preço</label>
+                    <input type="number" id="preco" name="preco" step=any>
+                </div>
 
-            <div class="form-group">
-                <label for="numBilheteria">Número Bilheteria</label>
-                <input type="number" id="numBilheteria" name="numBilheteria">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <% } %>
-
+                <div class="form-group">
+                    <label for="numBilheteria">Número Bilheteria</label>
+                    <input type="number" id="numBilheteria" name="numBilheteria">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% } %>
+        </div>
 
     </main>
 
