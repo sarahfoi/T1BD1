@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const sequelize = require("./database/database");
 const bodyParser = require('body-parser');
 const Ala = require("./database/Ala");
 const Animal = require("./database/Animal");
@@ -47,12 +46,9 @@ app.get('/insert/Ala', (req, res) => {
 });
 
 app.get('/insert/Animal', (req, res) => {
-
-    const projects = sequelize.query('SELECT * FROM especie', {
-        model: Especie,
-        mapToModel: true // pass true here if you have any mapped fields
+    Especie.findAll({
+        atributes: ['id', 'nomeCientifico']
     }).then(resultado => {
-        console.log(resultado);
         res.render('insert', {
             tabela: 'Animal',
             resultado: resultado
@@ -73,10 +69,8 @@ app.get('/insert/Bilheteria', (req, res) => {
 });
 
 app.get('/insert/Especie', (req, res) => {
-    
-    const projects = sequelize.query('SELECT * FROM ala', {
-        model: Ala,
-        mapToModel: true // pass true here if you have any mapped fields
+    Ala.findAll({
+        atributes: ['id', 'nome']
     }).then(resultado => {
         res.render('insert', {
             tabela: 'Especie',
@@ -93,10 +87,8 @@ app.get('/insert/ServicosGerais', (req, res) => {
 });
 
 app.get('/insert/Veterinario', (req, res) => {
-
-    const projects = sequelize.query('SELECT * FROM especie', {
-        model: Especie,
-        mapToModel: true // pass true here if you have any mapped fields
+    Especie.findAll({
+        atributes: ['id', 'nomeCientifico']
     }).then((resultado => {
         res.render('insert', {
             tabela: 'Veterinario',
@@ -121,6 +113,8 @@ app.get('/insert/Ingresso', (req, res) => {
 
 //*Falta: veterinário e bilheteiro
 app.get('/update/Ala/:id', (req, res) => {
+    var id = req.params.id;
+    //console.log(id)
     Ala.findOne({
         where: { id: id }
     }).then(elem0 => {
@@ -236,10 +230,8 @@ app.get('/select/Home', (req, res) => {
 });
 
 app.get('/select/Ala', (req, res) => {
-    var id = req.params.id;
-    sequelize.query('SELECT * FROM ala', {
-        model: Ala,
-        mapToModel: true // pass true here if you have any mapped fields
+    Ala.findAll({
+        atributes: ['localizacao', 'nome']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Ala',
@@ -250,10 +242,11 @@ app.get('/select/Ala', (req, res) => {
 });
 
 app.get('/select/Animal', (req, res) => {
-    sequelize.query('SELECT * FROM animal where ativo = :ativo', {
-        replacements: {ativo: true},
-        model: Animal,
-        mapToModel: true // pass true here if you have any mapped fields
+    Animal.findAll({
+        where: {
+            ativo: true
+        },
+        atributes: ['id', 'nome', 'sexo', 'dataNascimento', 'especieId']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Animal',
