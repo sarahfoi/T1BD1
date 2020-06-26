@@ -111,6 +111,7 @@ app.get('/insert/Ingresso', (req, res) => {
 
 // TELAS DE UPDATE
 
+//*Falta: veterinário e bilheteiro
 app.get('/update/Ala/:id', (req, res) => {
     var id = req.params.id;
     //console.log(id)
@@ -272,7 +273,7 @@ app.get('/select/Bilheteiro', (req, res) => {
         where: {
             Ativo: true
         },
-        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'bilheteriaId']
+        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereco', 'Banco', 'Agencia', 'Conta', 'Digito', 'bilheteriaId']
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Bilheteiro',
@@ -313,23 +314,32 @@ app.get('/select/ServicosGerais', (req, res) => {
         where: {
             ativo: true
         },
-        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'funcao']
+        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereco', 'Banco', 'Agencia', 'Conta', 'Digito', 'funcao']
     }).then((funcionarios) => {
-        funcionarios.forEach(funcionario => {
-            Trabalha.findAll({
-                where: {
-                    servicosGeraisCPF: funcionario.CPF
-                },
-            }).then((trabalho) => {
-                var newObject = { funcionario, trabalho };
-                resultado.push(newObject);
-                res.render('select', {
-                    tabela: "ServicosGerais",
-                    resultado: resultado,
-                    insert: '/insert/ServicosGerais'
-                });
-            })
-        });
+        if(funcionarios.length){
+            funcionarios.forEach(funcionario => {
+                Trabalha.findAll({
+                    where: {
+                        servicosGeraisCPF: funcionario.CPF
+                    },
+                }).then((trabalho) => {
+                    console.log(trabalho); 
+                    var newObject = { funcionario, trabalho };
+                    resultado.push(newObject);
+                    res.render('select', {
+                        tabela: "ServicosGerais",
+                        resultado: resultado,
+                        insert: '/insert/ServicosGerais'
+                    });
+                })
+            });
+        }else{
+            res.render('select', {
+                tabela: "ServicosGerais",
+                resultado: undefined,
+                insert: '/insert/ServicosGerais'
+            });
+        }
     })
 });
 
@@ -339,25 +349,34 @@ app.get('/select/Veterinario', (req, res) => {
         where: {
             Ativo: true
         },
-        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereço', 'Banco', 'Agencia', 'Conta', 'Digito', 'CRMV', 'Faculdade']
+        atributes: ['CPF', 'Nome', 'ddn', 'Salario', 'CLT', 'Endereco', 'Banco', 'Agencia', 'Conta', 'Digito', 'CRMV', 'Faculdade']
     }).then((funcionarios) => {
-        funcionarios.forEach(funcionario => {
-            Supervisiona.findAll({
-                where: {
-                    veterinarioCPF: funcionario.CPF
-                },
-                atributes: ['especieId']
-            }).then((especies) => {
-                var newObject = { funcionario, especies }
-                console.log(newObject.funcionario.Nome);
-                resultado.push(newObject);
-                res.render('select', {
-                    tabela: "Veterinario",
-                    resultado: resultado,
-                    insert: "/insert/Veterinario"
-                });
-            })
-        });
+        if(funcionarios.length){
+            funcionarios.forEach(funcionario => {
+                Supervisiona.findAll({
+                    where: {
+                        veterinarioCPF: funcionario.CPF
+                    },
+                    atributes: ['especieId']
+                }).then((especies) => {
+                    var newObject = { funcionario, especies }
+                    resultado.push(newObject); //! Problema: renderiza a página TODA VEZ, por isso dá erro aqui. Resolver isso de outra forma. Vou pesquisar como faz!!
+                    res.render('select', {
+                        tabela: "Veterinario",
+                        resultado: resultado,
+                        insert: "/insert/Veterinario"
+                    });
+                })
+            });
+            console.log("resultado select veterinario: "+resultado);  //aparece antes da execução da query (pq não é síncrono?)
+        }else{
+            res.render('select', {
+                tabela: "Veterinario",
+                resultado: undefined,
+                insert: "/insert/Veterinario"
+            });
+        }
+        
     })
 });
 
@@ -562,12 +581,13 @@ app.post("/insereAnimal", (req, res) => {
 });
 
 app.post("/insereBilheteiro", (req, res) => {
+    console.log(req.body); 
     var CPF = req.body.CPF;
-    var ddn = req.body.ddn;
+    var ddn = req.body.ddn; 
     var nome = req.body.nome;
-    var Salario = req.body.Salario;
+    var Salario = req.body.Salario; 
     var CLT = req.body.CLT;
-    var Endereço = req.body.Endereço;
+    var Endereco = req.body.Endereco;
     var Banco = req.body.Banco;
     var Agencia = req.body.Agencia;
     var Conta = req.body.Conta;
@@ -579,13 +599,13 @@ app.post("/insereBilheteiro", (req, res) => {
         Nome: nome,
         Salario: Salario,
         CLT: CLT,
-        Endereço: Endereço,
+        Endereco: Endereco,
         Banco: Banco,
         Agencia: Agencia,
         Conta: Conta,
         Digito: Digito,
         bilheteriaId: numBilheteria,
-        ativo: true
+        Ativo: true
     }).then((inserido) => {
         Cuida.create({
             bilheteiroCPF: inserido.CPF,
@@ -655,7 +675,7 @@ app.post("/insereServicosGerais", (req, res) => {
     var nome = req.body.nome;
     var Salario = req.body.Salario;
     var CLT = req.body.CLT;
-    var Endereço = req.body.Endereço;
+    var Endereco = req.body.Endereco;
     var Banco = req.body.Banco;
     var Agencia = req.body.Agencia;
     var Conta = req.body.Conta;
@@ -671,7 +691,7 @@ app.post("/insereServicosGerais", (req, res) => {
         Nome: nome,
         Salario: Salario,
         CLT: CLT,
-        Endereço: Endereço,
+        Endereco: Endereco,
         Banco: Banco,
         Agencia: Agencia,
         Conta: Conta,
@@ -695,7 +715,7 @@ app.post("/insereVeterinario", (req, res) => {
     var Nome = req.body.nome;
     var Salario = req.body.Salario;
     var CLT = req.body.CLT;
-    var Endereço = req.body.Endereço;
+    var Endereco = req.body.Endereco;
     var Banco = req.body.Banco;
     var Agencia = req.body.Agencia;
     var Conta = req.body.Conta;
@@ -709,7 +729,7 @@ app.post("/insereVeterinario", (req, res) => {
         Nome: Nome,
         Salario: Salario,
         CLT: CLT,
-        Endereço: Endereço,
+        Endereco: Endereco,
         Banco: Banco,
         Agencia: Agencia,
         Conta: Conta,
@@ -735,6 +755,8 @@ app.post('/insereIngresso', (req, res) => {
         bilheteriaId: numBilheteria
     }).then(() => {
         res.redirect('/select/Ingresso')
+    }).catch(err=>{
+        console.log(err);
     })
 
 })
@@ -823,7 +845,7 @@ app.post('/atualizaBilheteiro', (req, res) => {
         nome: req.body.nome,
         Salario: req.body.Salario,
         CLT: req.body.CLT,
-        Endereço: req.body.Endereço,
+        Endereco: req.body.Endereco,
         Banco: req.body.Banco,
         Agencia: req.body.Agencia,
         Conta: req.body.Conta,
@@ -844,7 +866,7 @@ app.post('/atualizaServicosGerais', (req, res) => {
         nome: req.body.nome,
         Salario: req.body.Salario,
         CLT: req.body.CLT,
-        Endereço: req.body.Endereço,
+        Endereco: req.body.Endereco,
         Banco: req.body.Banco,
         Agencia: req.body.Agencia,
         Conta: req.body.Conta,
@@ -865,7 +887,7 @@ app.post('/atualizaVeterinario', (req, res) => {
         nome: req.body.nome,
         Salario: req.body.Salario,
         CLT: req.body.CLT,
-        Endereço: req.body.Endereço,
+        Endereco: req.body.Endereco,
         Banco: req.body.Banco,
         Agencia: req.body.Agencia,
         Conta: req.body.Conta,

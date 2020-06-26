@@ -24,7 +24,7 @@ const Bilheteiro = connection.define( 'bilheteiro',{
         type: Sequelize.STRING,
         allowNull: false
     },
-    Endereço:{
+    Endereco:{
         type: Sequelize.STRING,
         allowNull: false
     },

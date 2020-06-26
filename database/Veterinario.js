@@ -23,7 +23,7 @@ const Veterinario = connection.define( 'veterinario',{
         type: Sequelize.STRING,
         allowNull: false
     },
-    Endereço:{
+    Endereco:{
         type: Sequelize.STRING,
         allowNull: false
     },

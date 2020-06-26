@@ -23,7 +23,7 @@ const ServicosGerais = connection.define( 'servicosGerais',{
         type: Sequelize.STRING,
         allowNull: false
     },
-    Endereço:{
+    Endereco:{
         type: Sequelize.STRING,
         allowNull: false
     },

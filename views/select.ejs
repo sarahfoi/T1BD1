@@ -1,0 +1,256 @@
+<%- include('partials/head.ejs'); %>
+<link rel="stylesheet" href="assets/styles/index.css">
+<title>Zoológico - Home</title>
+</head>
+
+<body>
+    <%- include('partials/navbar.ejs'); %>
+    <main role="main">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-sm-2">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Ala">Alas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Animal">Animais</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Atende">Atendimentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Bilheteiro">Bilheteiro</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Bilheteria">Bilheterias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Especie">Espécies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Ingresso">Ingressos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/ServicosGerais">Serviços Gerais</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/select/Veterinario">Veterinário</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h3><%- tabela %></h3>
+                        </div>
+                    </div>
+                    <% if (tabela != 'Home') { %>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="row bg-light">
+                                <div class="col-sm-8">
+                                    <form>
+                                        <div class="row py-3">
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="search"
+                                                    placeholder="Insira o que quiser pesquisar">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button class="btn btn-outline-info my-2 my-sm-0"
+                                                    type="submit">Pesquisar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-primary float-right" href=<%= insert %>>Inserir novo item</a>
+                        </div>
+                    </div>
+                    <% } %>
+
+                    <% if(tabela=="Home"){ %>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <span>Bem-vindo, administrador! Escolha ao lado a tabela que quer fazer alterações.</span>               
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <% if (resultado){ 
+                         var i = 0; 
+                         resultado.forEach(res => { %>
+                            <div class="accordion mt-3" id="accordion<%=i%>">
+                                <div class="card">
+                                    <div class="card-header bg-white" id="heading<%=i%>">
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <h2 class="mb-0">
+                                            <button class="btn bg-white" type="button" data-toggle="collapse" data-target="#collapse<%=i%>" aria-expanded="true" aria-controls="collapse<%=i%>">
+                                                <% switch(tabela){ 
+                                                        case "Ala": %>
+                                                        <%= res.nome %>
+                                                        <% break; 
+                                                        case "Animal": %>
+                                                        <%= res.nome %>
+                                                        <% break; 
+                                                        case "Atende": %>
+                                                        <p>CPF do veterinário: <%= res.veterinarioCPF %></p>
+                                                        <p>ID do animal: <%= res.animalId %></p>
+                                                        <% break; 
+                                                        case "Bilheteiro": %>
+                                                        <%= res.Nome %>
+                                                        <% break;
+                                                        case "Bilheteria": %>
+                                                        <%= res.id; %>
+                                                        <% break;
+                                                        case "Especie": %>
+                                                        <%= res.nomePopular; %>
+                                                        <% break; 
+                                                        case "ServicosGerais": %>
+                                                        <%= res.funcionario.Nome; %>
+                                                        <% break;
+                                                        case "Veterinario": %>
+                                                        <%= res.funcionario.Nome; %>
+                                                        <% break;
+                                                        case "Ingresso": %>
+                                                        <%= res.id; %>
+                                                        <% break %>
+                                                <% } %>
+                                            </button>
+                                            </h2>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <%
+                                            link = '/update/'+tabela;
+                                            if(tabela == 'Atende'){
+                                                link += '/'+res.veterinarioCPF+'/'+res.animalId;
+                                            }
+                                            else if (tabela == 'Veterinario' || tabela == 'ServicosGerais'){
+                                                link+= '/'+res.funcionario.CPF
+                                            }
+                                            else if(tabela == 'Bilheteiro'){
+                                                link+= '/'+res.CPF
+                                            }
+                                            else{
+                                                link+= '/'+res.id
+                                            }
+                                            %>
+                                            <a href="<%= link %>">
+
+                                                <i data-feather="edit"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <%
+                                            linkRemove = '/remove'+tabela;
+                                            if(tabela == 'Atende'){
+                                                linkRemove += '/'+res.veterinarioCPF+'/'+res.animalId;
+                                            }
+                                            else if (tabela == 'Veterinario' || tabela == 'ServicosGerais'){
+                                                linkRemove+= '/'+res.funcionario.CPF
+                                            }
+                                            else if(tabela == 'Bilheteiro'){
+                                                link+= '/'+res.CPF
+                                            }
+                                            else{
+                                                linkRemove+= '/'+res.id
+                                            }
+                                            %>
+                                            <a href="<%= linkRemove %>">
+                                                <i data-feather="trash-2"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="collapse<%=i%>" class="collapse" aria-labelledby="heading<%=i%>" data-parent="#accordion<%=i%>">
+                                    <div class="card-body">
+                                        <% switch(tabela){ 
+                                            case "Ala": %>
+                                            <p>ID: <%= res.id%></p>
+                                            <p>Localização: <%= res.localizacao %></p>
+                                            <% break; 
+                                            case "Animal": %>
+                                            <p>ID: <%= res.id%></p>
+                                            <p>Sexo: <%= res.sexo %></p>
+                                            <p>Data de nascimento: <%= String(res.dataNascimento) %></p>
+                                            <% break; 
+                                            case "Atende": %>
+                                            <p>Data do atendimento: <%= res.data %></p>
+                                            <p>Diagnóstico: <%= res.diagnostico %></p>
+                                            <% break; 
+                                            case "Bilheteiro": %>
+                                            <p>CPF: <%= res.CPF %></p>
+                                            <p>Data de nascimento: <%= res.ddn %></p>
+                                            <p>Salário: <%= res.Salario %></p>
+                                            <p>CLT: <%= res.CLT %></p>
+                                            <p>Endereço: <%= res.Endereco %></p>
+                                            <p>Banco: <%= res.Banco %></p>
+                                            <p>Conta: <%= res.Conta %></p>
+                                            <p>Dígito: <%= res.Digito %></p>
+                                            <p>Bilheteria: <%= res.bilheteriaId %></p>
+                                            <% break;
+                                            case "Bilheteria": %>
+                                            <p>Localização: <%= res.Localizacao %></p>
+                                            <% break;
+                                            case "Especie": %>
+                                            <p>Nome científico: <%= res.nomeCientifico %></p>
+                                            <p>Estado de Conservação: <%= res.estado %></p>
+                                            <p>Alimentação: <%= res.alimentacao %></p>
+                                            <p>Descrição: <%= res.descricao %></p>
+                                            <% break; 
+                                            case "ServicosGerais": %>
+                                            <p>CPF: <%= res.funcionario.CPF %></p>
+                                            <p>Data de nascimento: <%= res.funcionario.ddn %></p>
+                                            <p>Salário: <%= res.funcionario.Salario %></p>
+                                            <p>CLT: <%= res.funcionario.CLT %></p>
+                                            <p>Endereço: <%= res.funcionario.Endereco %></p>
+                                            <p>Banco: <%= res.funcionario.Banco %></p>
+                                            <p>Conta: <%= res.funcionario.Conta %></p>
+                                            <p>Dígito: <%= res.funcionario.Digito %></p>
+                                            <p>Função: <%= res.funcionario.funcao %></p>
+                                            <% break;
+                                            case "Veterinario": %>
+                                            <p>CPF: <%= res.funcionario.CPF %></p>
+                                            <p>Data de nascimento: <%= res.funcionario.ddn %></p>
+                                            <p>Salário: <%= res.funcionario.Salario %></p>
+                                            <p>CLT: <%= res.funcionario.CLT %></p>
+                                            <p>Endereço: <%= res.funcionario.Endereco %></p>
+                                            <p>Banco: <%= res.funcionario.Banco %></p>
+                                            <p>Conta: <%= res.funcionario.Conta %></p>
+                                            <p>Dígito: <%= res.funcionario.Digito %></p>
+                                            <p>CRMV: <%= res.funcionario.CRMV %></p>
+                                            <p>Faculdade: <%= res.funcionario.Faculdade %></p>
+                                            <p>ID das espécies supervisionadas:
+                                            <%res.especies.forEach(e => {%>
+                                                <%= e.especieId %>  
+                                            <% });%></p>
+                                            <% break;
+                                            case "Ingresso": %>
+                                            <p>Data de venda: <%= res.createdAt %></p>
+                                            <p>Preço: R$<%= res.preco %></p>
+                                            <p>Bilheteria: <%= res.bilheteriaId %></p>
+                                            <% break %>
+                                    <% } %>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <% i++}) %>
+                    <% } %>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+<script>
+    feather.replace()
+</script>
+<%- include('partials/foot.ejs'); %>
