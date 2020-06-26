@@ -12,7 +12,7 @@ const Animal = connection.define( 'animal',{
         allowNull: false
     },
     dataNascimento:{
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false
     },
     ativo:{

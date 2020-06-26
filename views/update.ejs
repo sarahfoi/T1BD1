@@ -12,21 +12,24 @@
                 <input type="hidden" name="alaId">
                 <div class="form-group">
                     <label for="cod">Código</label>
-                    <input type="number" id="cod" name="cod" value= "<%= elem.elem0.id %>" readonly>
+                    <input type="number" id="cod" name="cod" value= "<%= elem[0].id %>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" value= "<%= elem.elem0.nome %>" >
+                    <input type="text" id="nome" name="nome" value= "<%= elem[0].nome %>" >
                 </div>
                 <div class="form-group">
                     <label for="localizacao">Localização</label>
-                    <input type="text" id="localizacao" name="localizacao" value="<%= elem.elem0.localizacao %>">
+                    <input type="text" id="localizacao" name="localizacao" value="<%= elem[0].localizacao %>">
                 </div>
                 <!-- Horarios ala -->
+                <% var i = 1; 
+                elem.forEach(e => { %>
                 <div class="form-group">
-                    <label for="horario">Horário</label>
-                    <input type="time" id="horario" name="horario" value= "<%= elem.elem1.horario %>" >
+                    <label for="horario">Horário <%=i%></label>
+                    <input type="time" id="horario" name="horario" value= "<%= e.horario %>" >
                 </div>
+                <% i++;}) %>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -164,7 +167,7 @@
 
                 <div class="form-group">
                     <label for="funcao">Função</label>
-                    <select type="text" id="funcao" name="funcao" value= <%= elem.elem0.funcao %>>
+                    <select type="text" id="funcao" name="funcao" value= <%= elem.funcao %>>
                         <option value="Segurança">Segurança</option>
                         <option value="Limpeza">Limpeza</option>
                     </select>
@@ -172,15 +175,15 @@
                 <!--Trabalha-->
                 <div class="form-group">
                     <label for="codAla">Código Ala</label>
-                    <input type="number" id="codAla" name="codAla" value= <%= elem.elem1.alaId %>>
+                    <input type="number" id="codAla" name="codAla" value= <%= elem.alaId %>>
                 </div>
                 <div class="form-group">
                     <label for="horarioInicio">Horário Início</label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" value= <%= elem.elem1.horarioInicio %>>
+                    <input type="time" id="horarioInicio" name="horarioInicio" value= <%= elem.horarioInicio %>>
                 </div>
                 <div class="form-group">
                     <label for="horarioFinal">Horário Final</label>
-                    <input type="time" id="horarioFinal" name="horarioFinal" value= <%= elem.elem1.horarioFinal %>>
+                    <input type="time" id="horarioFinal" name="horarioFinal" value= <%= elem.horariofim %>>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -190,7 +193,7 @@
             <% if (tabela == 'Veterinario') { %>
             <form method='POST' action="/atualizaVeterinario">
 
-                <%- include('partials/funcionario_form.ejs');  %>
+                <%- include('partials/funcionario_update.ejs');  %>
 
                 <div class="form-group">
                     <label for="CRMV">CRMV</label>
@@ -198,7 +201,7 @@
                 </div>
                 <div class="form-group">
                     <label for="faculdade">Faculdade</label>
-                    <input type="text" id="faculdade" name="faculdade" value= "<%= elem.faculdade %>">
+                    <input type="text" id="faculdade" name="faculdade" value= "<%= elem.Faculdade %>">
                 </div>
 
                 <!-- Supervisiona -->

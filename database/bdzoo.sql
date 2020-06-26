@@ -19,11 +19,10 @@ CREATE TABLE IF NOT EXISTS `superviona` (`veterinarioCPF` VARCHAR(255) NOT NULL 
 CREATE TABLE IF NOT EXISTS `trabalha` (`alaId` INTEGER NOT NULL REFERENCES `ala` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `servicosGeraisCPF` VARCHAR(255) NOT NULL REFERENCES `servicosGerais` (`CPF`) ON DELETE CASCADE ON UPDATE CASCADE, `horarioInicio` TIME NOT NULL, `horariofim` TIME NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`alaId`, `servicosGeraisCPF`, `horarioInicio`, `horariofim`));
 
 /*-------------------Views-------------------*/
-CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT * FROM servicosGerais;
-CREATE VIEW IF NOT EXISTS `veterinario_v` as SELECT * FROM veterinario; 
+CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT servicosGerais.*, ala.nome as nomeAla, ala.localizacao as localizacaoAla FROM servicosGerais, ala, trabalha WHERE servicosGerais.CPF = trabalha.servicosGeraisCPF AND ala.id = trabalha.alaId;
+CREATE VIEW IF NOT EXISTS `veterinario_v` as SELECT veterinario.*, especie.nomePopular, especie.nomeCientifico FROM veterinario, especie, supervisiona WHERE especie.id = supervisiona.especieId AND veterinario.CPF = supervisiona.veterinarioCPF; 
 CREATE VIEW IF NOT EXISTS `bilheteiro_v` as SELECT * FROM bilheteiro;
-CREATE VIEW IF NOT EXISTS `animal_v` as SELECT * FROM animal;
-
+CREATE VIEW IF NOT EXISTS `animal_v` as SELECT animal.*, especie.nomePopular, especie.nomeCientifico FROM animal, especie WHERE especie.id = animal.especieId;
 /*-------------------Gatilhos-------------------*/
 
 /*Exclusão Lógica*/
@@ -63,25 +62,25 @@ BEGIN
 UPDATE servicosGerais SET ativo = true WHERE CPF = NEW.CPF;
 END;
 
-CREATE TRIGGER IF NOT EXISTS delete_veterinario
-INSTEAD OF delete ON veterinario_v
+CREATE TRIGGER IF NOT EXISTS create_veterinario
+AFTER INSERT ON veterinario
 FOR EACH ROW
 BEGIN
-UPDATE veterinario SET ativo = false WHERE CPF = OLD.CPF;
+UPDATE veterinario SET ativo = true WHERE CPF = NEW.CPF;
 END;
 
-CREATE TRIGGER IF NOT EXISTS delete_bilheteiro
-INSTEAD OF delete ON bilheteiro_v
+CREATE TRIGGER IF NOT EXISTS create_bilheteiro
+AFTER INSERT ON bilheteiro
 FOR EACH ROW
 BEGIN
-UPDATE bilheteiro SET ativo = false WHERE CPF = OLD.CPF;
+UPDATE bilheteiro SET ativo = TRUE WHERE CPF = NEW.CPF;
 END;
 
-CREATE TRIGGER IF NOT EXISTS delete_animal
-INSTEAD OF delete ON animal_v
+CREATE TRIGGER IF NOT EXISTS create_animal
+AFTER INSERT ON animal
 FOR EACH ROW
 BEGIN
-UPDATE animal SET ativo = false WHERE id = OLD.id;
+UPDATE animal SET ativo = true WHERE id = NEW.id;
 END;
 
 /*Ingresso - Inserir data automaticamente*/
