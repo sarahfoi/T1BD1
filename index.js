@@ -759,11 +759,14 @@ app.post('/atualizaAla/', (req, res) => {
                 }
             })
             res.redirect('/select/Ala')
+        }).catch((e)=>{
+            alert('ERRO AO ATUALIZAR ' + e)
+            res.redirect("/select/Ala")
         });
     })
 });
 
-app.post('/atualizaAnimal', (req, res) => {
+app.post('/atualizaAnimal/', (req, res) => {
     sequelize.query('UPDATE animal SET nome= :nome, sexo= :sexo, dataNascimento= :dataNascimento, especieId= :especieId where id= :id;', {
         replacements: {
             nome: req.body.nome,
@@ -775,8 +778,8 @@ app.post('/atualizaAnimal', (req, res) => {
     }).then(() => {
         res.redirect('/select/Animal')
     }).catch((e)=>{
-        alert('cu')
-        
+        alert('ERRO AO ATUALIZAR: ' + e)
+        res.redirect("/select/Animal")
     });
 });
 
@@ -790,7 +793,10 @@ app.post('/atualizaAtende', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Atende')
-    })
+    }).catch((e)=>{
+        alert('ERRO AO ATUALIZAR '+e)
+        res.redirect("/select/Atende")
+    });
 });
 
 app.post('/atualizaBilheteria', (req, res) => {
@@ -802,6 +808,9 @@ app.post('/atualizaBilheteria', (req, res) => {
 
     }).then(() => {
         res.redirect('/select/Bilheteria')
+    }).catch((e)=>{
+        alert('ERRO AO ATUALIZAR '+e)
+        res.redirect("/select/Bilheteria")
     });
 });
 
@@ -818,6 +827,9 @@ app.post('/atualizaEspecie', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Especie')
+    }).catch((e)=>{
+        alert('ERRO AO ATUALIZAR '+e)
+        res.redirect("/select/Especie")
     });
 });
 
@@ -839,6 +851,9 @@ app.post('/atualizaBilheteiro', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Bilheteiro')
+    }).catch((e)=>{
+        alert('ERRO AO ATUALIZAR ' + e)
+        res.redirect("/select/Bilheteiro")
     });
 });
 
@@ -869,6 +884,9 @@ app.post('/atualizaServicosGerais', (req, res) => {
                 }
             })
             res.redirect('/select/ServicosGerais')
+        }).catch((e)=>{
+            alert('ERRO AO ATUALIZAR ' + e)
+            res.redirect("/select/ServicosGerais")
         });
     })
 });
@@ -890,6 +908,9 @@ app.post('/atualizaVeterinario', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Veterinario')
+    }).catch((e)=>{
+        alert('ERRO AO ATUALIZAR ' + e)
+        res.redirect("/select/Veterinario")
     });
 });
 
@@ -902,6 +923,9 @@ app.post('/atualizaIngresso', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Ingresso')
+    }).catch((e)=>{
+        alert('ERRO AO ATUALIZAR ' + e)
+        res.redirect("/select/Ingresso")
     });
 });
 

@@ -22,7 +22,8 @@ const Bilheteiro = connection.define( 'bilheteiro',{
     },
     CLT:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Endereco:{
         type: Sequelize.STRING,
@@ -38,7 +39,8 @@ const Bilheteiro = connection.define( 'bilheteiro',{
     },
     Conta:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Digito:{
         type: Sequelize.CHAR,

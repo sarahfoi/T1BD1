@@ -21,7 +21,8 @@ const Veterinario = connection.define( 'veterinario',{
     },
     CLT:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Endereco:{
         type: Sequelize.STRING,
@@ -37,7 +38,8 @@ const Veterinario = connection.define( 'veterinario',{
     },
     Conta:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Digito:{
         type: Sequelize.CHAR,
@@ -45,7 +47,8 @@ const Veterinario = connection.define( 'veterinario',{
     },
     CRMV:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Faculdade:{
         type: Sequelize.STRING,

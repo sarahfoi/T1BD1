@@ -21,7 +21,8 @@ const ServicosGerais = connection.define( 'servicosGerais',{
     },
     CLT:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Endereco:{
         type: Sequelize.STRING,
@@ -37,7 +38,8 @@ const ServicosGerais = connection.define( 'servicosGerais',{
     },
     Conta:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     Digito:{
         type: Sequelize.CHAR,

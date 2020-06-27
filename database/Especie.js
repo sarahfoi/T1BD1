@@ -6,7 +6,8 @@ const Especie = connection.define( 'especie',{
     
     nomeCientifico:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     nomePopular:{
         type: Sequelize.STRING,
