@@ -50,7 +50,7 @@
                     <input type="text" id="nome" name="nome" value= "<%= elem.nome %>">
                 </div>
                 <div class="form-group">
-                    <label for="sexo">Sexo</label>
+                    <label for="sexo">Sexo</label> <!--Falta: Set sexo correto-->
                     <select type="text" id="sexo" name="sexo" value= "<%= elem.sexo %>">
                         <option value="M">M</option>
                         <option value="F">F</option>
@@ -72,11 +72,11 @@
             <form method='POST' action="/atualizaAtende">         
                 <div class="form-group">
                     <label for="veterinarioCPF">CPF</label>
-                    <input type="number" id="veterinarioCPF" name="veterinarioCPF" value= "<%= elem.veterinarioCPF %>">
+                    <input type="number" id="veterinarioCPF" name="veterinarioCPF" value= "<%= elem.veterinarioCPF %>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="codAnimal">Código do Animal</label>
-                    <input type="number" id="codAnimal" name="codAnimal" value= "<%= elem.animalId %>">
+                    <input type="number" id="codAnimal" name="codAnimal" value= "<%= elem.animalId %>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="data">Data</label>
@@ -220,12 +220,12 @@
             <% if (tabela == 'Bilheteiro') { %>
             <form method='POST' action="/atualizaBilheteiro">
 
-                <%- include('partials/funcionario_form.ejs');  %>
+                <%- include('partials/funcionario_update.ejs');  %>
 
                 <!--Cuida-->
                 <div class="form-group">
                     <label for="numBilheteria">Número Bilheteria</label>
-                    <input type="number" id="numBilheteria" name="numBilheteria" value= <%= bilheteriaId %>>
+                    <input type="number" id="numBilheteria" name="numBilheteria" value= <%= elem.bilheteriaId %>>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -244,7 +244,7 @@
                 </div>
                 <div class="form-group">
                     <label for="horario">Data e Horário da compra</label>
-                    <input type="text" id="horario" name="horario" value= '<%= elem.createdAt %> 'readonly>
+                    <input type="text" id="horario" name="horario" value= '<%= elem.createdAt %>' readonly>
                 </div>
                 
                 <div class="form-group">

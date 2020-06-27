@@ -159,7 +159,7 @@
                                                 linkRemove+= '/'+res.CPF
                                             }
                                             else if(tabela == 'Bilheteiro'){
-                                                link+= '/'+res.CPF
+                                                linkRemove+= '/'+res.CPF
                                             }
                                             else{
                                                 linkRemove+= '/'+res.id
@@ -199,7 +199,7 @@
                                     <p>Dígito: <%= res.Digito %></p>
                                     <p>Bilheteria: <%= res.bilheteriaId %></p>
                                     <% break;
-                                            case "Bilheteria": %>
+                                            case "Bilheteria": %> <!--Falta: horário início e fim-->
                                     <p>Localização: <%= res.Localizacao %></p>
                                     <% break;
                                             case "Especie": %>
