@@ -19,11 +19,13 @@ CREATE TABLE IF NOT EXISTS `supervisiona` (`veterinarioCPF` VARCHAR(255) NOT NUL
 CREATE TABLE IF NOT EXISTS `trabalha` (`alaId` INTEGER NOT NULL REFERENCES `ala` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `servicosGeraisCPF` VARCHAR(255) NOT NULL REFERENCES `servicosGerais` (`CPF`) ON DELETE CASCADE ON UPDATE CASCADE, `horarioInicio` TIME NOT NULL, `horariofim` TIME NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`alaId`, `servicosGeraisCPF`, `horarioInicio`, `horariofim`));
 
 /*-------------------Views-------------------*/
-CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT servicosGerais.*, ala.nome as nomeAla, ala.localizacao as localizacaoAla FROM servicosGerais, ala, trabalha WHERE servicosGerais.CPF = trabalha.servicosGeraisCPF AND ala.id = trabalha.alaId;
-CREATE VIEW IF NOT EXISTS `veterinario_v` as SELECT veterinario.*, especie.nomePopular, especie.nomeCientifico FROM veterinario, especie, supervisiona WHERE especie.id = supervisiona.especieId AND veterinario.CPF = supervisiona.veterinarioCPF and veterinario.Ativo = true; 
+CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT servicosGerais.*, ala.* FROM servicosGerais, ala, trabalha WHERE servicosGerais.CPF = trabalha.servicosGeraisCPF AND ala.id = trabalha.alaId;
+CREATE VIEW IF NOT EXISTS `veterinario_v` as select veterinario.*, especie.* FROM veterinario, especie, supervisiona where supervisiona.veterinarioCPF = veterinario.CPF AND especie.id = supervisiona.especieId AND veterinario.ativo = true
 CREATE VIEW IF NOT EXISTS `bilheteiro_v` as SELECT * FROM bilheteiro;
 CREATE VIEW IF NOT EXISTS `animal_v` as SELECT animal.*, especie.nomePopular, especie.nomeCientifico FROM animal, especie WHERE especie.id = animal.especieId;
-
+CREATE VIEW IF NOT EXISTS `animal_especie_v` as SELECT animal.*, especie.* FROM animal, especie WHERE animal.especieId = especie.id AND animal.ativo = true;
+CREATE VIEW IF NOT EXISTS 'cuida bilheteria v' as select bilheteiro.*, bilheteria.* FROM bilheteiro, bilheteria, cuida WHERE bilheteiro.CPF = cuida.bilheteiroCPF AND cuida.bilheteriaId = bilheteria.Id AND bilheteiro.ativo=true;
+CREATE VIEW IF NOT EXISTS `alas_especies_v` as SELECT ala.id as alaId, especie.id as especieId, ala.nome as alaNome, especie.nomePopular, especie.nomeCientifico from ala, especie where ala.id = especie.alaId;
 /*-------------------Gatilhos-------------------*/
 
 /*Exclusão Lógica*/

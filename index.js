@@ -52,7 +52,7 @@ app.get('/insert/Ala', (req, res) => {
 });
 
 app.get('/insert/Ala/adicionaHorario', (req, res) => {
-    
+
 });
 
 app.get('/insert/Animal', (req, res) => {
@@ -226,11 +226,13 @@ app.get('/update/Bilheteiro/:CPF', (req, res) => {
     })
 })
 
-//*Falta: Arrumar a query - ver se está ativo e colocar a cláusula servicosGerais.CPF = trabalha.servicosGeraisCPF
 app.get('/update/ServicosGerais/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    const resultado = sequelize.query('SELECT * FROM servicosGerais, trabalha WHERE servicosGeraisCPF = :CPF', {
-        replacements: { CPF: CPF },
+    sequelize.query('SELECT * FROM servicosGerais, trabalha WHERE trabalha.servicosGeraisCPF = servicosGerais.CPF AND ativo = :ativo AND servicosGeraisCPF = :CPF;', {
+        replacements: {
+            CPF: CPF,
+            ativo: true
+        },
         type: QueryTypes.SELECT
     }).then((elem => {
         console.log(elem[0]);
@@ -364,17 +366,15 @@ app.get('/select/ServicosGerais', (req, res) => {
     })
 });
 
-//*Falta: arrumar a exibição. Se tiver mais de uma espécie ou nenhuma buga, precisa alterar a view. E também não está mostrando as espécies, por causa da junção. Arrumar a view, mais cláusulas where.
 app.get('/select/Veterinario', (req, res) => {
     sequelize.query('SELECT * FROM veterinario_v', {
         replacements: { ativo: true },
-        model: Veterinario,
         mapToModel: true
     }).then(resultado => {
         console.log(resultado)
         res.render('select', {
             tabela: "Veterinario",
-            resultado: resultado,
+            resultado: resultado[0],
             insert: '/insert/Veterinario'
         })
     })
@@ -737,7 +737,6 @@ app.post('/insereIngresso', (req, res) => {
 })
 
 //FUNÇÕES DE UPDATE
-//*Falta atualizaIngresso
 app.post('/atualizaAla/', (req, res) => {
     sequelize.query(`UPDATE ala SET nome = :nome, localizacao = :localizacao WHERE id = :id;`, {
         replacements: {
@@ -788,8 +787,7 @@ app.post('/atualizaAtende', (req, res) => {
     })
 });
 
-//*Falta: atualizar horários
-app.post('/atualizaBilheteria', (req, res) => { 
+app.post('/atualizaBilheteria', (req, res) => {
     sequelize.query('UPDATE bilheteria SET Localizacao= :Localizacao WHERE id= :id;', {
         replacements: {
             Localizacao: req.body.localizacao,
@@ -839,10 +837,10 @@ app.post('/atualizaBilheteiro', (req, res) => {
 });
 
 app.post('/atualizaServicosGerais', (req, res) => {
-    sequelize.query('UPDATE servicosGerais SET ddn = :ddn, nome = :nome, Salario = :Salario, CLT = :CLT, Endereco = :Endereco, Banco = :Banco, Agencia = Agencia, Conta = :Conta, Digito = :Digito, funcao = :funcao WHERE CPF = :CPF;',{
-        replacements:{
+    sequelize.query('UPDATE servicosGerais SET ddn = :ddn, Nome = :nome, Salario = :Salario, CLT = :CLT, Endereco = :Endereco, Banco = :Banco, Agencia = Agencia, Conta = :Conta, Digito = :Digito, funcao = :funcao WHERE CPF = :CPF;', {
+        replacements: {
             ddn: req.body.ddn,
-            Nome: req.body.nome,
+            nome: req.body.nome,
             Salario: req.body.salario,
             CLT: req.body.CLT,
             Endereco: req.body.endereco,
@@ -854,8 +852,19 @@ app.post('/atualizaServicosGerais', (req, res) => {
             CPF: req.body.CPF
         }
     }).then(() => {
-        res.redirect('/select/ServicosGerais')
-    });
+        sequelize.query('SELECT * FROM servicosGerais, trabalha where servicosGerais.CPF = :CPF AND servicosGerais.CPF = trabalha.servicosGeraisCPF;', {
+            CPF: req.body.CPF,
+        }).then(() => {
+            sequelize.query('UPDATE trabalha SET horarioInicio = :horarioInicio, horariofim = :horarioFinal WHERE servicosGeraisCPF = :CPF;', {
+                replacements: {
+                    CPF: req.body.CPF,
+                    horarioInicio: req.body.horarioInicio,
+                    horarioFinal: req.body.horarioFinal
+                }
+            })
+            res.redirect('/select/ServicosGerais')
+        });
+    })
 });
 
 app.post('/atualizaVeterinario', (req, res) => {
@@ -875,6 +884,18 @@ app.post('/atualizaVeterinario', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Veterinario')
+    });
+});
+
+app.post('/atualizaIngresso', (req, res) => {
+    sequelize.query('UPDATE ingresso SET preco= :preco, bilheteriaId = :numBilheteria where id= :id;', {
+        replacements: {
+            preco: req.body.preco,
+            numBilheteria: req.body.numBilheteria,
+            id: req.body.num
+        }
+    }).then(() => {
+        res.redirect('/select/Ingresso')
     });
 });
 
