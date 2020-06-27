@@ -51,6 +51,10 @@ app.get('/insert/Ala', (req, res) => {
     })
 });
 
+app.get('/insert/Ala/adicionaHorario', (req, res) => {
+    
+});
+
 app.get('/insert/Animal', (req, res) => {
 
     const animais = sequelize.query('SELECT * FROM especie', {

@@ -24,9 +24,15 @@
                     <label for="horario">Horário</label>
                     <input type="time" id="horario" name="horario">
                 </div>
+                
+                
 
+                <div id="divAdicionaHorario">
+                </div>
+                
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <button type="button" class="btn" onclick="adicionaHorario()">aaaaa</button>
             <% } %>
 
             <% if (tabela == 'Animal') { %>
@@ -238,7 +244,17 @@
         </div>
 
     </main>
-
+    <script type = "text/javascript">
+        adicionaHorario = function (){
+             console.log("Teste");
+             document.getElementById('divAdicionaHorario').add('<div>Insert Div Content</div>');
+         }
+     </script>
 
 </body>
+<script>
+    feather.replace();
+</script>
+
+
 <%- include('partials/foot.ejs'); %>
