@@ -26,6 +26,7 @@ CREATE VIEW IF NOT EXISTS `animal_v` as SELECT animal.*, especie.nomePopular, es
 CREATE VIEW IF NOT EXISTS `animal_especie_v` as SELECT animal.*, especie.* FROM animal, especie WHERE animal.especieId = especie.id AND animal.ativo = true;
 CREATE VIEW IF NOT EXISTS 'cuida bilheteria v' as select bilheteiro.*, bilheteria.* FROM bilheteiro, bilheteria, cuida WHERE bilheteiro.CPF = cuida.bilheteiroCPF AND cuida.bilheteriaId = bilheteria.Id AND bilheteiro.ativo=true;
 CREATE VIEW IF NOT EXISTS `alas_especies_v` as SELECT ala.id as alaId, especie.id as especieId, ala.nome as alaNome, especie.nomePopular, especie.nomeCientifico from ala, especie where ala.id = especie.alaId;
+CREATE VIEW IF NOT EXISTS `sum_ingresso` as SELECT SUM(preco) from ingresso;
 /*-------------------Gatilhos-------------------*/
 
 /*Exclusão Lógica*/

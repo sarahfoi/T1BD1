@@ -17,6 +17,8 @@ const ServicosGerais = require("./database/ServicosGerais");
 const Supervisiona = require("./database/Supervisiona");
 const Trabalha = require("./database/Trabalha");
 const Veterinario = require("./database/Veterinario");
+const alert_node = require('alert');
+const alert = require('alert');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -153,7 +155,7 @@ app.get('/update/Animal/:id', (req, res) => {
             elem: elem[0]
         })
     })
-})
+});
 
 app.get('/update/Atende/:veterinarioCPF/:animalId', (req, res) => {
     var veterinarioCPF = req.params.veterinarioCPF;
@@ -731,7 +733,8 @@ app.post('/insereIngresso', (req, res) => {
     }).then(() => {
         res.redirect('/select/Ingresso')
     }).catch(err => {
-        console.log(err);
+        //console.log(err);
+        alert('Erro', 'window');
     })
 
 })
@@ -771,6 +774,9 @@ app.post('/atualizaAnimal', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Animal')
+    }).catch((e)=>{
+        alert('cu')
+        
     });
 });
 
