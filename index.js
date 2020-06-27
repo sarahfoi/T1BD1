@@ -143,9 +143,6 @@ app.get('/update/Animal/:id', (req, res) => {
         replacements: { id: id },
         type: QueryTypes.SELECT
     }).then(elem => {
-        //console.log(Date.parse("2020-06-06"));
-        //elem[0].dataNascimento = Date.parse(elem[0].dataNascimento);
-        //console.log(elem[0].dataNascimento);
         res.render('update', {
             tabela: 'Animal',
             elem: elem[0]
@@ -153,15 +150,14 @@ app.get('/update/Animal/:id', (req, res) => {
     })
 })
 
+//? testar
 app.get('/update/Atende/:veterinarioCPF/:animalId', (req, res) => {
     var veterinarioCPF = req.params.veterinarioCPF;
-    var animalid = req.params.animalId;
-    //console.log(id)
-    Atende.findOne({
-        where: {
-            veterinarioCPF: veterinarioCPF,
-            animalId: animalid
-        }
+    var animalId = req.params.animalId;
+    sequelize.query('SELECT * FROM atende where veterinarioCPF = :CPF and animalId = :id', {
+        replacements: { CPF: veterinarioCPF, id: animalId },
+        model: Atende,
+        mapToModel: true // pass true here if you have any mapped fields
     }).then(elem => {
         res.render('update', {
             tabela: 'Atende',
@@ -177,7 +173,7 @@ app.get('/update/Bilheteria/:id', (req, res) => {
         where: { id: id }
     }).then(elem => {
         HorarioBilheteria.findAll({
-            where: {BilheteriaId: id}
+            where: { BilheteriaId: id }
         })
         res.render('update', {
             tabela: 'Bilheteria',
@@ -295,6 +291,7 @@ app.get('/select/Atende', (req, res) => {
 
 app.get('/select/Bilheteiro', (req, res) => {
     sequelize.query('SELECT * FROM bilheteiro WHERE ativo = :ativo', {
+        replacements: { ativo: true },
         model: Bilheteiro,
         mapToModel: true
     }).then((resultado) => {
@@ -333,7 +330,7 @@ app.get('/select/Especie', (req, res) => {
 });
 
 app.get('/select/ServicosGerais', (req, res) => {
-    sequelize.query('SELECT * FROM servicosGerais_v where ativo= :ativo', {
+    sequelize.query('SELECT * FROM servicosGerais where ativo = :ativo', {
         replacements: { ativo: true },
         model: ServicosGerais,
         mapToModel: true
@@ -347,7 +344,7 @@ app.get('/select/ServicosGerais', (req, res) => {
 });
 
 app.get('/select/Veterinario', (req, res) => {
-    sequelize.query('SELECT * FROM veterinario_v where ativo= :ativo', {
+    sequelize.query('SELECT * FROM veterinario_v', {
         replacements: { ativo: true },
         model: Veterinario,
         mapToModel: true
@@ -379,23 +376,18 @@ app.get('/select/Ingresso', (req, res) => {
 
 app.get('/removeAla/:id', (req, res) => {
     var id = req.params.id;
-    Ala.destroy({
-        where: {
-            id: id
-        }
+    sequelize.query('DELETE FROM ala where id = :id', {
+        replacements: { id: id }
     }).then(() => {
         res.redirect('/select/Ala')
     });
 });
 
 app.get('/removeAtende/:veterinarioCPF/:animalId', (req, res) => {
-    var veterinarioCPF = req.params.veterinarioCPF;
-    var animalId = req.params.animalId;
-    Atende.destroy({
-        where: {
-            veterinarioCPF: veterinarioCPF,
-            animalId: animalId
-        }
+    var id = req.params.animalId;
+    var CPF = req.params.veterinarioId;
+    sequelize.query('DELETE FROM atende where animalId = :id and veterinarioCPF = :CPF', {
+        replacements: { id: id, CPF: CPF }
     }).then(() => {
         res.redirect('/select/Atende')
     });
@@ -403,10 +395,8 @@ app.get('/removeAtende/:veterinarioCPF/:animalId', (req, res) => {
 
 app.get('/removeBilheteria/:id', (req, res) => {
     var id = req.params.id;
-    Bilheteria.destroy({
-        where: {
-            id: id
-        }
+    sequelize.query('DELETE FROM bilheteria where id = :id', {
+        replacements: { id: id }
     }).then(() => {
         res.redirect('/select/Bilheteria')
     });
@@ -414,10 +404,8 @@ app.get('/removeBilheteria/:id', (req, res) => {
 
 app.get('/removeEspecie/:id', (req, res) => {
     var id = req.params.id;
-    Especie.destroy({
-        where: {
-            id: id
-        }
+    sequelize.query('DELETE FROM especie where id = :id', {
+        replacements: { id: id }
     }).then(() => {
         res.redirect('/select/Especie')
     });
@@ -425,36 +413,17 @@ app.get('/removeEspecie/:id', (req, res) => {
 
 app.get('/removeIngresso/:id', (req, res) => {
     var id = req.params.id;
-    Ingresso.destroy({
-        where: {
-            id: id
-        }
+    sequelize.query('DELETE FROM ingresso where id = :id', {
+        replacements: { id: id }
     }).then(() => {
         res.redirect('/select/Ingresso')
     });
 });
 
-app.get('/removeAnimal/:id', (req, res) => {
-    var id = req.params.id;
-    Animal.update({
-        ativo: false
-    }, {
-        where: {
-            id: id
-        }
-    }).then(() => {
-        res.redirect('/select/Animal')
-    });
-});
-
 app.get('/removeBilheteiro/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    Bilheteiro.update({
-        Ativo: false
-    }, {
-        where: {
-            CPF: CPF
-        }
+    sequelize.query('DELETE FROM bilheteiro_v where CPF = :CPF', {
+        replacements: { CPF: CPF }
     }).then(() => {
         res.redirect('/select/Bilheteiro')
     });
@@ -462,12 +431,8 @@ app.get('/removeBilheteiro/:CPF', (req, res) => {
 
 app.get('/removeServicosGerais/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    ServicosGerais.update({
-        ativo: false
-    }, {
-        where: {
-            CPF: CPF
-        }
+    sequelize.query('DELETE FROM servicosGerais_v where CPF = :CPF', {
+        replacements: { CPF: CPF }
     }).then(() => {
         res.redirect('/select/ServicosGerais')
     });
@@ -475,19 +440,24 @@ app.get('/removeServicosGerais/:CPF', (req, res) => {
 
 app.get('/removeVeterinario/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    Veterinario.update({
-        Ativo: false
-    }, {
-        where: {
-            CPF: CPF
-        }
+    sequelize.query('DELETE FROM veterinario_v where CPF = :CPF', {
+        replacements: { CPF: CPF }
     }).then(() => {
-        res.redirect('/select/Veterinario')
+        res.redirect('/select/veterinario')
+    });
+});
+
+app.get('/removeAnimal/:id', (req, res) => {
+    var id = req.params.id;
+    sequelize.query('DELETE FROM animal_v where id = :id', {
+        replacements: { id: id }
+    }).then(() => {
+        res.redirect('/select/animal')
     });
 });
 
 //FUNÇÕES DE BUSCA TODOS
-
+/*
 app.get('/buscatodosCuida', (req, res) => {
     Cuida.findAll({
         atributes: ['CPF', 'numBilheteria']
@@ -527,6 +497,7 @@ app.get('/buscatodosTrabalha', (req, res) => {
         res.redirect('/ServicosGerais')
     });
 });
+*/
 
 //FUNÇÕES DE INSERÇÃO
 
@@ -604,7 +575,6 @@ app.post("/insereAtende", (req, res) => {
     var codAnimal = req.body.codAnimal;
     var data = req.body.data;
     var diagnostico = req.body.diagnostico;
-
     Atende.create({
         veterinarioCPF: CPF,
         animalId: codAnimal,
@@ -770,60 +740,56 @@ app.post('/atualizaAla/', (req, res) => {
 });
 
 app.post('/atualizaAnimal', (req, res) => {
-    Animal.update({
-        nome: req.body.nome,
-        sexo: req.body.sexo,
-        dataNascimento: req.body.dataNascimento,
-        especieId: req.body.especieId
-    },
-        { where: { id: req.body.cod } }).then(() => {
-            res.redirect('/select/Animal')
-        });
+    sequelize.query('UPDATE animal SET nome= :nome, sexo= :sexo, dataNascimento= :dataNascimento, especieId= :especieId where id= :id;', {
+        replacements: {
+            nome: req.body.nome,
+            sexo: req.body.sexo,
+            dataNascimento: req.body.dataNascimento,
+            especieId: req.body.codEspecie,
+            id: req.body.cod
+        }
+    }).then(() => {
+        res.redirect('/select/Animal')
+    });
 });
 
 app.post('/atualizaAtende', (req, res) => {
-    console.log(req.body.codAnimal);
-    Atende.update({
-        veterinarioCPF: req.body.veterinarioCPF,
-        animalId: req.body.codAnimal,
-        data: req.body.data,
-        diagnostico: req.body.diagnostico
-    },
-        {
-            where: {
-                veterinarioCPF: req.body.veterinarioCPF,
-                animalId: req.body.codAnimal
-            }
-        }).then((x) => {
-            console.log(x);
-            res.redirect('/select/Atende')
-        }).catch(x => {
-            console.log(x);
-        });
+    sequelize.query('UPDATE atende SET data= :data, diagnostico = :diagnostico WHERE veterinarioCPF= :veterinarioCPF AND animalId= :animalId', {
+        replacements: {
+            veterinarioCPF: req.body.veterinarioCPF,
+            animalId: req.body.codAnimal,
+            data: req.body.data,
+            diagnostico: req.body.diagnostico
+        }
+    }).then((x) => {
+        console.log(x);
+        res.redirect('/select/Atende')
+    }).catch(x => {
+        console.log(x);
+    });
 });
 
 app.post('/atualizaBilheteria', (req, res) => {
-    Bilheteria.update({
-        Localizacao: req.body.Localizacao
-    }, {
-        where: {
+    sequelize.query('UPDATE bilheteria SET Localizacao= :Localizacao WHERE id= :id;', {
+        replacements: {
+            Localizacao: req.body.Localizacao,
             id: req.body.id
         }
+
     }).then(() => {
         res.redirect('/select/Bilheteria')
     });
 });
 
 app.post('/atualizaEspecie', (req, res) => {
-    Especie.update({
-        nomeCientifico: req.body.nomeCientifico,
-        nomePopular: req.body.nomePopular,
-        estado: req.body.estado,
-        alimentacao: req.body.alimentacao,
-        descricao: req.body.descricao,
-        alaId: req.body.alaId
-    }, {
-        where: {
+    sequelize.query('UPDATE especie SET nomeCientifico = :nomeCientifico, nomePopular = :nomePopular, estado = :estado, alimentacao = :alimentacao, descricao = :descricao, alaId = :alaId WHERE id = :id;', {
+        replacements: {
+            nomeCientifico: req.body.nomeCientifico,
+            nomePopular: req.body.nomePopular,
+            estado: req.body.estado,
+            alimentacao: req.body.alimentacao,
+            descricao: req.body.descricao,
+            alaId: req.body.codAla,
             id: req.body.codEspecie
         }
     }).then(() => {
@@ -832,19 +798,18 @@ app.post('/atualizaEspecie', (req, res) => {
 });
 
 app.post('/atualizaBilheteiro', (req, res) => {
-    Bilheteiro.update({
-        ddn: req.body.ddn,
-        nome: req.body.nome,
-        Salario: req.body.Salario,
-        CLT: req.body.CLT,
-        Endereco: req.body.Endereco,
-        Banco: req.body.Banco,
-        Agencia: req.body.Agencia,
-        Conta: req.body.Conta,
-        Digito: req.body.Digito,
-        bilheteriaId: req.body.bilheteriaId
-    }, {
-        where: {
+    sequelize.query('UPDATE bilheteria SET ddn = :ddn, nome = :nome, Salario = :Salario, CLT = :CLT, Endereco = :Endereco, Banco = :Banco, Agencia = Agencia, Conta = :Conta, Digito = :Digito, bilheteriaId = :bilheteria WHERE CPF = :CPF;', {
+        replacements: {
+            ddn: req.body.ddn,
+            nome: req.body.nome,
+            Salario: req.body.Salario,
+            CLT: req.body.CLT,
+            Endereco: req.body.Endereco,
+            Banco: req.body.Banco,
+            Agencia: req.body.Agencia,
+            Conta: req.body.Conta,
+            Digito: req.body.Digito,
+            bilheteriaId: req.body.bilheteriaId,
             CPF: req.body.CPF
         }
     }).then(() => {
@@ -874,24 +839,16 @@ app.post('/atualizaServicosGerais', (req, res) => {
 });
 
 app.post('/atualizaVeterinario', (req, res) => {
-    ServicosGerais.update({
-        ddn: req.body.ddn,
-        nome: req.body.nome,
-        Salario: req.body.Salario,
-        CLT: req.body.CLT,
-        Endereco: req.body.Endereco,
-        Banco: req.body.Banco,
-        Agencia: req.body.Agencia,
-        Conta: req.body.Conta,
-        Digito: req.body.Digito,
-        CRMV: req.body.CRMV,
-        Faculdade: Faculdade
-    }, {
-        where: {
-            CPF: req.body.CPF
+    sequelize.query('UPDATE veterinario SET ddn= :ddn, Nome= :Nome, Salario= :Salario, CLT= :CLT, Endereço = :Endereço, Banco = :Banco, Agencia = :Agencia, Conta = :Conta, Digito = :Digito, CRMV = :CRMV, Faculdade = :Faculdade where CPF= :CPF;', {
+        replacements: {
+            Nome: req.body.Nome,
+            ddn: req.body.ddn,
+            Salario: req.body.Salario,
+            especieId: req.body.codEspecie,
+            id: req.body.cod
         }
     }).then(() => {
-        res.redirect('/select/Veterinario')
+        res.redirect('/select/Animal')
     });
 });
 

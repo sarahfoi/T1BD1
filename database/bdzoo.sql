@@ -23,6 +23,7 @@ CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT servicosGerais.*, ala.nom
 CREATE VIEW IF NOT EXISTS `veterinario_v` as SELECT veterinario.*, especie.nomePopular, especie.nomeCientifico FROM veterinario, especie, supervisiona WHERE especie.id = supervisiona.especieId AND veterinario.CPF = supervisiona.veterinarioCPF; 
 CREATE VIEW IF NOT EXISTS `bilheteiro_v` as SELECT * FROM bilheteiro;
 CREATE VIEW IF NOT EXISTS `animal_v` as SELECT animal.*, especie.nomePopular, especie.nomeCientifico FROM animal, especie WHERE especie.id = animal.especieId;
+
 /*-------------------Gatilhos-------------------*/
 
 /*Exclusão Lógica*/
