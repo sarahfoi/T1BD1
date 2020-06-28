@@ -77,24 +77,14 @@
             <% } %>
 
             <% if (tabela == 'Bilheteria') { %>
-            <form method='POST' action="/insereBilheteria">
+            <form method='POST' action="/insert/horarioBilheteria">
 
                 <div class="form-group">
                     <label for="localizacao">Localização</label>
                     <input type="text" id="localizacao" name="localizacao" required>
                 </div>
 
-                <!--Horario Bilheteria-->
-                <div class="form-group">
-                    <label for="horarioInicio">Horário Início</label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioFinal">Horário Final</label>
-                    <input type="time" id="horarioFinal" name="horarioFinal" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
             </form>
             <% } %>
 
@@ -146,7 +136,7 @@
             <% } %>
 
             <% if (tabela == 'ServicosGerais') { %>
-            <form method='POST' action="/insereServicosGerais">
+            <form method='POST' action="/insert/horarioSG">
 
                 <%- include('partials/funcionario_form.ejs');  %>
 
@@ -157,21 +147,8 @@
                         <option value="Limpeza">Limpeza</option>
                     </select>
                 </div>
-                <!--Trabalha-->
-                <div class="form-group">
-                    <label for="codAla">Código Ala</label>
-                    <input type="number" id="codAla" name="codAla" required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioInicio">Horário Início</label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioFinal">Horário Final</label>
-                    <input type="time" id="horarioFinal" name="horarioFinal" required>
-                </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
             </form>
             <% } %>
 
@@ -187,12 +164,6 @@
                 <div class="form-group">
                     <label for="faculdade">Faculdade</label>
                     <input type="text" id="faculdade" name="faculdade" required>
-                </div>
-
-                <!-- Supervisiona -->
-                <div class="form-group">
-                    <label for="codEspecie">Código Especie</label>
-                    <input type="number" id="codEspecie" name="codEspecie" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>

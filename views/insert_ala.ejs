@@ -1,0 +1,32 @@
+<%- include('partials/head.ejs'); %>
+<link rel="stylesheet" href="/assets/styles/index.css">
+<title>Zoológico - Home</title>
+</head>
+
+<body>
+    <main role="main">
+        <%- include('partials/navbar.ejs'); %>
+        <div class="container">
+            <form method="post" action="/insereAla/horario">
+                <input type="hidden" name="alaId" value="<%= ala %>">
+                <div class="form-group">
+                    <label for="horarioInicio">Horário de Abertura</label>
+                    <input type="time" id="horarioInicio" name="horarioInicio" required>
+                </div>
+                <div class="form-group">
+                    <label for="horarioFinal">Horário de Fechamento</label>
+                    <input type="time" id="horarioFinal" name="horarioFinal" required>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-2">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                    <div class="col col-lg-2">
+                        <a class="btn btn-primary" href="/select/Home">Pular</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+<%- include('partials/foot.ejs'); %>

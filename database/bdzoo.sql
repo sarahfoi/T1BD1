@@ -1,6 +1,6 @@
 /*-------------------Tabelas-------------------*/
 CREATE TABLE IF NOT EXISTS `ala` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `localizacao` VARCHAR(255) NOT NULL, `nome` VARCHAR(255) NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);
-CREATE TABLE IF NOT EXISTS `horarioAla` (`alaId` INTEGER NOT NULL REFERENCES `ala` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `horario` TIME NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`alaId`, `horario`));
+CREATE TABLE IF NOT EXISTS `horarioAla` (`alaId` INTEGER NOT NULL REFERENCES `ala` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `horarioInicio` TIME NOT NULL,  `horarioFinal` TIME NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`alaId`, `horarioInicio`,`horarioFinal`));
 
 CREATE TABLE IF NOT EXISTS `bilheteria` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `Localizacao` VARCHAR(255) NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);
 CREATE TABLE IF NOT EXISTS `horarioBilheteria` (`bilheteriaId` INTEGER PRIMARY KEY REFERENCES `bilheteria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `horarioInicio` TIME NOT NULL, `horarioFinal` TIME NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);
@@ -20,12 +20,13 @@ CREATE TABLE IF NOT EXISTS `supervisiona` (`veterinarioCPF` VARCHAR(255) NOT NUL
 CREATE TABLE IF NOT EXISTS `trabalha` (`alaId` INTEGER NOT NULL REFERENCES `ala` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `servicosGeraisCPF` VARCHAR(255) NOT NULL REFERENCES `servicosGerais` (`CPF`) ON DELETE CASCADE ON UPDATE CASCADE, `horarioInicio` TIME NOT NULL, `horariofim` TIME NOT NULL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`alaId`, `servicosGeraisCPF`, `horarioInicio`, `horariofim`));
 
 /*-------------------Views-------------------*/
-CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT servicosGerais.*, ala.* FROM servicosGerais, ala, trabalha WHERE servicosGerais.CPF = trabalha.servicosGeraisCPF AND ala.id = trabalha.alaId AND servicosGerais.ativo = true;;
+CREATE VIEW IF NOT EXISTS `servicosGerais_v` as SELECT servicosGerais.*, ala.* FROM servicosGerais, ala, trabalha WHERE servicosGerais.CPF = trabalha.servicosGeraisCPF AND ala.id = trabalha.alaId AND servicosGerais.ativo = true;
 CREATE VIEW IF NOT EXISTS `veterinario_v` as select veterinario.*, especie.* FROM veterinario, especie, supervisiona where supervisiona.veterinarioCPF = veterinario.CPF AND especie.id = supervisiona.especieId AND veterinario.ativo = true;
 CREATE VIEW IF NOT EXISTS `animal_v` as SELECT animal.*, especie.* FROM animal, especie WHERE animal.especieId = especie.id AND animal.ativo = true;
 CREATE VIEW IF NOT EXISTS 'bilheteiro_v' as select bilheteiro.*, bilheteria.* FROM bilheteiro, bilheteria, cuida WHERE bilheteiro.CPF = cuida.bilheteiroCPF AND cuida.bilheteriaId = bilheteria.Id AND bilheteiro.ativo=true;
 CREATE VIEW IF NOT EXISTS `alas_especies_v` as SELECT ala.id as alaId, especie.id as especieId, ala.nome as alaNome, especie.nomePopular, especie.nomeCientifico from ala, especie where ala.id = especie.alaId;
 CREATE VIEW IF NOT EXISTS `bilheteria_v` as SELECT bilheteria.id as id, bilheteria.localizacao as localizacao , SUM(ingresso.preco) as soma, count(ingresso.bilheteriaId) as contagem from ingresso, bilheteria where bilheteria.id = ingresso.bilheteriaId GROUP BY bilheteriaId;
+CREATE VIEW IF NOT EXISTS `bilheteria_v_completa` as select bilheteria.*, bilheteria_v.* from bilheteria LEFT JOIN bilheteria_v on bilheteria.id = bilheteria_v.id;
 
 /*-------------------Gatilhos-------------------*/
 
@@ -174,11 +175,18 @@ INSERT INTO "main"."animal" ("id", "nome", "sexo", "dataNascimento", "ativo", "c
 INSERT INTO "main"."animal" ("id", "nome", "sexo", "dataNascimento", "ativo", "createdAt", "updatedAt", "especieId") VALUES ('31', 'Fedô', 'M', '2017-08-25', '1', '2020-06-27 18:46:01.572 +00:00', '2020-06-27 18:46:01.572 +00:00', '25');
 INSERT INTO "main"."animal" ("id", "nome", "sexo", "dataNascimento", "ativo", "createdAt", "updatedAt", "especieId") VALUES ('32', 'Nhom', 'M', '2016-06-19', '1', '2020-06-27 18:46:20.771 +00:00', '2020-06-27 18:46:20.771 +00:00', '26');
 INSERT INTO "main"."animal" ("id", "nome", "sexo", "dataNascimento", "ativo", "createdAt", "updatedAt", "especieId") VALUES ('33', 'Pululante', 'F', '2013-06-29', '1', '2020-06-27 18:46:42.550 +00:00', '2020-06-27 18:46:42.550 +00:00', '27');
+
 /* BILHETERIAS */
 INSERT INTO "main"."bilheteria" ("id", "Localizacao", "createdAt", "updatedAt") VALUES ('1', 'Pátio 1', '2020-06-28 00:01:02.675 +00:00', '2020-06-28 00:01:02.675 +00:00');
 INSERT INTO "main"."bilheteria" ("id", "Localizacao", "createdAt", "updatedAt") VALUES ('2', 'Pátio 4', '2020-06-28 00:01:31.094 +00:00', '2020-06-28 00:01:31.094 +00:00');
 INSERT INTO "main"."bilheteria" ("id", "Localizacao", "createdAt", "updatedAt") VALUES ('3', 'Pátio 2', '2020-06-28 00:01:52.057 +00:00', '2020-06-28 00:01:52.057 +00:00');
 INSERT INTO "main"."bilheteria" ("id", "Localizacao", "createdAt", "updatedAt") VALUES ('4', 'Pátio 17', '2020-06-28 00:02:19.299 +00:00', '2020-06-28 00:02:19.299 +00:00');
+
+/* HORARIOS BILHETERIA */
+INSERT INTO "main"."horarioBilheteria" ("bilheteriaId", "horarioInicio", "horarioFinal", "createdAt", "updatedAt") VALUES ('1', '08:00', '15:00', '2020-06-28 00:01:03.079 +00:00', '2020-06-28 00:01:03.079 +00:00');
+INSERT INTO "main"."horarioBilheteria" ("bilheteriaId", "horarioInicio", "horarioFinal", "createdAt", "updatedAt") VALUES ('2', '08:50', '18:00', '2020-06-28 00:01:31.418 +00:00', '2020-06-28 00:01:31.418 +00:00');
+INSERT INTO "main"."horarioBilheteria" ("bilheteriaId", "horarioInicio", "horarioFinal", "createdAt", "updatedAt") VALUES ('3', '00:00', '18:00', '2020-06-28 00:01:52.537 +00:00', '2020-06-28 00:01:52.537 +00:00');
+INSERT INTO "main"."horarioBilheteria" ("bilheteriaId", "horarioInicio", "horarioFinal", "createdAt", "updatedAt") VALUES ('4', '08:00', '17:00', '2020-06-28 00:02:19.987 +00:00', '2020-06-28 00:02:19.987 +00:00');
 
 /* INGRESSOS */
 INSERT INTO "main"."ingresso" ("id", "bilheteriaId", "preco", "createdAt", "updatedAt") VALUES ('1', '1', '5.0', '2020-06-28 00:06:27', '2020-06-28 00:06:27.312 +00:00');
@@ -201,4 +209,59 @@ INSERT INTO "main"."bilheteiro" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endere
 INSERT INTO "main"."bilheteiro" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "bilheteriaId", "Ativo", "createdAt", "updatedAt") VALUES ('258465147', 'Maria Valquiria Silveira', '1999-08-09', '560.0', '487599', 'Rua Padre do Balão, 46', '56', '456', '987482', '2', '2', '1', '2020-06-28 00:11:59.230 +00:00', '2020-06-28 00:11:59.230 +00:00');
 INSERT INTO "main"."bilheteiro" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "bilheteriaId", "Ativo", "createdAt", "updatedAt") VALUES ('281946375', 'João Marcos Oliveira', '2000-05-05', '550.0', '159487', 'Rua Antenor Pereira, 1001', '45', '456', '685558', '5', '3', '1', '2020-06-28 00:12:51.763 +00:00', '2020-06-28 00:12:51.763 +00:00');
 
-/*  */
+/* CUIDA */
+INSERT INTO "main"."cuida" ("bilheteiroCPF", "bilheteriaId", "createdAt", "updatedAt") VALUES ('4591263755', '1', '2020-06-28 00:11:11.904 +00:00', '2020-06-28 00:11:11.904 +00:00');
+INSERT INTO "main"."cuida" ("bilheteiroCPF", "bilheteriaId", "createdAt", "updatedAt") VALUES ('258465147', '2', '2020-06-28 00:11:59.537 +00:00', '2020-06-28 00:11:59.537 +00:00');
+INSERT INTO "main"."cuida" ("bilheteiroCPF", "bilheteriaId", "createdAt", "updatedAt") VALUES ('281946375', '3', '2020-06-28 00:12:52.904 +00:00', '2020-06-28 00:12:52.904 +00:00');
+
+/* VETERINARIOS */
+INSERT INTO "main"."veterinario" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "CRMV", "Faculdade", "Ativo", "createdAt", "updatedAt") VALUES ('30980948', 'Hercules Mariano', '1987-09-09', '2000.0', '9280389', 'Rua Vinho Canção, 99', '092', '98', '39802938', '9', '289374', 'UNESP', '1', '2020-06-28 01:02:33.843 +00:00', '2020-06-28 01:02:33.843 +00:00');
+INSERT INTO "main"."veterinario" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "CRMV", "Faculdade", "Ativo", "createdAt", "updatedAt") VALUES ('37492870901837', 'Larisso Gomes', '1998-09-09', '2000.0', '03803847', 'Rua Sabão, 9', '98', '9807', '8787896', '8', '238746', 'USP', '1', '2020-06-28 01:06:51.589 +00:00', '2020-06-28 01:06:51.589 +00:00');
+INSERT INTO "main"."veterinario" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "CRMV", "Faculdade", "Ativo", "createdAt", "updatedAt") VALUES ('345678987', 'Davidsona Helen', '1988-09-28', '3000.0', '20930987', 'Rua Major Antonio, 12', '089', '987', '90878678990', '9', '2912928739', 'Uninove', '1', '2020-06-28 01:10:39.698 +00:00', '2020-06-28 01:10:39.698 +00:00');
+
+/* ATENDE */ 
+INSERT INTO "main"."atende" ("veterinarioCPF", "animalId", "data", "diagnostico", "createdAt", "updatedAt") VALUES ('345678987', '22', '2020-08-22', 'Síndrome de kafka (achou que era uma barata)', '2020-06-28 01:15:23.719 +00:00', '2020-06-28 01:15:23.719 +00:00');
+INSERT INTO "main"."atende" ("veterinarioCPF", "animalId", "data", "diagnostico", "createdAt", "updatedAt") VALUES ('30980948', '32', '2020-07-08', 'Comeu eucalipto estragado', '2020-06-28 01:16:14.793 +00:00', '2020-06-28 01:16:14.793 +00:00');
+INSERT INTO "main"."atende" ("veterinarioCPF", "animalId", "data", "diagnostico", "createdAt", "updatedAt") VALUES ('37492870901837', '12', '2020-12-02', 'Ficou azul', '2020-06-28 01:17:13.901 +00:00', '2020-06-28 01:17:13.901 +00:00');
+INSERT INTO "main"."atende" ("veterinarioCPF", "animalId", "data", "diagnostico", "createdAt", "updatedAt") VALUES ('37492870901837', '17', '2020-02-22', 'Na verdade não é uma cobra, e sim um rabo', '2020-06-28 01:18:05.355 +00:00', '2020-06-28 01:18:05.355 +00:00');
+
+/* SUPERVISIONA */
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '3', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '5', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '6', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '7', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '8', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '9', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('30980948', '13', '2020-06-28 01:02:34.208 +00:00', '2020-06-28 01:02:34.208 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '14', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '15', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '16', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '17', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '18', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '19', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '20', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('37492870901837', '21', '2020-06-28 01:06:51.931 +00:00', '2020-06-28 01:06:51.931 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('345678987', '22', '2020-06-28 01:10:40.025 +00:00', '2020-06-28 01:10:40.025 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('345678987', '23', '2020-06-28 01:10:40.025 +00:00', '2020-06-28 01:10:40.025 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('345678987', '24', '2020-06-28 01:10:40.025 +00:00', '2020-06-28 01:10:40.025 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('345678987', '25', '2020-06-28 01:10:40.025 +00:00', '2020-06-28 01:10:40.025 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('345678987', '26', '2020-06-28 01:10:40.025 +00:00', '2020-06-28 01:10:40.025 +00:00');
+INSERT INTO "main"."supervisiona" ("veterinarioCPF", "especieId", "createdAt", "updatedAt") VALUES ('345678987', '27', '2020-06-28 01:10:40.025 +00:00', '2020-06-28 01:10:40.025 +00:00');
+
+/* SERVIÇOS GERAIS */
+INSERT INTO "main"."servicosGerais" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "funcao", "ativo", "createdAt", "updatedAt") VALUES ('487487487', 'Jorge Matos', '2000-12-31', '700.0', '48757', 'Rua Antenor Pereira, 1001', '54', '456', '456544', '5', 'Segurança', '1', '2020-06-28 00:53:40.954 +00:00', '2020-06-28 00:53:40.954 +00:00');
+INSERT INTO "main"."servicosGerais" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "funcao", "ativo", "createdAt", "updatedAt") VALUES ('1648759588', 'Dalva Almeida', '1950-05-05', '700.0', '125547', 'Rua Tomb Raider, 12', '54', '456', '4645645', '5', 'Limpeza', '1', '2020-06-28 00:55:20.037 +00:00', '2020-06-28 00:55:20.037 +00:00');
+INSERT INTO "main"."servicosGerais" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "funcao", "ativo", "createdAt", "updatedAt") VALUES ('65487778', 'Marlene Matos', '1987-04-04', '700.0', '7652817', 'Rua Sofá de Esquina, 69', '76', '862', '87328648', '7', 'Limpeza', '1', '2020-06-28 00:56:32.267 +00:00', '2020-06-28 00:56:32.267 +00:00');
+INSERT INTO "main"."servicosGerais" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "funcao", "ativo", "createdAt", "updatedAt") VALUES ('4195758857', 'Marcela Dion', '1987-08-08', '700.0', '98371', 'Rua Mesa Giratória, 99', '89', '988', '83428939', '9', 'Segurança', '1', '2020-06-28 00:58:04.277 +00:00', '2020-06-28 00:58:04.277 +00:00');
+INSERT INTO "main"."servicosGerais" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "funcao", "ativo", "createdAt", "updatedAt") VALUES ('123456789', 'Thor Lerisso', '2000-08-08', '700.0', '92387938', 'Rua Televisão 87 Polegadas, 12', '98', '978', '978654', '9', 'Segurança', '1', '2020-06-28 00:59:30.228 +00:00', '2020-06-28 00:59:30.228 +00:00');
+INSERT INTO "main"."servicosGerais" ("CPF", "Nome", "ddn", "Salario", "CLT", "Endereco", "Banco", "Agencia", "Conta", "Digito", "funcao", "ativo", "createdAt", "updatedAt") VALUES ('9876543', 'Kiko do KLB', '1987-08-08', '700.0', '02938', 'Rua Musicos, 1', '02', '389', '93849', '9', 'Limpeza', '1', '2020-06-28 01:00:28.056 +00:00', '2020-06-28 01:00:28.056 +00:00');
+
+/* TRABALHA */
+INSERT INTO "main"."trabalha" ("alaId", "servicosGeraisCPF", "horarioInicio", "horariofim", "createdAt", "updatedAt") VALUES ('22', '487487487', '08:00', '12:00', '2020-06-28 00:53:41.262 +00:00', '2020-06-28 00:53:41.262 +00:00');
+INSERT INTO "main"."trabalha" ("alaId", "servicosGeraisCPF", "horarioInicio", "horariofim", "createdAt", "updatedAt") VALUES ('22', '1648759588', '06:00', '22:00', '2020-06-28 00:55:20.421 +00:00', '2020-06-28 00:55:20.421 +00:00');
+INSERT INTO "main"."trabalha" ("alaId", "servicosGeraisCPF", "horarioInicio", "horariofim", "createdAt", "updatedAt") VALUES ('28', '65487778', '06:00', '00:00', '2020-06-28 00:56:32.702 +00:00', '2020-06-28 00:56:32.702 +00:00');
+INSERT INTO "main"."trabalha" ("alaId", "servicosGeraisCPF", "horarioInicio", "horariofim", "createdAt", "updatedAt") VALUES ('28', '4195758857', '23:00', '06:00', '2020-06-28 00:58:04.602 +00:00', '2020-06-28 00:58:04.602 +00:00');
+INSERT INTO "main"."trabalha" ("alaId", "servicosGeraisCPF", "horarioInicio", "horariofim", "createdAt", "updatedAt") VALUES ('29', '123456789', '02:00', '20:00', '2020-06-28 00:59:30.465 +00:00', '2020-06-28 00:59:30.465 +00:00');
+INSERT INTO "main"."trabalha" ("alaId", "servicosGeraisCPF", "horarioInicio", "horariofim", "createdAt", "updatedAt") VALUES ('29', '9876543', '00:00', '13:00', '2020-06-28 01:00:28.385 +00:00', '2020-06-28 01:00:28.385 +00:00');
+
+/* FIM */

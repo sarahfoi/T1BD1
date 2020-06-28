@@ -11,7 +11,6 @@
                 <% var i = 1; 
                 for (i = 0; i < 1; i++){ %>
             <form method='POST' action="/atualizaAla/">
-                <input type="hidden" name="alaId">
                 <div class="form-group">
                     <label for="cod">Código</label>
                     <input type="number" id="cod" name="cod" value= "<%= elem[i].id %>" readonly>
@@ -25,21 +24,40 @@
                     <input type="text" id="localizacao" name="localizacao" value="<%= elem[i].localizacao %>" required>
                 </div>
                 <% } %>
-                <!-- Horarios ala -->
-                <% var i = 1; 
-                elem.forEach(e => { %>
-                <div class="form-group">
-                    <label for="horarioInicio">Horário de Abertura <%=i%></label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" value= "<%= e.horarioInicio %>" required>
+                <div class="row my-0">
+                    <button type="submit" class="btn btn-primary">Atualizar ala</button>
                 </div>
-                <div class="form-group">
-                    <label for="horarioFinal">Horário de Fechamento <%=i%></label>
-                    <input type="time" id="horarioFinal" name="horarioFinal" value= "<%= e.horarioFinal %>" required>
-                </div>
-                <% i++;}) %>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+                <!-- Horarios ala -->
+                <% var i = 0; 
+                elem.forEach(e => { %>
+                    <form method="post" action="/removeHorarioAla">
+                        <input type="hidden" name="alaId" value='<%=e.id%>'>
+                        <div class="row my-0">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="horarioInicio">Horário de Abertura <%=i%></label>
+                                    <input type="time" id="horarioInicio" name="horarioInicio" value= "<%= e.horarioInicio %>" required>
+                                </div>        
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="horarioFinal">Horário de Fechamento <%=i%></label>
+                                    <input type="time" id="horarioFinal" name="horarioFinal" value= "<%= e.horarioFinal %>" required>
+                                </div>  
+                            </div>
+                            <div class="col-sm-1 align-middle">
+                                <button type="submit" class="btn btn-link align-middle"><i data-feather="trash-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                <% i++;}) %>
+                <div class="row mb-3 mt-0">
+                    <div class="col-sm-12">
+                        <a type="button" href="/update/Ala/horarioAla/<%= elem[0].id%>" class="btn btn-primary">Inserir novo horário</a>
+                    </div>
+                </div>
+                
             <% } %>
 
             <% if (tabela == 'Animal') { %>
@@ -101,25 +119,43 @@
                 <input type="hidden" name="bilheteriaId">
                 <div class="form-group">
                     <label for="numBilheteria">Número Bilheteria</label>
-                    <input type="number" id="numBilheteria" name="numBilheteria" value= '<%= elem.id %>' readonly>
+                    <input type="number" id="numBilheteria" name="numBilheteria" value= '<%= elem[0].id %>' readonly>
                 </div>
                 <div class="form-group">
                     <label for="localizacao">Localização</label>
-                    <input type="text" id="localizacao" name="localizacao" value= '<%= elem.Localizacao %>' required>
+                    <input type="text" id="localizacao" name="localizacao" value= '<%= elem[0].Localizacao %>' required>
                 </div>
-
-                <!--Horario Bilheteria-->
-                <div class="form-group">
-                    <label for="horarioInicio">Horário Início</label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" value= '<%= elem.horarioInicio %>' required>
+                </form>
+                <!-- Horarios ala -->
+                <% var i = 0; 
+                elem.forEach(e => { %>
+                    <form method="post" action="/removeHorarioBilheteria">
+                        <input type="hidden" name="bilheteriaId" value='<%=e.id%>'>
+                        <div class="row my-0">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="horarioInicio">Horário de Abertura <%=i%></label>
+                                    <input type="time" id="horarioInicio" name="horarioInicio" value= "<%= e.horarioInicio %>" required>
+                                </div>        
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="horarioFinal">Horário de Fechamento <%=i%></label>
+                                    <input type="time" id="horarioFinal" name="horarioFinal" value= "<%= e.horarioFinal %>" required>
+                                </div>  
+                            </div>
+                            <div class="col-sm-1 align-middle">
+                                <button type="submit" class="btn btn-link align-middle"><i data-feather="trash-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                <% i++;}) %>
+                <div class="row mb-3 mt-0">
+                    <div class="col-sm-12">
+                        <a type="button" href="/update/Bilheteria/horarioBilheteria/<%= elem[0].id%>" class="btn btn-primary">Inserir novo horário</a>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="horarioFinal">Horário Final</label>
-                    <input type="time" id="horarioFinal" name="horarioFinal" value= '<%= elem.horarioFinal %>' required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            
             <% } %>
 
             <% if (tabela == 'Especie') { %>
@@ -179,6 +215,7 @@
                         <option value="Limpeza">Limpeza</option>
                     </select>
                 </div>
+                
                 <!--Trabalha-->
                 <div class="form-group">
                     <label for="codAla">Código Ala</label>
@@ -261,6 +298,8 @@
         </div>
     </main>
 
-
+    <script>
+        feather.replace()
+    </script>
 </body>
 <%- include('partials/foot.ejs'); %>

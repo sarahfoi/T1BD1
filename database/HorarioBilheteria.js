@@ -10,10 +10,12 @@ const HorarioBilheteria = connection.define( 'horarioBilheteria',{
     },
     horarioInicio:{
         type: Sequelize.TIME,
+        primaryKey: true,
         allowNull: false
     },
     horarioFinal:{
         type: Sequelize.TIME,
+        primaryKey: true,
         allowNull: false
     }
 },{
