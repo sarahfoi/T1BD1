@@ -116,7 +116,7 @@
 
             <% if (tabela == 'Bilheteria') { %>
             <form method='POST' action="/atualizaBilheteria">
-                <input type="hidden" name="bilheteriaId">
+                
                 <div class="form-group">
                     <label for="numBilheteria">Número Bilheteria</label>
                     <input type="number" id="numBilheteria" name="numBilheteria" value= '<%= elem[0].id %>' readonly>
@@ -215,23 +215,43 @@
                         <option value="Limpeza">Limpeza</option>
                     </select>
                 </div>
-                
-                <!--Trabalha-->
-                <div class="form-group">
-                    <label for="codAla">Código Ala</label>
-                    <input type="number" id="codAla" name="codAla" value= '<%= elem.alaId %>' required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioInicio">Horário Início</label>
-                    <input type="time" id="horarioInicio" name="horarioInicio" value= '<%= elem.horarioInicio %>' required>
-                </div>
-                <div class="form-group">
-                    <label for="horarioFinal">Horário Final</label>
-                    <input type="time" id="horarioFinal" name="horarioFinal" value= '<%= elem.horariofim %>' required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Alterar Funcionário</button>
             </form>
+            <!-- Trabalha -->
+                <% var i = 0; 
+                elem.forEach(e => { %>
+                    <form method="get" action="/removeHorarioSG">
+                        <input type="hidden" id = "servicosGeraisCPF" name="servicosGeraisCPF" value='<%=e.servicosGeraisCPF%>'>
+                        <div class="row my-0">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="alaId">ID da Ala <%=i%></label>
+                                    <input type="number" id="alaId" name="alaId" value= "<%= e.alaId %>" readonly>
+                                </div>        
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="horarioInicio">Horário de Início <%=i%></label>
+                                    <input type="time" id="horarioInicio" name="horarioInicio" value= "<%= e.horarioInicio %>" required>
+                                </div>        
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="horariofim">Horário de Encerramento <%=i%></label>
+                                    <input type="time" id="horariofim" name="horariofim" value= "<%= e.horariofim %>" required>
+                                </div>  
+                            </div>
+                            <div class="col-sm-1 align-middle">
+                                <button type="submit" class="btn btn-link align-middle"><i data-feather="trash-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                <% i++;}) %>
+                <div class="row mb-3 mt-0">
+                    <div class="col-sm-12">
+                        <a type="button" href="/update/SG/horarioSG/<%= elem[0].servicosGeraisCPF%>" class="btn btn-primary">Inserir novo horário</a>
+                    </div>
+                </div>
             <% } %>
 
             <% if (tabela == 'Veterinario') { %>
@@ -260,8 +280,46 @@
 
             <% if (tabela == 'Bilheteiro') { %>
             <form method='POST' action="/atualizaBilheteiro">
-
-                <%- include('partials/funcionario_update.ejs');  %>
+                <div class="form-group">
+                    <label for="CPF">CPF</label>
+                    <input type="number" id="CPF" name="CPF" value= "<%= elem.CPF %>" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" value= "<%= elem.Nome %> " required>
+                </div>
+                <div class="form-group">
+                    <label for="ddn">Data de Nascimento</label>
+                    <input type="date" id="ddn" name="ddn" value= "<%= elem.ddn %>" required> 
+                </div>
+                <div class="form-group">
+                    <label for="salario">Salário</label>
+                    <input type="number" id="salario" name="salario" value= "<%= elem.Salario %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="CLT">CLT</label>
+                    <input type="number" id="CLT" name="CLT" value= "<%= elem.CLT %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Endereço</label>
+                    <input type="text" id="endereco" name="endereco" value= "<%= elem.Endereco %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="banco">Banco</label>
+                    <input type="number" id="banco" name="banco" value= "<%= elem.Banco %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="agencia">Agência</label>
+                    <input type="number" id="agencia" name="agencia" value= "<%= elem.Agencia %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="conta">Conta</label>
+                    <input type="number" id="conta" name="conta" value= "<%= elem.Conta %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="digito">Dígito</label>
+                    <input type="number" id="digito" name="digito" value= "<%= elem.Digito %>" required>
+                </div>
 
                 <!--Cuida-->
                 <div class="form-group">

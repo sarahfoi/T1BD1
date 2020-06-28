@@ -256,13 +256,21 @@ app.get('/update/ServicosGerais/:CPF', (req, res) => {
         },
         type: QueryTypes.SELECT
     }).then((elem => {
-        //console.log(elem[0]);
+        console.log(elem);
         res.render('update', {
             tabela: 'ServicosGerais',
             elem: elem
         })
     })).catch(err => {
         //console.log(err);
+    });
+});
+
+app.get('/update/SG/horarioSG/:id', (req,res)=>{
+    //para inserir um novo horário
+    var id = req.params.id;
+    res.render('insert_sg_horario', {
+        servicosgerais: id
     });
 });
 
@@ -485,10 +493,25 @@ app.get('/removeBilheteiro/:CPF', (req, res) => {
     });
 });
 
+//Falta: Consertar. Está removendo fisicamente da view e nao ta removendo logicamente da tabela
 app.get('/removeServicosGerais/:CPF', (req, res) => {
     var CPF = req.params.CPF;
     sequelize.query('DELETE FROM servicosGerais_v where CPF = :CPF', {
         replacements: { CPF: CPF }
+    }).then(() => {
+        res.redirect('/select/ServicosGerais')
+    });
+});
+
+//Falta: Consertar. Body está vindo vazio.
+app.get('/removeHorarioSG', (req, res) => {
+   // console.log(req.body.servicosGeraisCPF);
+    var servicosGeraisCPF = req.body.servicosGeraisCPF;
+    var alaId = req.body.alaId;
+    var horarioInicio= req.body.horarioInicio;
+    var horarioFim=req.body.horarioFim
+    sequelize.query('DELETE FROM trabalha where servicosGeraisCPF = :servicosGeraisCPF AND alaId = :alaId AND horarioInicio = :horarioInicio AND horarioFim = :horarioFim', {
+        replacements: { servicosGeraisCPF: servicosGeraisCPF, alaId: alaId, horarioInicio: horarioInicio, horarioFim: horarioFim}
     }).then(() => {
         res.redirect('/select/ServicosGerais')
     });
@@ -772,6 +795,7 @@ app.post("/insert/horarioSG", (req, res) => {
 });
 
 app.post("/insereSG/horario", (req, res) => {
+    console.log(req.body);
     var horarioInicio = req.body.horarioInicio;
     var horariofim = req.body.horariofim;
     var alaId = req.body.alaId;
@@ -789,6 +813,7 @@ app.post("/insereSG/horario", (req, res) => {
     });
 });
 
+//Falta: Consertar. Fala que estou violando a UNIQUE constraint.
 app.post("/insert/especieVeterinario", (req, res) => {
     var CPF = req.body.CPF;
     var ddn = req.body.ddn;
@@ -804,8 +829,8 @@ app.post("/insert/especieVeterinario", (req, res) => {
     var Faculdade = req.body.faculdade
     var especieId = req.body.codEspecie;
     var today = new Date();
-    sequelize.query('INSERT INTO veterinario (CPF, ddn, Nome, Salario, CLT, Endereco, Banco, Agencia, Conta, Digito, CRMV, Faculdade, createdAt, updatedAt) VALUES (:CPF, :ddn, :Nome, :Salario, :Banco, :Agencia, :Conta, :Digito, :CRMV, :Faculdade, :createdAt,:updatedAt)', {
-    replacements: { CPF: CPF, ddn: ddn, Nome: Nome, Salario: Salario, CLT: CLT, Endereco: Endereco, Banco: Banco, Conta: Conta, Digito: Digito, CRMV: CRMV, Faculdade: Faculdade, createdAt: today, updatedAt: today }
+    sequelize.query('INSERT INTO veterinario (CPF, ddn, Nome, Salario, CLT, Endereco, Banco, Agencia, Conta, Digito, CRMV, Faculdade, createdAt, updatedAt) VALUES (:CPF, :ddn, :Nome, :Salario, :CLT, :Endereco,:Banco, :Agencia, :Conta, :Digito, :CRMV, :Faculdade, :createdAt,:updatedAt)', {
+    replacements: { Agencia: Agencia, CPF: CPF, ddn: ddn, Nome: Nome, Salario: Salario, CLT: CLT, Endereco: Endereco, Banco: Banco, Conta: Conta, Digito: Digito, CRMV: CRMV, Faculdade: Faculdade, createdAt: today, updatedAt: today }
     }).then((inserido) => {
         res.render('insert_veterinario', {
             veterinario: inserido.id

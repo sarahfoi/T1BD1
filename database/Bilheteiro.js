@@ -40,7 +40,7 @@ const Bilheteiro = connection.define( 'bilheteiro',{
     Conta:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true
+        unique: false
     },
     Digito:{
         type: Sequelize.CHAR,
