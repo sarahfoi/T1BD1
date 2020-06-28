@@ -261,21 +261,38 @@
 
                 <div class="form-group">
                     <label for="CRMV">CRMV</label>
-                    <input type="number" id="CRMV" name="CRMV" value= "<%= elem.CRMV %>" required>
+                    <input type="number" id="CRMV" name="CRMV" value= "<%= elem[0].CRMV %>" required>
                 </div>
                 <div class="form-group">
                     <label for="faculdade">Faculdade</label>
-                    <input type="text" id="faculdade" name="faculdade" value= "<%= elem.Faculdade %>" required>
+                    <input type="text" id="faculdade" name="faculdade" value= "<%= elem[0].Faculdade %>" required>
                 </div>
-
-                <!-- Supervisiona -->
-                <div class="form-group">
-                    <label for="codEspecie">Código Especie</label>
-                    <input type="number" id="codEspecie" name="codEspecie" value= "<%= elem.especieId %>" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Alterar veterinário</button>
             </form>
+                <!-- Supervisiona -->
+                <% var i = 0; 
+                elem.forEach(e => { %>
+                    <form method="post" action="/removeSupervisiona">
+                        <input type="hidden" id = "veterinarioCPF" name="veterinarioCPF" value='<%=e.CPF%>'>
+                        <div class="row my-0">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="especieId">Código Especie</label>
+                                    <input type="number" id="especieId" name="especieId" value= "<%= e.especieId %>" required>
+                                </div>        
+                            </div>
+                            <div class="col-sm-1 align-middle">
+                                <button type="submit" class="btn btn-link align-middle"><i data-feather="trash-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                <% i++;}) %>
+                <div class="row mb-3 mt-0">
+                    <div class="col-sm-12">
+                        <a type="button" href="/update/Veterinario/Supervisiona/<%= elem[0].CPF%>" class="btn btn-primary">Inserir nova espécie</a>
+                    </div>
+                </div>
+            
             <% } %>
 
             <% if (tabela == 'Bilheteiro') { %>

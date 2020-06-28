@@ -184,7 +184,7 @@ app.get('/update/Bilheteria/:id', (req, res) => {
         replacements: { id: id },
         type: QueryTypes.SELECT
     }).then(elem => {
-        console.log(elem);
+        //console.log(elem);
         res.render('update', {
             tabela: 'Bilheteria',
             elem: elem
@@ -256,7 +256,7 @@ app.get('/update/ServicosGerais/:CPF', (req, res) => {
         },
         type: QueryTypes.SELECT
     }).then((elem => {
-        console.log(elem);
+        //console.log(elem);
         res.render('update', {
             tabela: 'ServicosGerais',
             elem: elem
@@ -276,10 +276,11 @@ app.get('/update/SG/horarioSG/:id', (req,res)=>{
 
 app.get('/update/Veterinario/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    const resultado = sequelize.query('SELECT * FROM veterinario, supervisiona WHERE veterinarioCPF = :CPF', {
+    const resultado = sequelize.query('SELECT * FROM veterinario, supervisiona WHERE veterinarioCPF = :CPF and veterinarioCPF = CPF', {
         replacements: { CPF: CPF },
         type: QueryTypes.SELECT
     }).then((elem => {
+       // console.log(elem);
         res.render('update', {
             tabela: 'Veterinario',
             elem: elem
@@ -373,7 +374,7 @@ app.get('/select/Bilheteria', (req, res) => {
     sequelize.query('SELECT * FROM bilheteria_v_completa', {
         mapToModel: true
     }).then((resultado) => {
-        console.log(resultado);
+       // console.log(resultado);
         res.render('select', {
             tabela: 'Bilheteria',
             resultado: resultado[0],
@@ -493,24 +494,22 @@ app.get('/removeBilheteiro/:CPF', (req, res) => {
     });
 });
 
-//Falta: Consertar. Está removendo fisicamente da view e nao ta removendo logicamente da tabela
 app.get('/removeServicosGerais/:CPF', (req, res) => {
     var CPF = req.params.CPF;
-    sequelize.query('DELETE FROM servicosGerais_v where CPF = :CPF', {
+    sequelize.query('DELETE FROM servicosGerais where CPF = :CPF', {
         replacements: { CPF: CPF }
     }).then(() => {
         res.redirect('/select/ServicosGerais')
     });
 });
 
-//Falta: Consertar. Body está vindo vazio.
 app.get('/removeHorarioSG', (req, res) => {
-   // console.log(req.body.servicosGeraisCPF);
-    var servicosGeraisCPF = req.body.servicosGeraisCPF;
-    var alaId = req.body.alaId;
-    var horarioInicio= req.body.horarioInicio;
-    var horarioFim=req.body.horarioFim
-    sequelize.query('DELETE FROM trabalha where servicosGeraisCPF = :servicosGeraisCPF AND alaId = :alaId AND horarioInicio = :horarioInicio AND horarioFim = :horarioFim', {
+    console.log(req.query);
+    var servicosGeraisCPF = req.query.servicosGeraisCPF;
+    var alaId = req.query.alaId;
+    var horarioInicio= req.query.horarioInicio;
+    var horarioFim=req.query.horariofim
+    sequelize.query('DELETE FROM trabalha where servicosGeraisCPF = :servicosGeraisCPF AND alaId = :alaId AND horarioInicio = :horarioInicio AND horariofim = :horarioFim', {
         replacements: { servicosGeraisCPF: servicosGeraisCPF, alaId: alaId, horarioInicio: horarioInicio, horarioFim: horarioFim}
     }).then(() => {
         res.redirect('/select/ServicosGerais')
@@ -795,7 +794,7 @@ app.post("/insert/horarioSG", (req, res) => {
 });
 
 app.post("/insereSG/horario", (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     var horarioInicio = req.body.horarioInicio;
     var horariofim = req.body.horariofim;
     var alaId = req.body.alaId;
@@ -813,7 +812,6 @@ app.post("/insereSG/horario", (req, res) => {
     });
 });
 
-//Falta: Consertar. Fala que estou violando a UNIQUE constraint.
 app.post("/insert/especieVeterinario", (req, res) => {
     var CPF = req.body.CPF;
     var ddn = req.body.ddn;
@@ -827,16 +825,18 @@ app.post("/insert/especieVeterinario", (req, res) => {
     var Digito = req.body.Digito;
     var CRMV = req.body.CRMV;
     var Faculdade = req.body.faculdade
-    var especieId = req.body.codEspecie;
     var today = new Date();
-    sequelize.query('INSERT INTO veterinario (CPF, ddn, Nome, Salario, CLT, Endereco, Banco, Agencia, Conta, Digito, CRMV, Faculdade, createdAt, updatedAt) VALUES (:CPF, :ddn, :Nome, :Salario, :CLT, :Endereco,:Banco, :Agencia, :Conta, :Digito, :CRMV, :Faculdade, :createdAt,:updatedAt)', {
-    replacements: { Agencia: Agencia, CPF: CPF, ddn: ddn, Nome: Nome, Salario: Salario, CLT: CLT, Endereco: Endereco, Banco: Banco, Conta: Conta, Digito: Digito, CRMV: CRMV, Faculdade: Faculdade, createdAt: today, updatedAt: today }
+    sequelize.query('INSERT INTO veterinario (CPF, ddn, Nome, Salario, CLT, Endereco, Banco, Agencia, Conta, Digito, CRMV, Faculdade, Ativo, createdAt, updatedAt) VALUES (:CPF, :ddn, :Nome, :Salario, :CLT, :Endereco,:Banco, :Agencia, :Conta, :Digito, :CRMV, :Faculdade, :Ativo, :createdAt,:updatedAt);', {
+        replacements: { Agencia: Agencia, CPF: CPF, ddn: ddn, Nome: Nome, Salario: Salario, CLT: CLT, Endereco: Endereco, Banco: Banco, Conta: Conta, Digito: Digito, CRMV: CRMV, Faculdade: Faculdade, Ativo: true, createdAt: today, updatedAt: today },
+        type: QueryTypes.INSERT
     }).then((inserido) => {
         res.render('insert_veterinario', {
-            veterinario: inserido.id
+            veterinario: CPF
         });
+        //console.log(inserido);
     }).catch((e) => {
         alert('ERRO AO INSERIR ' + e)
+        console.log(e)
         res.redirect("/insert/Veterinario")
     });
 });
@@ -850,10 +850,11 @@ app.post("/insereVeterinario/especie", (req, res) => {
         replacements: { veterinarioCPF: veterinarioCPF, especieId: especieId, createdAt: today, updatedAt: today }
     }).then(() => {
         res.render("insert_veterinario", {
-            veterinario: veterinario
+            veterinario: veterinarioCPF
         })
     }).catch((e) => {
         alert('ERRO AO INSERIR ' + e)
+        console.log(e)
         res.redirect("/insert/Veterinario")
     });
 });
@@ -1153,10 +1154,10 @@ app.get('/busca/Bilheteria', (req, res) => {
     })
 });
 
-app.get('/busca/Especies', (req, res) => {
+app.get('/busca/Especie', (req, res) => {
     var busca = req.query.busca;
     //console.log(busca);
-    sequelize.query('SELECT * FROM especie where nomePopular= :busca OR nomeCientifico= :busca OR estado= :busca OR alaId = :busca', {
+    sequelize.query('SELECT * FROM alas_especies_v where especieId = :busca or alaNome = :busca or nomePopular= :busca OR nomeCientifico= :busca OR estado= :busca OR alaId = :busca', {
         replacements: {
             busca: busca
         },
@@ -1189,10 +1190,10 @@ app.get('/busca/Ingresso', (req, res) => {
     })
 });
 
-app.get('/busca/Bilheteiro', (req, res) => {
+app.get('/busca/ServicosGerais', (req, res) => {
     var busca = req.query.busca;
     //console.log(busca);
-    sequelize.query('SELECT * FROM bilheteiro_v where Nome= :busca OR CPF= :busca OR ddn= :busca OR Salario= :busca OR CLT= :busca OR Endereco= :busca OR funcao = :busca OR id = :busca OR nome = :busca OR localizacao = :busca', {
+    sequelize.query('SELECT * FROM servicosGerais_v where Nome= :busca OR CPF= :busca OR ddn= :busca OR Salario= :busca OR CLT= :busca OR Endereco= :busca OR funcao = :busca OR id = :busca OR nome = :busca OR localizacao = :busca', {
         replacements: {
             busca: busca
         },
@@ -1200,9 +1201,9 @@ app.get('/busca/Bilheteiro', (req, res) => {
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
-            tabela: 'Bilheteiro',
+            tabela: 'ServicosGerais',
             resultado: resultado,
-            insert: '/insert/Bilheteiro'
+            insert: '/insert/ServicosGerais'
         })
     })
 });
