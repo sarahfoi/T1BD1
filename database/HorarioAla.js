@@ -8,7 +8,12 @@ const HorarioAla = connection.define( 'horarioAla',{
         primaryKey: true,
         allowNull: false
     },
-    horario:{
+    horarioInicio:{
+        type: Sequelize.TIME,
+        allowNull: false,
+        primaryKey: true
+    },
+    horarioFinal:{
         type: Sequelize.TIME,
         allowNull: false,
         primaryKey: true

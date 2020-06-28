@@ -26,7 +26,6 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//*Falta: tratamento de erros
 
 /*-------------ROTAS-------------*/
 
@@ -274,20 +273,34 @@ app.get('/select/Home', (req, res) => {
 
 app.get('/select/Ala', (req, res) => {
     var id = req.params.id;
-    sequelize.query('SELECT * FROM ala', {
-        model: Ala,
-        mapToModel: true // pass true here if you have any mapped fields
-    }).then((resultado) => {
+    var resultado;
+    var i = 0;
+    sequelize.query('SELECT * FROM ala ORDER BY nome ASC', {
+        type: QueryTypes.SELECT
+    }).then(alas => {
+       // console.log(alas);
+        /*alas.forEach(ala => {
+            i++;
+            sequelize.query('SELECT * FROM horarioAla where alaId = :id', {
+                replacements: { id: ala.id },
+                type: QueryTypes.SELECT
+            }).then((horarios) => {
+                const novo = { ala, horarios };
+               // console.log(novo);
+                alas[i] = novo;
+            })
+        });
+        console.log(alas);*/
         res.render('select', {
             tabela: 'Ala',
-            resultado: resultado,
+            resultado: alas,
             insert: '/insert/Ala'
-        })
-    })
+        });
+    });
 });
 
 app.get('/select/Animal', (req, res) => {
-    sequelize.query('SELECT * FROM animal where ativo = :ativo', {
+    sequelize.query('SELECT * FROM animal where ativo = :ativo ORDER BY nome asc', {
         replacements: { ativo: true },
         model: Animal,
         mapToModel: true // pass true here if you have any mapped fields
@@ -301,7 +314,7 @@ app.get('/select/Animal', (req, res) => {
 });
 
 app.get('/select/Atende', (req, res) => {
-    sequelize.query('SELECT * FROM atende', {
+    sequelize.query('SELECT * FROM atende order by data desc', {
         model: Atende,
         mapToModel: true
     }).then((resultado) => {
@@ -315,7 +328,7 @@ app.get('/select/Atende', (req, res) => {
 
 
 app.get('/select/Bilheteiro', (req, res) => {
-    sequelize.query('SELECT * FROM bilheteiro WHERE ativo = :ativo', {
+    sequelize.query('SELECT * FROM bilheteiro WHERE ativo = :ativo order by Nome asc', {
         replacements: { ativo: true },
         model: Bilheteiro,
         mapToModel: true
@@ -329,20 +342,19 @@ app.get('/select/Bilheteiro', (req, res) => {
 });
 
 app.get('/select/Bilheteria', (req, res) => {
-    sequelize.query('SELECT * FROM bilheteria', {
-        model: Bilheteria,
+    sequelize.query('SELECT * FROM bilheteria_v order by soma desc', {
         mapToModel: true
     }).then((resultado) => {
         res.render('select', {
             tabela: 'Bilheteria',
-            resultado: resultado,
+            resultado: resultado[0],
             insert: '/insert/Bilheteria'
         })
     })
 });
 
 app.get('/select/Especie', (req, res) => {
-    sequelize.query('SELECT * FROM especie', {
+    sequelize.query('SELECT * FROM especie order by nomePopular asc', {
         model: Especie,
         mapToModel: true
     }).then((resultado) => {
@@ -355,7 +367,7 @@ app.get('/select/Especie', (req, res) => {
 });
 
 app.get('/select/ServicosGerais', (req, res) => {
-    sequelize.query('SELECT * FROM servicosGerais where ativo = :ativo', {
+    sequelize.query('SELECT * FROM servicosGerais where ativo = :ativo order by Nome asc', {
         replacements: { ativo: true },
         model: ServicosGerais,
         mapToModel: true
@@ -369,7 +381,7 @@ app.get('/select/ServicosGerais', (req, res) => {
 });
 
 app.get('/select/Veterinario', (req, res) => {
-    sequelize.query('SELECT * FROM veterinario_v', {
+    sequelize.query('SELECT * FROM veterinario_v group by Nome order by Nome asc', {
         replacements: { ativo: true },
         mapToModel: true
     }).then(resultado => {
@@ -383,7 +395,7 @@ app.get('/select/Veterinario', (req, res) => {
 });
 
 app.get('/select/Ingresso', (req, res) => {
-    sequelize.query('SELECT * FROM ingresso', {
+    sequelize.query('SELECT * FROM ingresso order by createdAt desc', {
         model: Ingresso,
         mapToModel: true
     }).then((resultado) => {
@@ -479,53 +491,11 @@ app.get('/removeAnimal/:id', (req, res) => {
     });
 });
 
-//FUNÇÕES DE BUSCA TODOS
-/*
-app.get('/buscatodosCuida', (req, res) => {
-    Cuida.findAll({
-        atributes: ['CPF', 'numBilheteria']
-    }).then(() => {
-        res.redirect('/select/Cuida')
-    });
-});
-
-app.get('/buscatodosHorarioAla', (req, res) => {
-    HorarioAla.findAll({
-        atributes: ['cod', 'horario']
-    }).then(() => {
-        res.render('/select/Ala')
-    });
-});
-
-app.get('/buscatodosHorarioBilheteria', (req, res) => {
-    HorarioBilheteria.findAll({
-        atributes: ['cod', 'horarioInicio', 'horarioFinal']
-    }).then(() => {
-        res.render('/select/Bilheteria')
-    });
-});
-
-app.get('/buscatodosSupervisiona', (req, res) => {
-    Supervisiona.findAll({
-        atributes: ['CPF', 'codEspecie']
-    }).then(() => {
-        res.redirect('/Veterinario')
-    });
-});
-
-app.get('/buscatodosTrabalha', (req, res) => {
-    Trabalha.findAll({
-        atributes: ['CPF', 'codAla', 'horarioInicio', 'horarioFim']
-    }).then(() => {
-        res.redirect('/ServicosGerais')
-    });
-});
-*/
 
 //FUNÇÕES DE INSERÇÃO
 
-//*Falta: alterar os inserts para raw query. Se der tempo. Última prioridade.
-app.post("/insereAla", (req, res) => {
+app.post("/insert/horarioAla", (req, res) => {
+    //insere ala e renderiza insert/horarioAla
     var nome = req.body.nome;
     var localizacao = req.body.localizacao;
     var horario = req.body.horario;
@@ -533,11 +503,23 @@ app.post("/insereAla", (req, res) => {
         localizacao: localizacao,
         nome: nome
     }).then((inserido) => {
-        HorarioAla.create({
-            alaId: inserido.id,
-            horario: horario
-        }).then(() => {
-            res.redirect('/insert/Ala');
+        console.log(inserido);
+        res.render('insert_horario', {
+            ala: inserido.id
+        });
+    });
+});
+
+app.post("/insereAla/horario", (req, res) => {
+    var horarioInicio = req.body.horarioInicio;
+    var horarioFinal = req.body.horarioFinal;
+    var alaId = req.body.alaId;
+    var today = new Date();
+    sequelize.query('INSERT INTO horarioAla (alaId, horarioInicio, horarioFinal, createdAt, updatedAt) VALUES (:alaId, :horarioInicio, :horarioFinal, :createdAt, :updatedAt)', {
+        replacements: { alaId: alaId, horarioInicio: horarioInicio, horarioFinal: horarioFinal, createdAt: today, updatedAt: today }
+    }).then(() => {
+        res.render("insert_horario", {
+            ala: alaId
         })
     });
 });
@@ -554,6 +536,9 @@ app.post("/insereAnimal", (req, res) => {
         especieId: codEspecie,
         ativo: true
     }).then(() => {
+        res.redirect("/insert/Animal")
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
         res.redirect("/insert/Animal")
     });
 });
@@ -590,6 +575,9 @@ app.post("/insereBilheteiro", (req, res) => {
             bilheteriaId: numBilheteria
         }).then(() => {
             res.redirect("/insert/Bilheteiro")
+        }).catch((e) => {
+            alert('ERRO AO INSERIR ' + e)
+            res.redirect("/insert/Bilheteiro")
         });
     });
 });
@@ -605,6 +593,9 @@ app.post("/insereAtende", (req, res) => {
         data: data,
         diagnostico: diagnostico,
     }).then(() => {
+        res.redirect("/insert/Atende")
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
         res.redirect("/insert/Atende")
     });
 });
@@ -624,6 +615,9 @@ app.post("/insereBilheteria", (req, res) => {
             res.redirect("/insert/Bilheteria")
         })
 
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
+        res.redirect("/insert/Bilheteria")
     });
 });
 
@@ -643,6 +637,9 @@ app.post("/insereEspecie", (req, res) => {
         alaId: codAla
     }).then(() => {
         res.redirect("/insert/Especie")
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
+        res.redirect("/insert/Especies")
     });
 });
 
@@ -681,7 +678,13 @@ app.post("/insereServicosGerais", (req, res) => {
             alaId: alaId,
             horariofim: horarioFinal,
             horarioInicio: horarioInicio
+        }).catch((e) => {
+            alert('ERRO AO INSERIR ' + e)
+            res.redirect("/insert/ServicosGerais")
         })
+        res.redirect("/insert/ServicosGerais")
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
         res.redirect("/insert/ServicosGerais")
     });
 });
@@ -721,6 +724,9 @@ app.post("/insereVeterinario", (req, res) => {
         }).then(() => {
             res.redirect('/insert/Veterinario');
         })
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
+        res.redirect("/insert/Veterinario")
     });
 });
 
@@ -732,12 +738,11 @@ app.post('/insereIngresso', (req, res) => {
         bilheteriaId: numBilheteria
     }).then(() => {
         res.redirect('/select/Ingresso')
-    }).catch(err => {
-        //console.log(err);
-        alert('Erro', 'window');
-    })
-
-})
+    }).catch((e) => {
+        alert('ERRO AO INSERIR ' + e)
+        res.redirect("/insert/Ingresso")
+    });
+});
 
 //FUNÇÕES DE UPDATE
 app.post('/atualizaAla/', (req, res) => {
@@ -752,14 +757,14 @@ app.post('/atualizaAla/', (req, res) => {
         sequelize.query('SELECT * FROM ala, horarioAla where ala.id = :id;', {
             id: req.body.cod,
         }).then(() => {
-            sequelize.query('UPDATE horarioAla SET horario = :horario WHERE alaId = :id;', {
+            sequelize.query('UPDATE horarioAla SET horarioInicio = :horarioInicio WHERE alaId = :id;', {
                 replacements: {
                     id: req.body.cod,
                     horario: req.body.horario
                 }
             })
             res.redirect('/select/Ala')
-        }).catch((e)=>{
+        }).catch((e) => {
             alert('ERRO AO ATUALIZAR ' + e)
             res.redirect("/select/Ala")
         });
@@ -777,7 +782,7 @@ app.post('/atualizaAnimal/', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Animal')
-    }).catch((e)=>{
+    }).catch((e) => {
         alert('ERRO AO ATUALIZAR: ' + e)
         res.redirect("/select/Animal")
     });
@@ -793,8 +798,8 @@ app.post('/atualizaAtende', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Atende')
-    }).catch((e)=>{
-        alert('ERRO AO ATUALIZAR '+e)
+    }).catch((e) => {
+        alert('ERRO AO ATUALIZAR ' + e)
         res.redirect("/select/Atende")
     });
 });
@@ -808,8 +813,8 @@ app.post('/atualizaBilheteria', (req, res) => {
 
     }).then(() => {
         res.redirect('/select/Bilheteria')
-    }).catch((e)=>{
-        alert('ERRO AO ATUALIZAR '+e)
+    }).catch((e) => {
+        alert('ERRO AO ATUALIZAR ' + e)
         res.redirect("/select/Bilheteria")
     });
 });
@@ -827,8 +832,8 @@ app.post('/atualizaEspecie', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Especie')
-    }).catch((e)=>{
-        alert('ERRO AO ATUALIZAR '+e)
+    }).catch((e) => {
+        alert('ERRO AO ATUALIZAR ' + e)
         res.redirect("/select/Especie")
     });
 });
@@ -851,7 +856,7 @@ app.post('/atualizaBilheteiro', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Bilheteiro')
-    }).catch((e)=>{
+    }).catch((e) => {
         alert('ERRO AO ATUALIZAR ' + e)
         res.redirect("/select/Bilheteiro")
     });
@@ -884,7 +889,7 @@ app.post('/atualizaServicosGerais', (req, res) => {
                 }
             })
             res.redirect('/select/ServicosGerais')
-        }).catch((e)=>{
+        }).catch((e) => {
             alert('ERRO AO ATUALIZAR ' + e)
             res.redirect("/select/ServicosGerais")
         });
@@ -908,7 +913,7 @@ app.post('/atualizaVeterinario', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Veterinario')
-    }).catch((e)=>{
+    }).catch((e) => {
         alert('ERRO AO ATUALIZAR ' + e)
         res.redirect("/select/Veterinario")
     });
@@ -923,10 +928,183 @@ app.post('/atualizaIngresso', (req, res) => {
         }
     }).then(() => {
         res.redirect('/select/Ingresso')
-    }).catch((e)=>{
+    }).catch((e) => {
         alert('ERRO AO ATUALIZAR ' + e)
         res.redirect("/select/Ingresso")
     });
+});
+//Funções de Busca
+
+app.get('/select/Financas', (req, res) => {
+    sequelize.query('SELECT * FROM ingresso_v')
+        .then((resultado) => {
+            res.render('select', {
+                tabela: 'Financas',
+                resultado: resultado,
+                insert: undefined
+            })
+        })
+});
+
+app.get('/busca/Ala', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM ala where nome= :busca OR id= :busca OR localizacao= :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Ala,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Ala',
+            resultado: resultado,
+            insert: '/insert/Ala'
+        })
+    })
+});
+
+app.get('/busca/Animal', (req, res) => {
+    var busca = req.query.busca;
+    sequelize.query('SELECT * FROM animal_v where nome= :busca OR id= :busca OR sexo= :busca OR dataNascimento= :busca OR nomePopular = :busca OR nomeCientifico = :busca OR especieId = :busca OR alaId = :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Animal,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Animal',
+            resultado: resultado,
+            insert: '/insert/Animal'
+        })
+    })
+});
+
+app.get('/busca/Atende', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM atende where veterinarioCPF= :busca OR animalId = :busca OR diagnostico= :busca OR data = :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Atende,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Atende',
+            resultado: resultado,
+            insert: '/insert/Atende'
+        })
+    })
+});
+
+app.get('/busca/Bilheteiro', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM bilheteiro where Nome= :busca OR CPF= :busca OR ddn= :busca OR Salario= :busca OR CLT= :busca OR Endereco= :busca OR bilheteriaId = :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Bilheteiro,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Bilheteiro',
+            resultado: resultado,
+            insert: '/insert/Bilheteiro'
+        })
+    })
+});
+
+app.get('/busca/Bilheteria', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM bilheteria where id= :busca OR localizacao= :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Bilheteria,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Bilheteria',
+            resultado: resultado,
+            insert: '/insert/Bilheteria'
+        })
+    })
+});
+
+app.get('/busca/Especies', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM especie where nomePopular= :busca OR nomeCientifico= :busca OR estado= :busca OR alaId = :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Especie,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Especie',
+            resultado: resultado,
+            insert: '/insert/Especie'
+        })
+    })
+});
+
+app.get('/busca/Ingresso', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM ingresso where id= :busca OR bilheteriaId= :busca OR preco= :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Ingresso,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Ingresso',
+            resultado: resultado,
+            insert: '/insert/Ingresso'
+        })
+    })
+});
+
+app.get('/busca/Bilheteiro', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM bilheteiro_v where Nome= :busca OR CPF= :busca OR ddn= :busca OR Salario= :busca OR CLT= :busca OR Endereco= :busca OR funcao = :busca OR id = :busca OR nome = :busca OR localizacao = :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Bilheteiro,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Bilheteiro',
+            resultado: resultado,
+            insert: '/insert/Bilheteiro'
+        })
+    })
+});
+
+app.get('/busca/Veterinario', (req, res) => {
+    var busca = req.query.busca;
+    console.log(busca);
+    sequelize.query('SELECT * FROM veterinario_v where Nome= :busca OR CPF= :busca OR ddn= :busca OR Salario= :busca OR CLT= :busca OR Endereco= :busca OR CRMV = :busca OR Faculdade = :busca OR nomePopular = :busca OR nomeCientifico = :busca OR alaId = :busca', {
+        replacements: {
+            busca: busca
+        },
+        model: Veterinario,
+        mapToModel: true
+    }).then((resultado) => {
+        res.render('select', {
+            tabela: 'Veterinario',
+            resultado: resultado,
+            insert: '/insert/Veterinario'
+        })
+    })
 });
 
 /*-----------FIM ROTAS-----------*/

@@ -9,7 +9,7 @@
 
         <div class="container mt-5">
             <% if (tabela == 'Ala') { %>
-            <form method='POST' action="/insereAla">
+            <form method='POST' action="/insert/horarioAla">
 
                 <div class="form-group">
                     <label for="cod">Nome</label>
@@ -19,20 +19,8 @@
                     <label for="cod">Localização</label>
                     <input type="text" id="localizacao" name="localizacao" required>
                 </div>
-                <!-- Horarios ala -->
-                <div class="form-group">
-                    <label for="horario">Horário</label>
-                    <input type="time" id="horario" name="horario" required>
-                </div>
-                <button type="button" onclick="adicionaHorario()">+</button>
-                
-
-                <div id="divAdicionaHorario">
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
             </form>
-            <button type="button" class="btn" onclick="adicionaHorario()">aaaaa</button>
             <% } %>
 
             <% if (tabela == 'Animal') { %>
@@ -215,14 +203,12 @@
             <form method='POST' action="/insereBilheteiro">
 
                 <%- include('partials/funcionario_form.ejs');  %>
-
-                <!--Cuida-->
                 <div class="form-group">
                     <label for="numBilheteria">Número Bilheteria</label>
                     <input type="number" id="numBilheteria" name="numBilheteria" required>
                 </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <% } %>
 
