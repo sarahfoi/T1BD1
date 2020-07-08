@@ -1022,6 +1022,7 @@ app.post('/atualizaVeterinario', (req, res) => {
             ddn: req.body.ddn,
             Salario: req.body.salario,
             CLT: req.body.CLT,
+            Conta: req.body.conta,
             Endereco: req.body.endereco,
             Banco: req.body.banco,
             Agencia: req.body.agencia,
